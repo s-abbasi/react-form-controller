@@ -1,0 +1,13 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  jobTest1:
+    name: bla
+    runs-on: ubuntu-latest
+    steps:
+      - name: step1 name
+        uses: s-abbasi/checkout@v2

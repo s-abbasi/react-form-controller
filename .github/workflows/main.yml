@@ -1,0 +1,21 @@
+name: MAIN
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v2
+      - name: Update README.md version
+        run: |
+          sed -i "s/%VERSION/v1/g" README.md
+      - name: Update files on GitHub
+        uses: test-room-7/action-update-file@v1.6.0
+        with:
+          file-path: README.md
+          commit-msg: README.md auto update
+          github-token: ${{ secrets.GITHUB_TOKEN }}

@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: step1 name
-        uses: s-abbasi/checkout@v2
+        uses: actions/checkout@v2

@@ -2,3 +2,4 @@
 
 
 # react-form-controller
+VERSION: %VERSION

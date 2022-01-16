@@ -1,4 +1,4 @@
-name: CI
+name: MAIN
 
 on:
   push:
@@ -8,8 +8,8 @@ jobs:
   version:
     runs-on: ubuntu-latest
     steps:
-      - name: clone repo
+      - name: Clone repo
         uses: actions/checkout@v2
-      - name: add version
-        run: sed -i "s/VERSION/hoy/" README.md
+      - name: Update README.md version
+        run:  -exec sed -i "s/VERSION/hoy/" README.md
       

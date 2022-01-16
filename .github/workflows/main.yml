@@ -6,13 +6,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  version:
     runs-on: ubuntu-latest
     steps:
       - name: clone repo
         uses: actions/checkout@v2
-      - name: cat version
-        run: cat README.md
       - name: add version
-        run: sed -i "s/VERSION/hoy/g" README.md
+        run: sed -i "s/VERSION/hoy/" README.md
       

@@ -8,5 +8,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: step1 name
+      - name: clone repo
         uses: actions/checkout@v2
+      - name: add version
+      - run: sed -i 's/%VERSION/hoy/' README.md
+      

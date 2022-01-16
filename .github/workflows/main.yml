@@ -11,5 +11,5 @@ jobs:
       - name: clone repo
         uses: actions/checkout@v2
       - name: add version
-        run: sed -i "s/%VERSION/hoy/" README.md
+        run: sed -i "s/%VERSION/hoy/g" README.md
       

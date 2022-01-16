@@ -12,6 +12,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Update README.md version
         run: | 
-          sed -i "s/%VERSION/v1" README.md
+          sed -i "s/%VERSION/v1/g" README.md
       - name: cat README.md version
         run:  cat README.md

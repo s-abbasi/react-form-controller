@@ -11,5 +11,5 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v2
       - name: Update README.md version
-        run:  -exec sed -i "s/VERSION/hoy/" README.md
+        run:  -exec sed -i "s/VERSION/123/g" README.md
       

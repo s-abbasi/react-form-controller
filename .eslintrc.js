@@ -7,6 +7,7 @@ module.exports = {
         'plugin:react/recommended',
         'airbnb',
         'plugin:@typescript-eslint/recommended',
+        'plugin:storybook/recommended',
     ],
     parser: '@typescript-eslint/parser',
     parserOptions: {
@@ -51,7 +52,6 @@ module.exports = {
                 tsx: 'never',
             },
         ],
-
         'no-shadow': 'off',
         '@typescript-eslint/no-shadow': ['error'],
         '@typescript-eslint/explicit-function-return-type': [

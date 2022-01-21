@@ -32,6 +32,7 @@ module.exports = {
         ],
         quotes: ['error', 'single'],
         indent: ['error', 4],
+        'react/jsx-indent': ['error', 4],
         'react/destructuring-assignment': 0,
         'comma-dangle': 'off',
         'no-use-before-define': 'off',

@@ -1,15 +1,19 @@
-export function Test(): JSX.Element {
-    const pipe = (...args: string[]): string => JSON.stringify(args);
+import { useForm } from '../useForm/UseForm';
+import { Form } from '../useForm/UseForm.types';
 
-    const form = {
-        firstName: pipe(''),
-        lastName: '',
-    };
+const form: Form = {
+    firstName: { initialValue: 'sajad' },
+    lastName: { initialValue: '' },
+};
+
+export function Test(): JSX.Element {
+    const signupForm = useForm(form);
 
     return (
         <>
-            <p>HELLO WORLD!</p>
-            <div>bla</div>
+            <code>{JSON.stringify(signupForm)}</code>
+            <br />
+            <input {...signupForm.firstName.jsx} />
         </>
     );
 }

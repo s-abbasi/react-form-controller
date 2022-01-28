@@ -11,39 +11,41 @@ module.exports = {
     ],
     parser: '@typescript-eslint/parser',
     parserOptions: {
-        ecmaFeatures: {
-            jsx: true,
-        },
+        ecmaFeatures: { jsx: true },
         ecmaVersion: 13,
         sourceType: 'module',
     },
-    plugins: ['react', '@typescript-eslint', 'react-hooks'],
-    settings: {
-        'import/resolver': {
-            typescript: {},
-        },
-    },
+    plugins: ['react', '@typescript-eslint', 'react-hooks', 'prettier'],
+    settings: { 'import/resolver': { typescript: {} } },
     rules: {
-        'import/no-extraneous-dependencies': [
+        'object-curly-newline': [
             'error',
             {
-                devDependencies: true,
+                ObjectExpression: {
+                    multiline: true,
+                    minProperties: 4,
+                },
+                ObjectPattern: { multiline: true },
+                ImportDeclaration: 'never',
+                ExportDeclaration: {
+                    multiline: true,
+                    minProperties: 3,
+                },
             },
         ],
+        'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+        'prettier/prettier': 'error',
+        'arrow-body-style': ['error', 'as-needed'],
         quotes: ['error', 'single'],
         indent: ['error', 4],
         'react/jsx-indent': ['error', 4],
+        'react/jsx-props-no-spreading': 'off',
         'react/destructuring-assignment': 0,
         'comma-dangle': 'off',
         'no-use-before-define': 'off',
         'import/prefer-default-export': 'off',
         '@typescript-eslint/no-use-before-define': ['error'],
-        'react/jsx-filename-extension': [
-            'warn',
-            {
-                extensions: ['.tsx'],
-            },
-        ],
+        'react/jsx-filename-extension': ['warn', { extensions: ['.tsx'] }],
         'react/react-in-jsx-scope': 'off',
         'import/extensions': [
             'error',
@@ -57,9 +59,7 @@ module.exports = {
         '@typescript-eslint/no-shadow': ['error'],
         '@typescript-eslint/explicit-function-return-type': [
             'error',
-            {
-                allowExpressions: true,
-            },
+            { allowExpressions: true },
         ],
         'react-hooks/rules-of-hooks': 'error',
         'react-hooks/exhaustive-deps': 'warn',

@@ -12,6 +12,8 @@ const addToRefs = (
     }
 };
 
+// const x: number = 1;
+
 const generateJSX = (form: Form, refs: MutableRefObject<JSXRef[]>): UseForm => {
     const convertor = (_: Form[keyof Form], key: keyof Form): JSXProp => ({
         jsx: {

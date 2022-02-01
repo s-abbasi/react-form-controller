@@ -17,6 +17,7 @@
         "@storybook/addon-links": "^6.5.0-alpha.22",
         "@storybook/react": "^6.5.0-alpha.22",
         "@testing-library/react": "^12.1.2",
+        "@testing-library/react-hooks": "^7.0.2",
         "@tsconfig/recommended": "^1.0.1",
         "@types/jest": "^27.4.0",
         "@types/ramda": "^0.27.64",

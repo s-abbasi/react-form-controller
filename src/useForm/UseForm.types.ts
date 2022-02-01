@@ -1,17 +1,24 @@
+import { ChangeEvent } from 'react';
+
 export interface Field<T> {
     initialValue: T;
 }
 
+type ValueTypes = string | number;
+
 export interface Form {
-    [key: string | number]: Field<string | number | boolean>;
+    [key: string | number]: Field<ValueTypes>;
 }
 
 export type ElRef = HTMLInputElement | null;
 
 export interface JSXProp {
     jsx: {
-        ref: (el: ElRef) => void;
+        // ref: (el: ElRef) => void;
+        defaultValue: ValueTypes;
+        onChange: (e: ChangeEvent<HTMLInputElement>) => void;
     };
+    value: ValueTypes;
 }
 
 export interface UseForm {

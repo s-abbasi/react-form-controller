@@ -14,3 +14,13 @@ jobs:
               run: npm i
             - name: Lint
               run: npx eslint .
+
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Test
+              uses: actions/checkout@v2
+            - name: Install dependencies
+              run: npm i
+            - name: Test
+              run: npm run test

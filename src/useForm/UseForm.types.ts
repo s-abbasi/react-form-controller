@@ -1,33 +1,43 @@
-import { ChangeEvent } from 'react';
-
 export interface Field<T> {
     initialValue: T;
 }
 
-type ValueTypes = string | number;
+export type ValueTypes = string | number | boolean;
 
 export interface Form {
     [key: string | number]: Field<ValueTypes>;
 }
 
-export type ElRef = HTMLInputElement | null;
-
 export interface JSXProp {
     jsx: {
-        // ref: (el: ElRef) => void;
-        defaultValue: ValueTypes;
-        onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+        ref: (el: HTMLInputElement) => void;
     };
-    value: ValueTypes;
 }
+
+export interface Ref {
+    key: keyof Form;
+    ref: HTMLInputElement;
+}
+
+export type InputTypes = 'text' | 'number' | 'checkbox';
+
+export type GetInputType = (el: HTMLInputElement) => {
+    type: InputTypes;
+    el: HTMLInputElement;
+};
 
 export interface UseForm {
     [key: keyof Form]: JSXProp;
 }
 
+export type Convertor = (fieldValue: Form[keyof Form], fieldName: keyof Form) => JSXProp;
 export interface JSXRef {
     fieldName: keyof Form;
-    ref: ElRef;
+    ref: HTMLInputElement;
 }
+
+export type SetInitialValue = (
+    initialValue: ValueTypes
+) => (el: HTMLInputElement) => void;
 
 export type UseFormPropsFields = Form[keyof Form];

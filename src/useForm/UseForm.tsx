@@ -1,23 +1,44 @@
-import { map } from 'ramda';
-import { ChangeEvent } from 'react';
-import { Form, JSXProp, UseForm } from './UseForm.types';
+import { mapObjIndexed, compose } from 'ramda';
+import { MutableRefObject, useRef } from 'react';
+import {
+    checkRefExistence,
+    setInitialValue,
+    attachListenerToEl,
+    getElInputType,
+} from './UseForm.helper';
+import { Convertor, Form, Ref, UseForm } from './UseForm.types';
 
-const generateJSX = (form: Form): UseForm => {
-    const convertor = (value: Form[keyof Form]): JSXProp => {
-        const obj = {
-            jsx: {
-                defaultValue: value.initialValue,
-                onChange(e: ChangeEvent<HTMLInputElement>) {
-                    (this as unknown as typeof obj).value = e.target.value;
-                },
-            },
-            value: value.initialValue,
-        };
-        obj.jsx.onChange = obj.jsx.onChange.bind(obj);
-        return obj;
+const addElToRefs = (refs: MutableRefObject<Ref[]>, fieldName: keyof Form) => {
+    return (el: HTMLInputElement) => {
+        refs.current.push({ key: fieldName, ref: el });
+        return el;
     };
-
-    return map(convertor, form);
 };
 
-export const useForm = (form: Form): UseForm => generateJSX(form);
+export const useForm = (form: Form): UseForm => {
+    const refs = useRef<Ref[]>([]);
+
+    const convertor: Convertor = (fieldValue, fieldName) => {
+        const refExist = checkRefExistence(fieldName, refs);
+        const addElToRefList = addElToRefs(refs, fieldName);
+        const setInitialValueToEl = setInitialValue(fieldValue.initialValue);
+
+        return {
+            jsx: {
+                ref: (el: HTMLInputElement) => {
+                    if (el && !refExist) {
+                        const addEl = compose(
+                            setInitialValueToEl,
+                            addElToRefList,
+                            attachListenerToEl,
+                            getElInputType
+                        );
+                        addEl(el);
+                    }
+                },
+            },
+        };
+    };
+
+    return mapObjIndexed(convertor, form);
+};

@@ -18,24 +18,11 @@ module.exports = {
     plugins: ['react', '@typescript-eslint', 'react-hooks', 'prettier'],
     settings: { 'import/resolver': { typescript: {} } },
     rules: {
-        'object-curly-newline': [
-            'error',
-            {
-                ObjectExpression: {
-                    multiline: true,
-                    minProperties: 4,
-                },
-                ObjectPattern: { multiline: true },
-                ImportDeclaration: 'never',
-                ExportDeclaration: {
-                    multiline: true,
-                    minProperties: 3,
-                },
-            },
-        ],
+        'object-curly-newline': 'off',
         'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
         'prettier/prettier': 'error',
-        'arrow-body-style': ['error', 'as-needed'],
+        'arrow-body-style': 'off',
+        'implicit-arrow-linebreak': 'off',
         quotes: ['error', 'single'],
         indent: ['error', 4],
         'react/jsx-indent': ['error', 4],
@@ -67,7 +54,7 @@ module.exports = {
             'warn',
             {
                 props: true,
-                ignorePropertyModificationsFor: ['state'],
+                ignorePropertyModificationsFor: ['state', 'el'],
             },
         ],
     },

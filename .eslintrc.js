@@ -1,4 +1,15 @@
-module.exports = {
+const reactRules = {
+    'react/jsx-indent': ['error', 4],
+    'react/jsx-props-no-spreading': 'off',
+    'react/jsx-filename-extension': ['warn', { extensions: ['.tsx'] }],
+    'react/jsx-indent-props': 'off',
+    'react/react-in-jsx-scope': 'off',
+    'react/destructuring-assignment': 0,
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
+};
+
+const config = {
     env: {
         browser: true,
         es2021: true,
@@ -8,6 +19,7 @@ module.exports = {
         'airbnb',
         'plugin:@typescript-eslint/recommended',
         'plugin:storybook/recommended',
+        'prettier',
     ],
     parser: '@typescript-eslint/parser',
     parserOptions: {
@@ -25,15 +37,10 @@ module.exports = {
         'implicit-arrow-linebreak': 'off',
         quotes: ['error', 'single'],
         indent: ['error', 4],
-        'react/jsx-indent': ['error', 4],
-        'react/jsx-props-no-spreading': 'off',
-        'react/destructuring-assignment': 0,
         'comma-dangle': 'off',
         'no-use-before-define': 'off',
         'import/prefer-default-export': 'off',
         '@typescript-eslint/no-use-before-define': ['error'],
-        'react/jsx-filename-extension': ['warn', { extensions: ['.tsx'] }],
-        'react/react-in-jsx-scope': 'off',
         'import/extensions': [
             'error',
             'ignorePackages',
@@ -48,14 +55,16 @@ module.exports = {
             'error',
             { allowExpressions: true },
         ],
-        'react-hooks/rules-of-hooks': 'error',
-        'react-hooks/exhaustive-deps': 'warn',
         'no-param-reassign': [
             'warn',
             {
                 props: true,
-                ignorePropertyModificationsFor: ['state', 'el'],
+                ignorePropertyModificationsFor: ['state', 'el', 'obj'],
             },
         ],
     },
 };
+
+Object.assign(config.rules, { ...reactRules });
+
+module.exports = config;

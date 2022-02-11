@@ -12,6 +12,7 @@ export interface JSXProp {
     jsx: {
         ref: (el: HTMLInputElement) => void;
     };
+    value: ValueTypes;
 }
 
 export interface Ref {
@@ -19,7 +20,7 @@ export interface Ref {
     ref: HTMLInputElement;
 }
 
-export type InputTypes = 'text' | 'number' | 'checkbox';
+export type InputTypes = 'text' | 'number' | 'checkbox' | 'radio';
 
 export type GetInputType = (el: HTMLInputElement) => {
     type: InputTypes;
@@ -35,6 +36,10 @@ export interface JSXRef {
     fieldName: keyof Form;
     ref: HTMLInputElement;
 }
+
+export type AttachListenerToEl = (
+    obj: JSXProp
+) => (el: { el: HTMLInputElement; type: InputTypes }) => HTMLInputElement;
 
 export type SetInitialValue = (
     initialValue: ValueTypes

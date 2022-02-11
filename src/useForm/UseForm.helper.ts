@@ -1,6 +1,8 @@
+/* eslint-disable no-console */
 import { cond, T } from 'ramda';
 import { MutableRefObject } from 'react';
 import {
+    AttachListenerToEl,
     Form,
     GetInputType,
     InputTypes,
@@ -9,33 +11,52 @@ import {
     ValueTypes,
 } from './UseForm.types';
 
-export const attachListenerToEl = cond([
-    [
-        ({ type }) => type === 'text',
-        ({ el }) => {
-            el.addEventListener('input', () => {
-                // eslint-disable-next-line no-console
-                console.log('change text: ', el.value);
-            });
-            return el;
-        },
-    ],
-    [
-        ({ type }) => type === 'checkbox',
-        ({ el }) => {
-            el.addEventListener('input', () => {
-                // eslint-disable-next-line no-console
-                console.log('change chb: ', el.checked);
-            });
-            return el;
-        },
-    ],
-]);
+export const addElToRefs = (refs: MutableRefObject<Ref[]>, fieldName: keyof Form) => {
+    return (el: HTMLInputElement) => {
+        refs.current.push({ key: fieldName, ref: el });
+        return el;
+    };
+};
+
+export const attachListenerToEl: AttachListenerToEl = (obj) =>
+    cond([
+        [
+            ({ type }) => type === 'text',
+            ({ el }) => {
+                el.addEventListener('input', (e) => {
+                    obj.value = (e.target as HTMLInputElement).value;
+                    console.log('change text: ', el.value);
+                });
+                return el;
+            },
+        ],
+        [
+            ({ type }) => type === 'checkbox',
+            ({ el }) => {
+                el.addEventListener('input', (e) => {
+                    obj.value = (e.target as HTMLInputElement).checked;
+                    console.log('change chb: ', el.checked);
+                });
+                return el;
+            },
+        ],
+        [
+            ({ type }) => type === 'radio',
+            ({ el }) => {
+                el.addEventListener('input', (e) => {
+                    obj.value = (e.target as HTMLInputElement).value;
+                    console.log('change radio: ', el.value);
+                });
+                return el;
+            },
+        ],
+    ]);
 
 export const getElInputType: GetInputType = cond([
     [(el) => el.type === 'text', (el) => ({ type: 'text' as InputTypes, el })],
     [(el) => el.type === 'number', (el) => ({ type: 'number' as InputTypes, el })],
     [(el) => el.type === 'checkbox', (el) => ({ type: 'checkbox' as InputTypes, el })],
+    [(el) => el.type === 'radio', (el) => ({ type: 'radio' as InputTypes, el })],
     [T, (el) => ({ type: 'text', el })],
 ]);
 
@@ -58,6 +79,12 @@ export const setInitialValue: SetInitialValue = (initialValue: ValueTypes) =>
             (el: HTMLInputElement) => el.type === 'checkbox',
             (el: HTMLInputElement) => {
                 el.checked = initialValue as boolean;
+            },
+        ],
+        [
+            (el: HTMLInputElement) => el.type === 'radio',
+            (el: HTMLInputElement) => {
+                el.checked = el.value === initialValue;
             },
         ],
     ]);

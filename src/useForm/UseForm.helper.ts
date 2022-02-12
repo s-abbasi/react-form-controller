@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { cond, T } from 'ramda';
 import { MutableRefObject } from 'react';
 import {
@@ -25,7 +24,6 @@ export const attachListenerToEl: AttachListenerToEl = (obj) =>
             ({ el }) => {
                 el.addEventListener('input', (e) => {
                     obj.value = (e.target as HTMLInputElement).value;
-                    console.log('change text: ', el.value);
                 });
                 return el;
             },
@@ -35,7 +33,6 @@ export const attachListenerToEl: AttachListenerToEl = (obj) =>
             ({ el }) => {
                 el.addEventListener('input', (e) => {
                     obj.value = (e.target as HTMLInputElement).checked;
-                    console.log('change chb: ', el.checked);
                 });
                 return el;
             },
@@ -45,7 +42,6 @@ export const attachListenerToEl: AttachListenerToEl = (obj) =>
             ({ el }) => {
                 el.addEventListener('input', (e) => {
                     obj.value = (e.target as HTMLInputElement).value;
-                    console.log('change radio: ', el.value);
                 });
                 return el;
             },

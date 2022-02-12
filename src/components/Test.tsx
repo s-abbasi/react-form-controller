@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { StrictMode, useState } from 'react';
 import { useForm } from '../useForm/UseForm';
 import { Form } from '../useForm/UseForm.types';

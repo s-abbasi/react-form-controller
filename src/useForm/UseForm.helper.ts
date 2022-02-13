@@ -7,7 +7,6 @@ import {
     InputTypes,
     Ref,
     SetInitialValue,
-    ValueTypes,
 } from './UseForm.types';
 
 export const addElToRefs = (refs: MutableRefObject<Ref[]>, fieldName: keyof Form) => {
@@ -63,24 +62,30 @@ export const checkRefExistence = (
     return refs.current.some((item: Ref) => item.key === fieldName);
 };
 
-export const setInitialValue: SetInitialValue = (initialValue: ValueTypes) =>
+export const setInitialState: SetInitialValue = (fieldValue) =>
     cond([
         [
             (el: HTMLInputElement) => el.type === 'text',
             (el: HTMLInputElement) => {
-                el.value = initialValue as string;
+                el.value = fieldValue.initialValue as string;
+                el.disabled =
+                    fieldValue?.disable !== undefined ? fieldValue.disable : false;
             },
         ],
         [
             (el: HTMLInputElement) => el.type === 'checkbox',
             (el: HTMLInputElement) => {
-                el.checked = initialValue as boolean;
+                el.checked = fieldValue.initialValue as boolean;
+                el.disabled =
+                    fieldValue?.disable !== undefined ? fieldValue.disable : false;
             },
         ],
         [
             (el: HTMLInputElement) => el.type === 'radio',
             (el: HTMLInputElement) => {
-                el.checked = el.value === initialValue;
+                el.checked = el.value === fieldValue.initialValue;
+                el.disabled =
+                    fieldValue?.disable !== undefined ? fieldValue.disable : false;
             },
         ],
     ]);

@@ -3,10 +3,9 @@ import { useForm } from '../useForm/UseForm';
 import { Form } from '../useForm/UseForm.types';
 
 const formModel: Form = {
-    firstName: { initialValue: 'sajad' },
-    lastName: { initialValue: 'abbasi' },
-    single: { initialValue: true },
-    contact: { initialValue: 'phone' },
+    name: { initialValue: 'sajad', disable: true },
+    single: { initialValue: true, disable: true },
+    contact: { initialValue: 'phone', disable: true },
 };
 
 export function Test(): JSX.Element {
@@ -14,7 +13,6 @@ export function Test(): JSX.Element {
     const [code, setCode] = useState(form);
 
     const log = (): void => {
-        console.log(form);
         setCode(form);
     };
 
@@ -23,7 +21,7 @@ export function Test(): JSX.Element {
             <StrictMode>
                 <code>{JSON.stringify(code)}</code>
                 <hr />
-                <input type="text" {...form.firstName.jsx} />
+                <input type="text" {...form.name.jsx} />
                 <br />
                 <label htmlFor="chb">
                     <input type="checkbox" {...form.single.jsx} />

@@ -2,7 +2,7 @@ import { mapObjIndexed, compose } from 'ramda';
 import { useRef } from 'react';
 import {
     checkRefExistence,
-    setInitialValue,
+    setInitialState,
     attachListenerToEl,
     getElInputType,
     addElToRefs,
@@ -15,14 +15,14 @@ export const useForm = (form: Form): UseForm => {
     const convertor: Convertor = (fieldValue, fieldName) => {
         const refExist = checkRefExistence(fieldName, refs);
         const addElToRefList = addElToRefs(refs, fieldName);
-        const setInitialValueToEl = setInitialValue(fieldValue.initialValue);
+        const setInitialStateToEl = setInitialState(fieldValue);
 
         const obj = {
             jsx: {
                 ref: (el: HTMLInputElement) => {
                     if (el && !refExist) {
                         const addEl = compose(
-                            setInitialValueToEl,
+                            setInitialStateToEl,
                             addElToRefList,
                             attachListenerToEl(obj),
                             getElInputType
@@ -32,6 +32,7 @@ export const useForm = (form: Form): UseForm => {
                 },
             },
             value: fieldValue.initialValue,
+            disable: !!fieldValue.disable,
         };
         return obj;
     };

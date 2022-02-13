@@ -1,5 +1,6 @@
 export interface Field<T> {
     initialValue: T;
+    disable?: boolean;
 }
 
 export type ValueTypes = string | number | boolean;
@@ -13,6 +14,7 @@ export interface JSXProp {
         ref: (el: HTMLInputElement) => void;
     };
     value: ValueTypes;
+    disable: boolean;
 }
 
 export interface Ref {
@@ -42,7 +44,7 @@ export type AttachListenerToEl = (
 ) => (el: { el: HTMLInputElement; type: InputTypes }) => HTMLInputElement;
 
 export type SetInitialValue = (
-    initialValue: ValueTypes
+    fieldValue: Form[keyof Form]
 ) => (el: HTMLInputElement) => void;
 
 export type UseFormPropsFields = Form[keyof Form];

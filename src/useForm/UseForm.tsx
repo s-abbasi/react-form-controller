@@ -1,5 +1,6 @@
 import { mapObjIndexed, compose } from 'ramda';
 import { useRef } from 'react';
+import { validate } from '../validations/validations';
 import {
     checkRefExistence,
     setInitialState,
@@ -24,6 +25,7 @@ export const useForm = (form: Form): UseForm => {
                         const addEl = compose(
                             setInitialStateToEl,
                             addElToRefList,
+                            validate(obj, fieldValue.validations),
                             attachListenerToEl(obj),
                             getElInputType
                         );
@@ -33,6 +35,7 @@ export const useForm = (form: Form): UseForm => {
             },
             value: fieldValue.initialValue,
             disable: !!fieldValue.disable,
+            errors: [],
         };
         return obj;
     };

@@ -1,10 +1,14 @@
 import { StrictMode, useState } from 'react';
 import { useForm } from '../useForm/UseForm';
 import { Form } from '../useForm/UseForm.types';
+import { minLength, maxLength } from '../validations/validations';
 
 const formModel: Form = {
-    name: { initialValue: 'sajad', disable: true },
-    single: { initialValue: true, disable: true },
+    name: {
+        initialValue: '',
+        validations: [minLength(3), maxLength(10)],
+    },
+    single: { initialValue: true, disable: false },
     contact: { initialValue: 'phone', disable: true },
 };
 

@@ -1,6 +1,18 @@
+export interface Validations {
+    name: string;
+    errorMessage: string;
+    validateWith: (value: ValueTypes) => boolean;
+}
+
+export interface ControlError {
+    name: string;
+    message: string;
+}
+
 export interface Field<T> {
     initialValue: T;
     disable?: boolean;
+    validations?: Validations[];
 }
 
 export type ValueTypes = string | number | boolean;
@@ -15,6 +27,8 @@ export interface JSXProp {
     };
     value: ValueTypes;
     disable: boolean;
+    isValid?: boolean;
+    errors: ControlError[];
 }
 
 export interface Ref {
@@ -34,6 +48,7 @@ export interface UseForm {
 }
 
 export type Convertor = (fieldValue: Form[keyof Form], fieldName: keyof Form) => JSXProp;
+
 export interface JSXRef {
     fieldName: keyof Form;
     ref: HTMLInputElement;

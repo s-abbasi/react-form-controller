@@ -1,20 +1,23 @@
 import { StrictMode, useState } from 'react';
+import { createSelectOptionsInput } from '../useForm/tests/helper';
 import { useForm } from '../useForm/UseForm';
 import { Form } from '../useForm/UseForm.types';
 import { minLength, maxLength } from '../validations/validations';
 
 const formModel: Form = {
     name: {
-        initialValue: '',
+        initialValue: 'hey',
         validations: [minLength(3), maxLength(10)],
     },
-    single: { initialValue: true, disable: false },
-    contact: { initialValue: 'phone', disable: true },
+    single: { initialValue: true },
+    contact: { initialValue: 'phone' },
+    pet: { initialValue: 'ori' },
 };
 
 export function Test(): JSX.Element {
     const form = useForm(formModel);
     const [code, setCode] = useState(form);
+    const [state, setState] = useState('');
 
     const log = (): void => {
         setCode(form);
@@ -23,6 +26,11 @@ export function Test(): JSX.Element {
     return (
         <div style={{ color: '#cdcdcd' }}>
             <StrictMode>
+                <input
+                    type="text"
+                    onChange={(e) => setState(e.target.value)}
+                    value={state}
+                />
                 <code>{JSON.stringify(code)}</code>
                 <hr />
                 <input type="text" {...form.name.jsx} />
@@ -64,6 +72,21 @@ export function Test(): JSX.Element {
                         Fax
                     </label>
                 </div>
+
+                <label htmlFor="pet-select">
+                    Choose a pet:
+                    <select {...form.pet.jsx} name="pets" id="pet-select">
+                        <option value="">choose an option</option>
+                        <option value="dog">Dog</option>
+                        <option value="cat">Cat</option>
+                        <option value="hamster">Hamster</option>
+                        <option value="parrot">Parrot</option>
+                        <option value="spider">Spider</option>
+                        <option value="ori">Ori</option>
+                        <option value="goldfish">Goldfish</option>
+                    </select>
+                </label>
+                <hr />
                 <button type="button" onClick={log}>
                     LOG
                 </button>

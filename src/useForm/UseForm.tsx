@@ -1,32 +1,27 @@
 import { mapObjIndexed, compose } from 'ramda';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { validate } from '../validations/validations';
 import {
-    checkRefExistence,
     setInitialState,
-    attachListenerToEl,
+    setFormControllerValue,
     getElInputType,
     addElToRefs,
 } from './UseForm.helper';
-import { Convertor, Form, Ref, UseForm } from './UseForm.types';
+import { Convertor, Form, HTMLInputTypes, Ref, UseForm } from './UseForm.types';
 
 export const useForm = (form: Form): UseForm => {
     const refs = useRef<Ref[]>([]);
 
-    const convertor: Convertor = (fieldValue, fieldName) => {
-        const refExist = checkRefExistence(fieldName, refs);
-        const addElToRefList = addElToRefs(refs, fieldName);
-        const setInitialStateToEl = setInitialState(fieldValue);
-
+    const convertor: Convertor = (fieldValue) => {
         const obj = {
             jsx: {
-                ref: (el: HTMLInputElement) => {
-                    if (el && !refExist) {
+                ref: (el: HTMLInputTypes) => {
+                    if (el) {
                         const addEl = compose(
-                            setInitialStateToEl,
-                            addElToRefList,
+                            setInitialState(fieldValue),
+                            addElToRefs(refs),
                             validate(obj, fieldValue.validations),
-                            attachListenerToEl(obj),
+                            setFormControllerValue(obj),
                             getElInputType
                         );
                         addEl(el);
@@ -40,5 +35,5 @@ export const useForm = (form: Form): UseForm => {
         return obj;
     };
 
-    return mapObjIndexed(convertor, form);
+    return useMemo(() => mapObjIndexed(convertor, form), [form]);
 };

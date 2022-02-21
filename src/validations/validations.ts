@@ -1,6 +1,7 @@
 import {
     ControlError,
     Field,
+    HTMLInputTypes,
     JSXProp,
     Validations,
     ValueTypes,
@@ -10,7 +11,7 @@ export const validate = (
     obj: JSXProp,
     validations: Field<unknown>['validations'] = []
 ) => {
-    return (el: HTMLInputElement): HTMLInputElement => {
+    return (el: NonNullable<HTMLInputTypes>): NonNullable<HTMLInputTypes> => {
         el.addEventListener('input', (e) => {
             const { value } = e.target as HTMLInputElement;
 

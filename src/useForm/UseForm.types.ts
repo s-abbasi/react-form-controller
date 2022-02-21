@@ -21,9 +21,11 @@ export interface Form {
     [key: string | number]: Field<ValueTypes>;
 }
 
+export type HTMLInputTypes = HTMLInputElement | HTMLSelectElement | null;
+
 export interface JSXProp {
     jsx: {
-        ref: (el: HTMLInputElement) => void;
+        ref: (el: HTMLInputTypes) => void;
     };
     value: ValueTypes;
     disable: boolean;
@@ -31,16 +33,13 @@ export interface JSXProp {
     errors: ControlError[];
 }
 
-export interface Ref {
-    key: keyof Form;
-    ref: HTMLInputElement;
-}
+export type Ref = NonNullable<HTMLInputTypes>;
 
-export type InputTypes = 'text' | 'number' | 'checkbox' | 'radio';
+export type InputTypes = 'text' | 'number' | 'checkbox' | 'radio' | 'select-one';
 
-export type GetInputType = (el: HTMLInputElement) => {
+export type GetInputType = (el: NonNullable<HTMLInputTypes>) => {
     type: InputTypes;
-    el: HTMLInputElement;
+    el: NonNullable<HTMLInputTypes>;
 };
 
 export interface UseForm {
@@ -49,17 +48,15 @@ export interface UseForm {
 
 export type Convertor = (fieldValue: Form[keyof Form], fieldName: keyof Form) => JSXProp;
 
-export interface JSXRef {
-    fieldName: keyof Form;
-    ref: HTMLInputElement;
-}
-
 export type AttachListenerToEl = (
     obj: JSXProp
-) => (el: { el: HTMLInputElement; type: InputTypes }) => HTMLInputElement;
+) => (el: {
+    el: NonNullable<HTMLInputTypes>;
+    type: InputTypes;
+}) => NonNullable<HTMLInputTypes>;
 
 export type SetInitialValue = (
     fieldValue: Form[keyof Form]
-) => (el: HTMLInputElement) => void;
+) => (el: NonNullable<HTMLInputTypes>) => void;
 
 export type UseFormPropsFields = Form[keyof Form];

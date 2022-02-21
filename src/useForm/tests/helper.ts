@@ -9,3 +9,18 @@ export const createCheckboxInput = (): HTMLInputElement => {
     checkboxEl.type = 'checkbox';
     return checkboxEl;
 };
+
+export const createSelectOptionsInput = (): HTMLSelectElement => {
+    const select = document.createElement('select');
+
+    const pets = ['ori', 'dog', 'cat', 'eagle'];
+
+    pets.forEach((pet) => {
+        const option = document.createElement('option');
+        option.value = pet.toLowerCase();
+        option.innerHTML = pet;
+        select.appendChild(option);
+    });
+
+    return select;
+};

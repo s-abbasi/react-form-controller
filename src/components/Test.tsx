@@ -1,12 +1,11 @@
 import { StrictMode, useState } from 'react';
-import { createSelectOptionsInput } from '../useForm/tests/helper';
 import { useForm } from '../useForm/UseForm';
 import { Form } from '../useForm/UseForm.types';
 import { minLength, maxLength } from '../validations/validations';
 
 const formModel: Form = {
     name: {
-        initialValue: 'hey',
+        initialValue: 'hi',
         validations: [minLength(3), maxLength(10)],
     },
     single: { initialValue: true },

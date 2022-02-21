@@ -15,9 +15,7 @@ export const validate = (
         el.addEventListener('input', (e) => {
             const { value } = e.target as HTMLInputElement;
 
-            const isValid = validations.some((validation) =>
-                validation.validateWith(value)
-            );
+            const isValid = validations.every(({ validateWith }) => validateWith(value));
 
             const errors: ControlError[] = validations
                 .filter((validation) => !validation.validateWith(value))

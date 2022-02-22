@@ -27,7 +27,7 @@ export const setFormControllerValue: AttachListenerToEl = (obj) =>
                 el.addEventListener('input', (ev) => {
                     obj.value = (ev.target as HTMLInputElement).value;
                 });
-                return el;
+                return { el, type: 'text' };
             },
         ],
         [
@@ -36,7 +36,7 @@ export const setFormControllerValue: AttachListenerToEl = (obj) =>
                 el.addEventListener('input', (ev) => {
                     obj.value = (ev.target as HTMLInputElement).checked;
                 });
-                return el;
+                return { el, type: 'checkbox' as InputTypes };
             },
         ],
         [
@@ -45,7 +45,7 @@ export const setFormControllerValue: AttachListenerToEl = (obj) =>
                 el.addEventListener('input', (ev) => {
                     obj.value = (ev.target as HTMLInputElement).value;
                 });
-                return el;
+                return { el, type: 'radio' };
             },
         ],
         [
@@ -54,7 +54,7 @@ export const setFormControllerValue: AttachListenerToEl = (obj) =>
                 el.addEventListener('input', (ev) => {
                     obj.value = (ev.target as HTMLInputElement).value;
                 });
-                return el;
+                return { el, type: 'select-one' };
             },
         ],
     ]);

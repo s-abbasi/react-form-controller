@@ -36,7 +36,7 @@ const config = {
         'arrow-body-style': 'off',
         'implicit-arrow-linebreak': 'off',
         quotes: ['error', 'single'],
-        indent: ['error', 4],
+        // indent: ['error', 4, { MemberExpression: 'off', FunctionExpression: 'off' }],
         'comma-dangle': 'off',
         'no-use-before-define': 'off',
         'import/prefer-default-export': 'off',

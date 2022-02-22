@@ -48,15 +48,24 @@ export interface UseForm {
 
 export type Convertor = (fieldValue: Form[keyof Form], fieldName: keyof Form) => JSXProp;
 
-export type AttachListenerToEl = (
-    obj: JSXProp
-) => (el: {
+export type AttachListenerToEl = (obj: JSXProp) => (el: {
     el: NonNullable<HTMLInputTypes>;
     type: InputTypes;
-}) => NonNullable<HTMLInputTypes>;
+}) => {
+    type: InputTypes;
+    el: NonNullable<HTMLInputTypes>;
+};
 
 export type SetInitialValue = (
     fieldValue: Form[keyof Form]
 ) => (el: NonNullable<HTMLInputTypes>) => void;
 
 export type UseFormPropsFields = Form[keyof Form];
+
+export type Validate = (
+    obj: JSXProp,
+    validations: Field<unknown>['validations']
+) => (obj: {
+    el: NonNullable<HTMLInputTypes>;
+    type: InputTypes;
+}) => NonNullable<HTMLInputTypes>;

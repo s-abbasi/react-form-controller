@@ -1,25 +1,27 @@
 import { StrictMode, useState } from 'react';
 import { useForm } from '../useForm/UseForm';
 import { Form } from '../useForm/UseForm.types';
-import { minLength, maxLength } from '../validations/validations';
+import { maxLength } from '../validations/validation.maxLength';
+import { minLength } from '../validations/validation.minLength';
+import { required } from '../validations/validation.required';
 
 const formModel: Form = {
     name: {
         initialValue: 'hi',
-        validations: [minLength(3), maxLength(10)],
+        validations: [minLength(3), maxLength(10), required()],
+        // validations: [required()],
     },
-    single: { initialValue: true },
-    contact: { initialValue: 'phone' },
-    pet: { initialValue: 'ori' },
+    single: { initialValue: true, validations: [required()] },
+    contact: { initialValue: '', validations: [required()] },
+    pet: { initialValue: 'ori', validations: [required()] },
 };
 
 export function Test(): JSX.Element {
     const form = useForm(formModel);
-    const [code, setCode] = useState(form);
     const [state, setState] = useState('');
 
     const log = (): void => {
-        setCode(form);
+        console.log('form: ', form);
     };
 
     return (
@@ -30,13 +32,12 @@ export function Test(): JSX.Element {
                     onChange={(e) => setState(e.target.value)}
                     value={state}
                 />
-                <code>{JSON.stringify(code)}</code>
                 <hr />
                 <input type="text" {...form.name.jsx} />
                 <br />
                 <label htmlFor="chb">
+                    single?
                     <input type="checkbox" {...form.single.jsx} />
-                    checkbox
                 </label>
 
                 <div>

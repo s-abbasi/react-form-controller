@@ -1,9 +1,11 @@
 import { fireEvent } from '@testing-library/react';
 import { act, renderHook } from '@testing-library/react-hooks';
-import { createTextInput } from '../useForm/tests/helper';
+import { createCheckboxInput, createTextInput } from '../useForm/tests/helper';
 import { useForm } from '../useForm/UseForm';
 import { Form } from '../useForm/UseForm.types';
-import { maxLength, minLength } from './validations';
+import { maxLength } from './validation.maxLength';
+import { minLength } from './validation.minLength';
+import { required } from './validation.required';
 
 describe('Validations', () => {
     test('should set form.name.isValid to the result of value given to validations', () => {
@@ -73,5 +75,47 @@ describe('Validations', () => {
         };
 
         expect(form.name.errors[0]).toStrictEqual(expect.objectContaining(expected));
+    });
+});
+
+describe('Validation - required', () => {
+    test('should set "form.name.isValid" to "false" if controller does not have value', () => {
+        const formModel: Form = {
+            single: {
+                initialValue: true,
+                validations: [required()],
+            },
+        };
+
+        const hook = renderHook(() => useForm(formModel));
+        const form = hook.result.current;
+        const checkboxEl = createCheckboxInput();
+
+        act(() => {
+            form.single.jsx.ref(checkboxEl);
+            fireEvent.input(checkboxEl, { target: { checked: false } });
+        });
+
+        expect(form.single.isValid).toBe(false);
+    });
+
+    test('should set "form.name.isValid" to "true" if controller has value', () => {
+        const formModel: Form = {
+            single: {
+                initialValue: false,
+                validations: [required()],
+            },
+        };
+
+        const hook = renderHook(() => useForm(formModel));
+        const form = hook.result.current;
+        const checkboxEl = createCheckboxInput();
+
+        act(() => {
+            form.single.jsx.ref(checkboxEl);
+            fireEvent.input(checkboxEl, { target: { checked: true } });
+        });
+
+        expect(form.single.isValid).toBe(true);
     });
 });

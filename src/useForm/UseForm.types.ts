@@ -15,7 +15,7 @@ export interface Field<T> {
     validations?: Validations[];
 }
 
-export type ValueTypes = string | number | boolean;
+export type ValueTypes = string | number | boolean | ArrayBuffer | null | undefined;
 
 export interface Form {
     [key: string | number]: Field<ValueTypes>;
@@ -35,7 +35,7 @@ export interface JSXProp {
 
 export type Ref = NonNullable<HTMLInputTypes>;
 
-export type InputTypes = 'text' | 'number' | 'checkbox' | 'radio' | 'select-one';
+export type InputTypes = 'text' | 'number' | 'checkbox' | 'radio' | 'select-one' | 'file';
 
 export type GetInputType = (el: NonNullable<HTMLInputTypes>) => {
     type: InputTypes;

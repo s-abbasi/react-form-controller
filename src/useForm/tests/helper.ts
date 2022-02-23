@@ -10,6 +10,20 @@ export const createCheckboxInput = (): HTMLInputElement => {
     return checkboxEl;
 };
 
+export const createFileInput = (): HTMLInputElement => {
+    const checkboxEl = document.createElement('input');
+    checkboxEl.type = 'file';
+    return checkboxEl;
+};
+
+export const createFile = (type = 'image/jpg'): File => {
+    const format = type.split('/')[1];
+    const el = new File(['(⌐□_□)'], `imageName.${format}`, {
+        type: type || 'image/png',
+    });
+    return el;
+};
+
 export const createSelectOptionsInput = (): HTMLSelectElement => {
     const select = document.createElement('select');
 

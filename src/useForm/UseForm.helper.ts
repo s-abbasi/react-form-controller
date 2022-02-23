@@ -57,6 +57,23 @@ export const setFormControllerValue: AttachListenerToEl = (obj) =>
                 return { el, type: 'select-one' };
             },
         ],
+        [
+            ({ type }) => type === 'file',
+            ({ el }) => {
+                el.addEventListener('input', (ev) => {
+                    const e = ev.target as unknown as HTMLInputElement;
+                    const file = e.files?.length ? e.files[0] : '';
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onloadend = (binaryFile) => {
+                            obj.value = binaryFile.target?.result;
+                        };
+                        reader.readAsBinaryString(file);
+                    }
+                });
+                return { el, type: 'file' };
+            },
+        ],
     ]);
 
 export const getElInputType: GetInputType = cond([
@@ -64,6 +81,7 @@ export const getElInputType: GetInputType = cond([
     [(el) => el.type === 'number', (el) => ({ type: 'number' as InputTypes, el })],
     [(el) => el.type === 'checkbox', (el) => ({ type: 'checkbox' as InputTypes, el })],
     [(el) => el.type === 'radio', (el) => ({ type: 'radio' as InputTypes, el })],
+    [(el) => el.type === 'file', (el) => ({ type: 'file' as InputTypes, el })],
     [
         (el) => el.type === 'select-one',
         (el) => ({ type: 'select-one' as InputTypes, el }),

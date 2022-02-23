@@ -2,6 +2,7 @@ import { fireEvent } from '@testing-library/react';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { useForm } from '../UseForm';
 import { Form } from '../UseForm.types';
+import { createTextInput } from './helper';
 
 const formModel: Form = {
     name: { initialValue: '', disable: true },
@@ -14,8 +15,7 @@ describe('UseForm - typeof text', () => {
         const hook = renderHook(() => useForm(formModel));
         const form = hook.result.current;
 
-        const inputTextEl: HTMLInputElement = document.createElement('input');
-        inputTextEl.type = 'text';
+        const inputTextEl = createTextInput();
 
         act(() => {
             form.name.jsx.ref(inputTextEl);

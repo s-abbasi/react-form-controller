@@ -9,11 +9,11 @@ const formModel: Form = {
     name: {
         initialValue: 'hi',
         validations: [minLength(3), maxLength(10), required()],
-        // validations: [required()],
     },
     single: { initialValue: true, validations: [required()] },
     contact: { initialValue: '', validations: [required()] },
     pet: { initialValue: 'ori', validations: [required()] },
+    img: { initialValue: '' },
 };
 
 export function Test(): JSX.Element {
@@ -21,7 +21,7 @@ export function Test(): JSX.Element {
     const [state, setState] = useState('');
 
     const log = (): void => {
-        console.log('form: ', form);
+        console.log('form: ', form.img);
     };
 
     return (
@@ -34,12 +34,15 @@ export function Test(): JSX.Element {
                 />
                 <hr />
                 <input type="text" {...form.name.jsx} />
-                <br />
+                <hr />
+                <input type="file" {...form.img.jsx} />
+                <hr />
                 <label htmlFor="chb">
                     single?
                     <input type="checkbox" {...form.single.jsx} />
                 </label>
 
+                <hr />
                 <div>
                     <label htmlFor="contactChoice1">
                         <input
@@ -73,6 +76,7 @@ export function Test(): JSX.Element {
                     </label>
                 </div>
 
+                <hr />
                 <label htmlFor="pet-select">
                     Choose a pet:
                     <select {...form.pet.jsx} name="pets" id="pet-select">

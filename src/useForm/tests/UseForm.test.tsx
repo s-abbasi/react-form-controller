@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { Form } from './UseForm.types';
-import { useForm } from './UseForm';
+import { useForm } from '../UseForm';
+import { Form } from '../UseForm.types';
 
 const formModel: Form = {
     name: { initialValue: '', disable: true },

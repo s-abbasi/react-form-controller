@@ -69,3 +69,5 @@ export type Validate = (
     el: NonNullable<HTMLInputTypes>;
     type: InputTypes;
 }) => NonNullable<HTMLInputTypes>;
+
+export type GenerateObjProxy = (obj: JSXProp, forceUpdate: () => void) => JSXProp;

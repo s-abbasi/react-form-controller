@@ -21,7 +21,7 @@ export function Test(): JSX.Element {
     const [state, setState] = useState('');
 
     const log = (): void => {
-        console.log('form: ', form.img);
+        console.log('form: ', form);
     };
 
     return (
@@ -34,16 +34,18 @@ export function Test(): JSX.Element {
                 />
                 <hr />
                 <input type="text" {...form.name.jsx} />
+                value: {form.name.value}
                 <hr />
                 <input type="file" {...form.img.jsx} />
                 <hr />
                 <label htmlFor="chb">
                     single?
                     <input type="checkbox" {...form.single.jsx} />
+                    value: {JSON.stringify(form.single.value)}
                 </label>
-
                 <hr />
                 <div>
+                    contact:
                     <label htmlFor="contactChoice1">
                         <input
                             {...form.contact.jsx}
@@ -75,7 +77,7 @@ export function Test(): JSX.Element {
                         Fax
                     </label>
                 </div>
-
+                value: {form.contact.value}
                 <hr />
                 <label htmlFor="pet-select">
                     Choose a pet:
@@ -90,6 +92,7 @@ export function Test(): JSX.Element {
                         <option value="goldfish">Goldfish</option>
                     </select>
                 </label>
+                value: {form.pet.value}
                 <hr />
                 <button type="button" onClick={log}>
                     LOG

@@ -40,7 +40,6 @@ const config = {
         'comma-dangle': 'off',
         'no-use-before-define': 'off',
         'import/prefer-default-export': 'off',
-        '@typescript-eslint/no-use-before-define': ['error'],
         'import/extensions': [
             'error',
             'ignorePackages',

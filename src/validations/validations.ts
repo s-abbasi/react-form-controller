@@ -1,15 +1,5 @@
-import {
-    ControlError,
-    Field,
-    InputTypes,
-    Validate,
-    ValueTypes,
-} from '../useForm/UseForm.types';
-
-export type GenerateErrors = (
-    value: ValueTypes,
-    validations: NonNullable<Field<unknown>['validations']>
-) => ControlError[];
+import { InputTypes, ValueTypes } from '../useForm/UseForm.types';
+import { GenerateErrors, Validate, ValidateAll } from './validations.types';
 
 const generateErrors: GenerateErrors = (value, validations) =>
     validations
@@ -26,12 +16,22 @@ const normalizeValue = (ev: Event, type: InputTypes): ValueTypes => {
     return (ev.target as HTMLInputElement).value;
 };
 
-export const validate: Validate = (obj, validations = []) => {
+const validateAll: ValidateAll = (value, validations) => {
+    // const validations: Validations[] = fieldValue.validations || [];
+    return validations.every(({ validateWith }) => validateWith(value));
+};
+
+export const validate: Validate = (obj, fieldValue) => {
+    const { initialValue, validations = [] } = fieldValue;
+
+    obj.isValid = validateAll(initialValue, validations);
+    obj.errors = generateErrors(initialValue, validations);
+
     return ({ el, type }) => {
         el.addEventListener('input', (ev) => {
             const value = normalizeValue(ev, type);
 
-            obj.isValid = validations.every(({ validateWith }) => validateWith(value));
+            obj.isValid = validateAll(value, validations);
             obj.errors = generateErrors(value, validations);
         });
         return el;

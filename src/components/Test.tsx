@@ -13,7 +13,7 @@ const formModel: Form = {
     single: { initialValue: true, validations: [required()] },
     contact: { initialValue: '', validations: [required()] },
     pet: { initialValue: 'ori', validations: [required()] },
-    img: { initialValue: '' },
+    img: { initialValue: '', validations: [required()] },
 };
 
 export function Test(): JSX.Element {
@@ -34,14 +34,24 @@ export function Test(): JSX.Element {
                 />
                 <hr />
                 <input type="text" {...form.name.jsx} />
+                <br />
                 value: {form.name.value}
+                <br />
+                isValid: {JSON.stringify(form.name.isValid)}
                 <hr />
                 <input type="file" {...form.img.jsx} />
+                <br />
+                value: {(form.img.value as string).substring(0, 30)}
+                <br />
+                isValid: {JSON.stringify(form.img.isValid)}
                 <hr />
                 <label htmlFor="chb">
                     single?
                     <input type="checkbox" {...form.single.jsx} />
+                    <br />
                     value: {JSON.stringify(form.single.value)}
+                    <br />
+                    isValid:{JSON.stringify(form.single.isValid)}
                 </label>
                 <hr />
                 <div>
@@ -78,6 +88,8 @@ export function Test(): JSX.Element {
                     </label>
                 </div>
                 value: {form.contact.value}
+                <br />
+                isValid: {JSON.stringify(form.contact.isValid)}
                 <hr />
                 <label htmlFor="pet-select">
                     Choose a pet:
@@ -92,7 +104,10 @@ export function Test(): JSX.Element {
                         <option value="goldfish">Goldfish</option>
                     </select>
                 </label>
+                <br />
                 value: {form.pet.value}
+                <br />
+                isValid: {JSON.stringify(form.pet.isValid)}
                 <hr />
                 <button type="button" onClick={log}>
                     LOG

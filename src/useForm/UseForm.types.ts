@@ -62,12 +62,4 @@ export type SetInitialValue = (
 
 export type UseFormPropsFields = Form[keyof Form];
 
-export type Validate = (
-    obj: JSXProp,
-    validations: Field<unknown>['validations']
-) => (obj: {
-    el: NonNullable<HTMLInputTypes>;
-    type: InputTypes;
-}) => NonNullable<HTMLInputTypes>;
-
 export type GenerateObjProxy = (obj: JSXProp, forceUpdate: () => void) => JSXProp;

@@ -18,11 +18,13 @@ import {
     GenerateObjProxy,
 } from './UseForm.types';
 
+const forceUpdateOn = ['value', 'isValid'];
+
 const generateObjProxy: GenerateObjProxy = (obj, forceUpdate) => {
     const handler: ProxyHandler<typeof obj> = {
         set: (target: JSXProp, prop, receiver) => {
             target[prop] = receiver;
-            if (prop === 'value') {
+            if (forceUpdateOn.includes(prop)) {
                 forceUpdate();
             }
             return true;
@@ -43,7 +45,7 @@ export const useForm = (form: Form): UseForm => {
                         const addEl = compose(
                             setInitialState(fieldValue),
                             addElToRefs(refs),
-                            validate(objProxy, fieldValue.validations),
+                            validate(objProxy, fieldValue),
                             setFormControllerValue(objProxy),
                             getElInputType
                         );

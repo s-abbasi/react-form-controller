@@ -76,6 +76,40 @@ describe('Validations', () => {
 
         expect(form.name.errors[0]).toStrictEqual(expect.objectContaining(expected));
     });
+    test('should set "form.name.valid" to "false" on hook mount', () => {
+        const formModel: Form = {
+            name: {
+                initialValue: '',
+                validations: [required()],
+            },
+        };
+        const hook = renderHook(() => useForm(formModel));
+        const form = hook.result.current;
+        const textInputEl = createTextInput();
+
+        act(() => {
+            form.name.jsx.ref(textInputEl);
+        });
+
+        expect(form.name.isValid).toBe(false);
+    });
+    test('should set "form.name.valid" to "true" on hook mount', () => {
+        const formModel: Form = {
+            name: {
+                initialValue: '',
+                validations: [],
+            },
+        };
+        const hook = renderHook(() => useForm(formModel));
+        const form = hook.result.current;
+        const textInputEl = createTextInput();
+
+        act(() => {
+            form.name.jsx.ref(textInputEl);
+        });
+
+        expect(form.name.isValid).toBe(true);
+    });
 });
 
 describe('Validation - required', () => {

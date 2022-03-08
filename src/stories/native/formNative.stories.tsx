@@ -10,8 +10,6 @@ const formModel = {
     name: { initialValue: '' },
 };
 
-const Template: ComponentStory<typeof FormNative> = (args: any): JSX.Element => (
-    <FormNative {...args} />
-);
+const Template: ComponentStory<typeof FormNative> = (): JSX.Element => <FormNative />;
 export const Primary = Template.bind({});
 Primary.args = formModel;

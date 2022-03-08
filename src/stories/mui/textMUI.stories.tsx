@@ -10,9 +10,7 @@ const formModel = {
     name: { initialValue: '' },
 };
 
-const Template: ComponentStory<typeof TextMUI> = (args: any): JSX.Element => (
-    <TextMUI {...args} />
-);
+const Template: ComponentStory<typeof TextMUI> = (): JSX.Element => <TextMUI />;
 
 export const WithoutInitialValue = Template.bind({});
 WithoutInitialValue.args = formModel;

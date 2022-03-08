@@ -6,13 +6,6 @@ export default {
     component: FormMUI,
 } as ComponentMeta<typeof FormMUI>;
 
-// const formModel: unknown = {
-//     name: { initialValue: '' },
-// };
-
-const Template: ComponentStory<typeof FormMUI> = (args: any): JSX.Element => (
-    <FormMUI {...args} />
-);
+const Template: ComponentStory<typeof FormMUI> = (): JSX.Element => <FormMUI />;
 
 export const Primary = Template.bind({});
-// Primary.args = formModel;

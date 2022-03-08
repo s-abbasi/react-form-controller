@@ -1,7 +1,6 @@
 import TextField from '@mui/material/TextField';
 
-export const TextMUI = (formModel: any): JSX.Element => {
-    console.log('formModel: ', formModel);
+export const TextMUI = (): JSX.Element => {
     return (
         <>
             <p>text MUI</p>

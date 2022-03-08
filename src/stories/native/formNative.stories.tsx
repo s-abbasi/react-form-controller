@@ -1,5 +1,4 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { Form } from '../../useForm/UseForm.types';
 import { FormNative } from './formNative';
 
 export default {
@@ -7,11 +6,11 @@ export default {
     component: FormNative,
 } as ComponentMeta<typeof FormNative>;
 
-const formModel: Form = {
+const formModel = {
     name: { initialValue: '' },
 };
 
-const Template: ComponentStory<typeof FormNative> = (args: Form): JSX.Element => (
+const Template: ComponentStory<typeof FormNative> = (args: any): JSX.Element => (
     <FormNative {...args} />
 );
 export const Primary = Template.bind({});

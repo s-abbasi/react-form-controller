@@ -1,5 +1,4 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { Form } from '../../useForm/UseForm.types';
 import { FormMUI } from './formMUI';
 
 export default {
@@ -7,13 +6,13 @@ export default {
     component: FormMUI,
 } as ComponentMeta<typeof FormMUI>;
 
-const formModel: Form = {
-    name: { initialValue: '' },
-};
+// const formModel: unknown = {
+//     name: { initialValue: '' },
+// };
 
-const Template: ComponentStory<typeof FormMUI> = (args: Form): JSX.Element => (
+const Template: ComponentStory<typeof FormMUI> = (args: any): JSX.Element => (
     <FormMUI {...args} />
 );
 
 export const Primary = Template.bind({});
-Primary.args = formModel;
+// Primary.args = formModel;

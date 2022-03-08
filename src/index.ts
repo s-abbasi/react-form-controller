@@ -1,1 +1,1 @@
-export { useForm } from './useForm/UseForm';
+export { UseForm } from './useForm/useForm';

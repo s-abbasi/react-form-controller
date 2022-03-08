@@ -1,12 +1,10 @@
 import TextField from '@mui/material/TextField';
-import { useForm } from '../..';
-import { Form } from '../../useForm/UseForm.types';
 
-export const TextMUI = (formModel: Form): JSX.Element => {
-    const form = useForm(formModel);
+export const TextMUI = (formModel: any): JSX.Element => {
+    console.log('formModel: ', formModel);
     return (
         <>
-            <p>{form.name.value}</p>
+            <p>text MUI</p>
             <TextField label="Outlined" variant="outlined" />
         </>
     );

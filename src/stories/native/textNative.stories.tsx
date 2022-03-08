@@ -1,17 +1,16 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Form } from '../../useForm/UseForm.types';
-import { TextNative } from './textNative';
+import { TextNative } from './TextNative';
 
 export default {
     title: 'native/text',
     component: TextNative,
 } as ComponentMeta<typeof TextNative>;
 
-const formModel: Form = {
+const formModel: any = {
     name: { initialValue: '' },
 };
 
-const Template: ComponentStory<typeof TextNative> = (args: Form): JSX.Element => (
+const Template: ComponentStory<typeof TextNative> = (args: any): JSX.Element => (
     <TextNative {...args} />
 );
 

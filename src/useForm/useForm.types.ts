@@ -1,21 +1,22 @@
 import { ChangeEvent, HTMLAttributes } from 'react';
 
-export type NativeValueTypes = HTMLAttributes<HTMLInputElement>['defaultValue'];
+export type DefaultValue = HTMLAttributes<HTMLInputElement>['defaultValue'] | boolean;
+export type DefaultChecked = HTMLAttributes<HTMLInputElement>['defaultChecked'];
 
 type ValidatorName = 'minValue' | 'maxValue' | 'minLength' | 'maxLength' | string;
 
 interface Validator {
     name: ValidatorName;
-    validateWith: (value: NativeValueTypes) => boolean;
+    validateWith: (value: DefaultValue) => boolean;
     message?: string;
 }
 
 export interface ControlModel {
-    defaultValue: NativeValueTypes;
+    defaultValue: DefaultValue;
     validators?: Validator[];
 }
 
-export type FormModel = Record<string, NativeValueTypes | ControlModel>;
+export type FormModel = Record<string, DefaultValue | ControlModel>;
 
 // interface ControlError {
 //     name: ValidatorName;
@@ -23,8 +24,9 @@ export type FormModel = Record<string, NativeValueTypes | ControlModel>;
 // }
 
 export interface JSXBinding {
+    defaultValue?: Exclude<DefaultValue, boolean>;
+    defaultChecked?: DefaultChecked;
     onChange: (ev: ChangeEvent<HTMLInputElement>) => void;
-    defaultValue: NativeValueTypes;
 }
 
 type Bind = (controlName: string) => JSXBinding;
@@ -34,7 +36,7 @@ export type GenerateBinding = (model: FormModel) => {
     onFormChange: (fn: Observer) => void;
 };
 
-export type Observer = (ev: { controlName: string; value: NativeValueTypes }) => unknown;
+export type Observer = (ev: { controlName: string; value: DefaultValue }) => unknown;
 
 // interface CtrlAddRemoveResult {
 //     success: boolean;
@@ -42,16 +44,16 @@ export type Observer = (ev: { controlName: string; value: NativeValueTypes }) =>
 // }
 
 export type ControlConvertor = (
-    value: NativeValueTypes | ControlModel,
+    value: DefaultValue | ControlModel,
     key: string
-) => { value: NativeValueTypes };
+) => { value: DefaultValue };
 
 export interface Controls {
     [key: string]: Control;
 }
 
 export interface Control {
-    value: NativeValueTypes;
+    value: DefaultValue;
     // setValue: (value: ValueType) => void;
     // isValid: boolean;
     // isEnabled: boolean;

@@ -1,24 +1,39 @@
 /* eslint-disable no-console */
 import { mapObjIndexed } from 'ramda';
-import { setDefaultValue } from './useForm.helper';
+import { setDefaultChecked, getDefaultValue } from './useForm.helper';
 import {
     ControlConvertor,
     FormGroup,
     FormModel,
     GenerateBinding,
+    JSXBinding,
     Observer,
 } from './useForm.types';
 
 const generateBinding: GenerateBinding = (model) => {
     const observers: Observer[] = [];
 
-    const bind: ReturnType<GenerateBinding>['bind'] = (controlName) => ({
-        defaultValue: setDefaultValue(model[controlName]),
-        onChange: (ev) => {
-            const arg = { controlName, value: ev.target.value };
-            observers[0](arg);
-        },
-    });
+    const bind: ReturnType<GenerateBinding>['bind'] = (controlName) => {
+        const value = getDefaultValue(model[controlName]);
+        const valueIsBoolean = typeof value === 'boolean';
+
+        const obj: JSXBinding = {
+            onChange: ({ target }) => {
+                const isCheckbox = target.type === 'checkbox';
+                const targetValue = isCheckbox ? target.checked : target.value;
+                const arg = { controlName, value: targetValue };
+                observers[0](arg);
+            },
+        };
+
+        if (valueIsBoolean) {
+            Object.assign(obj, { defaultChecked: setDefaultChecked(model[controlName]) });
+        } else {
+            Object.assign(obj, { defaultValue: value });
+        }
+
+        return obj;
+    };
 
     const onFormChange: ReturnType<GenerateBinding>['onFormChange'] = (fn) => {
         observers.push(fn);
@@ -31,7 +46,7 @@ const proxyHandler = {};
 
 const controlConvertor: ControlConvertor = (value) => {
     return {
-        value: setDefaultValue(value),
+        value: getDefaultValue(value),
     };
 };
 

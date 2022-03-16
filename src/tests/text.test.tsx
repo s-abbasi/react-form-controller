@@ -1,9 +1,9 @@
 import { ChangeEvent } from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { FormModel } from '../../useForm/useForm.types';
-import { useForm } from '../../useForm/useForm';
+import { FormModel } from '../useForm/useForm.types';
+import { useForm } from '../useForm/useForm';
 
-describe('TextNative', () => {
+describe('text', () => {
     test('should set "<input defaultValue={}>" to the given defaultValue in FormModel', () => {
         const formModel: FormModel = {
             firstName: { defaultValue: 'sajad' },
@@ -45,8 +45,8 @@ describe('TextNative', () => {
         const hook = renderHook(() => useForm(formModel));
         const form = hook.result.current;
 
-        const value = { target: { value: 'sara' } } as ChangeEvent<HTMLInputElement>;
-        form.bind('firstName').onChange(value);
+        const change = { target: { value: 'sara' } } as ChangeEvent<HTMLInputElement>;
+        form.bind('firstName').onChange(change);
 
         expect(form.firstName.value).toBe('sara');
     });

@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { FormModel } from '../../useForm/useForm.types';
 import { TextNative } from './TextNative';
 
 export default {
@@ -6,10 +7,21 @@ export default {
     component: TextNative,
 } as ComponentMeta<typeof TextNative>;
 
-const Template: ComponentStory<typeof TextNative> = (): JSX.Element => <TextNative />;
+const formModel: FormModel = {
+    firstName: {
+        defaultValue: 'sajad',
+    },
+    lastName: {
+        defaultValue: '',
+    },
+};
+
+const Template: ComponentStory<typeof TextNative> = (args: FormModel): JSX.Element => (
+    <TextNative {...args} />
+);
 
 export const WithoutInitialValue = Template.bind({});
-WithoutInitialValue.args = {};
+WithoutInitialValue.args = formModel;
 
 export const WithInitialValue = Template.bind({});
-WithInitialValue.args = { ...{}, name: { initialValue: 'initial value' } };
+WithInitialValue.args = { ...formModel, firstName: 'with initial value' };

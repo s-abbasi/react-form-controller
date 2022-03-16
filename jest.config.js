@@ -1,1 +1,4 @@
-module.exports = { testEnvironment: 'jsdom' };
+module.exports = {
+    testEnvironment: 'jsdom',
+    setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
+};

@@ -58,7 +58,7 @@ const config = {
             'warn',
             {
                 props: true,
-                ignorePropertyModificationsFor: ['state', 'el', 'obj'],
+                ignorePropertyModificationsFor: ['state'],
             },
         ],
     },

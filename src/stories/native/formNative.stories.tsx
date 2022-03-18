@@ -17,6 +17,9 @@ const formModel: FormModel = {
     single: {
         defaultValue: true,
     },
+    contact: {
+        defaultValue: 'phone',
+    },
 };
 const Template: ComponentStory<typeof FormNative> = (): JSX.Element => (
     <FormNative {...formModel} />

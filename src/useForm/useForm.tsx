@@ -1,8 +1,11 @@
 /* eslint-disable no-console */
 import { mapObjIndexed } from 'ramda';
+import { ChangeEvent } from 'react';
 import { setDefaultChecked, getDefaultValue } from './useForm.helper';
 import {
     ControlConvertor,
+    ControlModel,
+    DefaultValue,
     FormGroup,
     FormModel,
     GenerateBinding,
@@ -10,27 +13,43 @@ import {
     Observer,
 } from './useForm.types';
 
+const getValueBasedOnType = ({ target }: ChangeEvent<HTMLInputElement>): DefaultValue => {
+    const isCheckbox = target.type === 'checkbox';
+    // const isRadio = target.type === 'radio';
+
+    const targetValue = isCheckbox ? target.checked : target.value;
+
+    return targetValue;
+};
+
+const generateJSXValueAttribute = (
+    value: unknown,
+    control: DefaultValue | ControlModel
+): unknown => {
+    const valueIsBoolean = typeof value === 'boolean';
+
+    if (valueIsBoolean) {
+        return { defaultChecked: setDefaultChecked(control) };
+    }
+    return { defaultValue: value };
+};
+
 const generateBinding: GenerateBinding = (model) => {
     const observers: Observer[] = [];
 
     const bind: ReturnType<GenerateBinding>['bind'] = (controlName) => {
         const value = getDefaultValue(model[controlName]);
-        const valueIsBoolean = typeof value === 'boolean';
 
         const obj: JSXBinding = {
-            onChange: ({ target }) => {
-                const isCheckbox = target.type === 'checkbox';
-                const targetValue = isCheckbox ? target.checked : target.value;
-                const arg = { controlName, value: targetValue };
+            onChange: (ev) => {
+                const eventValue = getValueBasedOnType(ev);
+                const arg = { controlName, value: eventValue };
                 observers[0](arg);
             },
         };
 
-        if (valueIsBoolean) {
-            Object.assign(obj, { defaultChecked: setDefaultChecked(model[controlName]) });
-        } else {
-            Object.assign(obj, { defaultValue: value });
-        }
+        const JSXValueAttribute = generateJSXValueAttribute(value, model[controlName]);
+        Object.assign(obj, JSXValueAttribute);
 
         return obj;
     };

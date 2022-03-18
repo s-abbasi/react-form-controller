@@ -5,10 +5,6 @@ import { FormModel } from '../../useForm/useForm.types';
 export const TextNative = (formModel: FormModel): JSX.Element => {
     const form = useForm(formModel);
 
-    const log = (): void => {
-        console.log(form.firstName);
-    };
-
     return (
         <div>
             <label htmlFor="1">
@@ -21,9 +17,6 @@ export const TextNative = (formModel: FormModel): JSX.Element => {
                 Without type text assigned
                 <input id="2" {...form.bind('lastName')} />
             </label>
-            <button type="button" onClick={log}>
-                log
-            </button>
         </div>
     );
 };

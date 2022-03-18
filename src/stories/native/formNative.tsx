@@ -6,7 +6,8 @@ export const FormNative = (formModel: FormModel): JSX.Element => {
     const form = useForm(formModel);
 
     const log = (): void => {
-        console.log(form.single);
+        console.clear();
+        console.table(form);
     };
 
     return (
@@ -25,6 +26,58 @@ export const FormNative = (formModel: FormModel): JSX.Element => {
                 <br />
                 <input id="2" {...form.bind('lastName')} />
             </label>
+
+            <hr />
+
+            <div {...form.bind('contact')}>
+                <label htmlFor="phone">
+                    Phone
+                    <input type="radio" name="contact" id="phone" value="phone" />
+                </label>
+                <br />
+                <label htmlFor="fax">
+                    Fax
+                    <input type="radio" name="contact" id="fax" value="fax" />
+                </label>
+                <br />
+                <label htmlFor="email">
+                    Email
+                    <input type="radio" name="contact" id="email" value="email" />
+                </label>
+            </div>
+
+            {/* <label htmlFor="phone">
+                Phone
+                <input
+                    type="radio"
+                    name="contact"
+                    id="phone"
+                    value="phone"
+                    {...form.bind('contact')}
+                />
+            </label>
+            <br />
+            <label htmlFor="fax">
+                Fax
+                <input
+                    type="radio"
+                    name="contact"
+                    id="fax"
+                    value="fax"
+                    {...form.bind('contact')}
+                />
+            </label>
+            <br />
+            <label htmlFor="email">
+                Email
+                <input
+                    type="radio"
+                    name="contact"
+                    id="email"
+                    value="email"
+                    {...form.bind('contact')}
+                />
+            </label> */}
 
             <hr />
 

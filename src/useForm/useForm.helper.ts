@@ -1,4 +1,4 @@
-import { ControlModel, DefaultValue } from './useForm.types';
+import { ControlConvertor, ControlModel, DefaultValue } from './useForm.types';
 
 export const isValueType = (
     controlValueType: DefaultValue | ControlModel
@@ -21,4 +21,21 @@ export const setDefaultChecked = (
     const value = getDefaultValue(controlValueType);
     const valueIsBoolean = typeof value === 'boolean';
     return valueIsBoolean ? value : undefined;
+};
+export const generateJSXValueAttribute = (
+    value: unknown,
+    control: DefaultValue | ControlModel
+): unknown => {
+    const valueIsBoolean = typeof value === 'boolean';
+
+    if (valueIsBoolean) {
+        return { defaultChecked: setDefaultChecked(control) };
+    }
+    return { defaultValue: value };
+};
+
+export const controlConvertor: ControlConvertor = (value) => {
+    return {
+        value: getDefaultValue(value),
+    };
 };

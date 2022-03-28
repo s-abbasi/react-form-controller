@@ -46,45 +46,21 @@ export const FormNative = (formModel: FormModel): JSX.Element => {
                 </label>
             </div>
 
-            {/* <label htmlFor="phone">
-                Phone
-                <input
-                    type="radio"
-                    name="contact"
-                    id="phone"
-                    value="phone"
-                    {...form.bind('contact')}
-                />
-            </label>
-            <br />
-            <label htmlFor="fax">
-                Fax
-                <input
-                    type="radio"
-                    name="contact"
-                    id="fax"
-                    value="fax"
-                    {...form.bind('contact')}
-                />
-            </label>
-            <br />
-            <label htmlFor="email">
-                Email
-                <input
-                    type="radio"
-                    name="contact"
-                    id="email"
-                    value="email"
-                    {...form.bind('contact')}
-                />
-            </label> */}
-
             <hr />
 
             <label htmlFor="chb">
                 single
                 <input id="chb" type="checkbox" {...form.bind('single')} />
             </label>
+
+            <hr />
+            <label htmlFor="file">
+                file:
+                <br />
+                <input type="file" id="file" {...form.bind('image')} />
+            </label>
+
+            <hr />
 
             <button type="button" onClick={log}>
                 log

@@ -1,7 +1,8 @@
 import { ChangeEvent, HTMLAttributes } from 'react';
 
-export type DefaultValue = HTMLAttributes<HTMLInputElement>['defaultValue'] | boolean;
+export type DefaultValue = HTMLAttributes<HTMLInputElement>['defaultValue'];
 export type DefaultChecked = HTMLAttributes<HTMLInputElement>['defaultChecked'];
+export type ControlValue = DefaultValue | boolean | File;
 
 type ValidatorName = 'minValue' | 'maxValue' | 'minLength' | 'maxLength' | string;
 
@@ -36,7 +37,7 @@ export type GenerateBinding = (model: FormModel) => {
     onFormChange: (fn: Observer) => void;
 };
 
-export type Observer = (ev: { controlName: string; value: DefaultValue }) => unknown;
+export type Observer = (ev: { controlName: string; value: ControlValue }) => unknown;
 
 // interface CtrlAddRemoveResult {
 //     success: boolean;
@@ -53,7 +54,7 @@ export interface Controls {
 }
 
 export interface Control {
-    value: DefaultValue;
+    value: ControlValue;
     // setValue: (value: ValueType) => void;
     // isValid: boolean;
     // isEnabled: boolean;

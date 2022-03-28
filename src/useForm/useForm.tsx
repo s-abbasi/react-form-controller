@@ -1,11 +1,12 @@
-/* eslint-disable no-console */
 import { mapObjIndexed } from 'ramda';
 import { ChangeEvent } from 'react';
-import { setDefaultChecked, getDefaultValue } from './useForm.helper';
 import {
-    ControlConvertor,
-    ControlModel,
-    DefaultValue,
+    getDefaultValue,
+    generateJSXValueAttribute,
+    controlConvertor,
+} from './useForm.helper';
+import {
+    ControlValue,
     FormGroup,
     FormModel,
     GenerateBinding,
@@ -13,25 +14,25 @@ import {
     Observer,
 } from './useForm.types';
 
-const getValueBasedOnType = ({ target }: ChangeEvent<HTMLInputElement>): DefaultValue => {
-    const isCheckbox = target.type === 'checkbox';
-    // const isRadio = target.type === 'radio';
+const getValueBasedOnType = ({ target }: ChangeEvent<HTMLInputElement>): ControlValue => {
+    switch (target.type) {
+        case 'checkbox':
+            return target.checked;
 
-    const targetValue = isCheckbox ? target.checked : target.value;
+        case 'radio':
+            return target.value;
 
-    return targetValue;
-};
+        case 'file':
+            if (target.files) {
+                return target.files[0];
+            }
+            // eslint-disable-next-line no-console
+            console.warn('file input has returned undefined');
+            return undefined;
 
-const generateJSXValueAttribute = (
-    value: unknown,
-    control: DefaultValue | ControlModel
-): unknown => {
-    const valueIsBoolean = typeof value === 'boolean';
-
-    if (valueIsBoolean) {
-        return { defaultChecked: setDefaultChecked(control) };
+        default:
+            return target.value;
     }
-    return { defaultValue: value };
 };
 
 const generateBinding: GenerateBinding = (model) => {
@@ -62,12 +63,6 @@ const generateBinding: GenerateBinding = (model) => {
 };
 
 const proxyHandler = {};
-
-const controlConvertor: ControlConvertor = (value) => {
-    return {
-        value: getDefaultValue(value),
-    };
-};
 
 export const useForm = (model: FormModel): FormGroup => {
     const { bind, onFormChange } = generateBinding(model);

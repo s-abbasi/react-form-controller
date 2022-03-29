@@ -62,6 +62,14 @@ export const FormNative = (formModel: FormModel): JSX.Element => {
 
             <hr />
 
+            <label htmlFor="textarea">
+                textarea:
+                <br />
+                <textarea id="textarea" {...form.bind('description')} />
+            </label>
+
+            <hr />
+
             <button type="button" onClick={log}>
                 log
             </button>

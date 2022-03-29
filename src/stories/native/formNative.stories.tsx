@@ -23,6 +23,9 @@ const formModel: FormModel = {
     image: {
         defaultValue: undefined,
     },
+    description: {
+        defaultValue: '',
+    },
 };
 const Template: ComponentStory<typeof FormNative> = (): JSX.Element => (
     <FormNative {...formModel} />

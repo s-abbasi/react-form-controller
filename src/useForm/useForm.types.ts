@@ -27,7 +27,7 @@ export type FormModel = Record<string, DefaultValue | ControlModel>;
 export interface JSXBinding {
     defaultValue?: Exclude<DefaultValue, boolean>;
     defaultChecked?: DefaultChecked;
-    onChange: (ev: ChangeEvent<HTMLInputElement>) => void;
+    onChange: (ev: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
 type Bind = (controlName: string) => JSXBinding;

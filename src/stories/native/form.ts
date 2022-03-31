@@ -1,10 +1,10 @@
 import { FormModel } from '../../useForm/useForm.types';
-import { min } from '../../validations/validations';
+import { max, min } from '../../validations/validations';
 
 export const formModel: FormModel = {
     firstName: {
         defaultValue: '1',
-        validators: [min(2)],
+        validators: [min(2), max(3)],
     },
     lastName: {
         defaultValue: '',

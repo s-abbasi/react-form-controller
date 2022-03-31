@@ -1,8 +1,10 @@
 /* eslint-disable no-console */
 import { useForm } from '../../useForm/useForm';
 import { FormModel } from '../../useForm/useForm.types';
+import { formModel } from './form';
 
-export const FormNative = (formModel: FormModel): JSX.Element => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const FormNative = (_formModel?: FormModel): JSX.Element => {
     const form = useForm(formModel);
 
     const log = (): void => {
@@ -29,20 +31,38 @@ export const FormNative = (formModel: FormModel): JSX.Element => {
 
             <hr />
 
-            <div {...form.bind('contact')}>
+            <div>
                 <label htmlFor="phone">
                     Phone
-                    <input type="radio" name="contact" id="phone" value="phone" />
+                    <input
+                        {...form.bind('contact')}
+                        type="radio"
+                        name="contact"
+                        id="phone"
+                        defaultValue="phone"
+                    />
                 </label>
                 <br />
                 <label htmlFor="fax">
                     Fax
-                    <input type="radio" name="contact" id="fax" value="fax" />
+                    <input
+                        {...form.bind('contact')}
+                        type="radio"
+                        name="contact"
+                        id="fax"
+                        defaultValue="fax"
+                    />
                 </label>
                 <br />
                 <label htmlFor="email">
                     Email
-                    <input type="radio" name="contact" id="email" value="email" />
+                    <input
+                        {...form.bind('contact')}
+                        type="radio"
+                        name="contact"
+                        id="email"
+                        defaultValue="email"
+                    />
                 </label>
             </div>
 

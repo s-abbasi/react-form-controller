@@ -1,22 +1,28 @@
-import { ControlConvertor, ControlModel, DefaultValue } from './useForm.types';
+import { ChangeEvent } from 'react';
+import {
+    ControlConvertor,
+    ControlObjectModel,
+    ControlPrimitiveModel,
+} from './useForm.types';
+import { validate } from './useForm.validations';
 
-export const isValueType = (
-    controlValueType: DefaultValue | ControlModel
-): controlValueType is DefaultValue => {
-    return typeof controlValueType !== 'object';
+export const isTypeOfControlModel = (
+    controlValueType: ControlPrimitiveModel | ControlObjectModel
+): controlValueType is ControlObjectModel => {
+    return typeof controlValueType === 'object';
 };
 
 export const getDefaultValue = (
-    controlValueType: DefaultValue | ControlModel
-): DefaultValue => {
-    if (isValueType(controlValueType)) {
-        return controlValueType;
+    controlValueType: ControlPrimitiveModel | ControlObjectModel
+): ControlPrimitiveModel => {
+    if (isTypeOfControlModel(controlValueType)) {
+        return controlValueType.defaultValue;
     }
-    return controlValueType.defaultValue;
+    return controlValueType;
 };
 
 export const setDefaultChecked = (
-    controlValueType: DefaultValue | ControlModel
+    controlValueType: ControlPrimitiveModel | ControlObjectModel
 ): boolean | undefined => {
     const value = getDefaultValue(controlValueType);
     const valueIsBoolean = typeof value === 'boolean';
@@ -24,18 +30,45 @@ export const setDefaultChecked = (
 };
 export const generateJSXValueAttribute = (
     value: unknown,
-    control: DefaultValue | ControlModel
+    control: ControlPrimitiveModel | ControlObjectModel
 ): unknown => {
     const valueIsBoolean = typeof value === 'boolean';
 
-    if (valueIsBoolean) {
-        return { defaultChecked: setDefaultChecked(control) };
-    }
-    return { defaultValue: value };
+    return valueIsBoolean
+        ? { defaultChecked: setDefaultChecked(control) }
+        : { defaultValue: value };
 };
 
-export const controlConvertor: ControlConvertor = (value) => {
+export const controlGenerator: ControlConvertor = (controlModel) => {
+    const defaultValue = getDefaultValue(controlModel);
+    const validators = (controlModel as ControlObjectModel)?.validators;
+
     return {
-        value: getDefaultValue(value),
+        value: defaultValue,
+        isValid: validate(defaultValue, validators),
     };
+};
+
+export const getValueBasedOnType = ({
+    target,
+}: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): ControlPrimitiveModel => {
+    switch (target.type) {
+        case 'checkbox':
+            return (target as HTMLInputElement).checked;
+
+        case 'radio':
+            return (target as HTMLInputElement).value;
+
+        case 'file':
+            // eslint-disable-next-line no-case-declarations
+            const { files } = target as HTMLInputElement;
+            if (files) {
+                return files[0];
+            }
+            console.warn('file input has returned undefined');
+            return undefined;
+
+        default:
+            return target.value;
+    }
 };

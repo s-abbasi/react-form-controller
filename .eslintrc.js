@@ -30,6 +30,7 @@ const config = {
     plugins: ['react', '@typescript-eslint', 'react-hooks', 'prettier'],
     settings: { 'import/resolver': { typescript: {} } },
     rules: {
+        'no-console': ['warn', { allow: ['warn', 'error'] }],
         'react/function-component-definition': ['off'],
         'object-curly-newline': 'off',
         'import/no-extraneous-dependencies': ['error', { devDependencies: true }],

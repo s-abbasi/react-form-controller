@@ -1,79 +1,68 @@
+/* eslint-disable no-console */
 import { mapObjIndexed } from 'ramda';
-import { ChangeEvent } from 'react';
 import {
     getDefaultValue,
     generateJSXValueAttribute,
-    controlConvertor,
+    controlGenerator,
+    getValueBasedOnType,
 } from './useForm.helper';
 import {
-    ControlValue,
+    ControlObjectModel,
     FormGroup,
     FormModel,
     GenerateBinding,
     JSXBinding,
     Observer,
 } from './useForm.types';
-
-const getValueBasedOnType = ({ target }: ChangeEvent<HTMLInputElement>): ControlValue => {
-    switch (target.type) {
-        case 'checkbox':
-            return target.checked;
-
-        case 'radio':
-            return target.value;
-
-        case 'file':
-            if (target.files) {
-                return target.files[0];
-            }
-            // eslint-disable-next-line no-console
-            console.warn('file input has returned undefined');
-            return undefined;
-
-        default:
-            return target.value;
-    }
-};
+import { validate } from './useForm.validations';
 
 const generateBinding: GenerateBinding = (model) => {
     const observers: Observer[] = [];
 
     const bind: ReturnType<GenerateBinding>['bind'] = (controlName) => {
-        const value = getDefaultValue(model[controlName]);
-
-        const obj: JSXBinding = {
+        const jsx: JSXBinding = {
             onChange: (ev) => {
-                const eventValue = getValueBasedOnType(ev);
-                const arg = { controlName, value: eventValue };
+                const arg = { controlName, value: getValueBasedOnType(ev) };
                 observers[0](arg);
             },
         };
 
-        const JSXValueAttribute = generateJSXValueAttribute(value, model[controlName]);
-        Object.assign(obj, JSXValueAttribute);
+        const JSXValueAttribute = generateJSXValueAttribute(
+            getDefaultValue(model[controlName]),
+            model[controlName]
+        );
 
-        return obj;
+        Object.assign(jsx, JSXValueAttribute);
+
+        return jsx;
     };
 
-    const onFormChange: ReturnType<GenerateBinding>['onFormChange'] = (fn) => {
+    const onControlValueChange: ReturnType<GenerateBinding>['onControlValueChange'] = (
+        fn
+    ) => {
         observers.push(fn);
     };
 
-    return { bind, onFormChange };
+    return { bind, onControlValueChange };
 };
 
 const proxyHandler = {};
 
 export const useForm = (model: FormModel): FormGroup => {
-    const { bind, onFormChange } = generateBinding(model);
-    const controls = mapObjIndexed(controlConvertor, model);
+    const { bind, onControlValueChange } = generateBinding(model);
+    const controls = mapObjIndexed(controlGenerator, model);
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     const formGroup: FormGroup = { bind, ...controls };
 
-    onFormChange(({ controlName, value }): void => {
-        formGroup[controlName].value = value; // WARNING: this line mutates formGroup
+    onControlValueChange(({ controlName, value }): void => {
+        const validators = (model[controlName] as ControlObjectModel)?.validators;
+
+        // WARNING: this block mutates formGroup
+        formGroup[controlName].value = value;
+        formGroup[controlName].isValid = validate(value, validators);
+        //
     });
 
     return new Proxy(formGroup, proxyHandler);

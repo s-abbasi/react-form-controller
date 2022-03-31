@@ -2,5 +2,5 @@
     "yaml.schemas": {
         "https://json.schemastore.org/github-workflow.json": "file:///Users/sajadabbasi/Projects/libraries/react-form-controller/.github/workflows/main.yml"
     },
-    "cSpell.words": ["commitlint", "cond", "linebreak", "testid"]
+    "cSpell.words": ["commitlint", "cond", "linebreak", "maxlength", "testid"]
 }

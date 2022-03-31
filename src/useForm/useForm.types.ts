@@ -2,61 +2,63 @@ import { ChangeEvent, HTMLAttributes } from 'react';
 
 export type DefaultValue = HTMLAttributes<HTMLInputElement>['defaultValue'];
 export type DefaultChecked = HTMLAttributes<HTMLInputElement>['defaultChecked'];
-export type ControlValue = DefaultValue | boolean | File;
+export type ControlPrimitiveModel = DefaultValue | boolean | File;
 
-type ValidatorName = 'minValue' | 'maxValue' | 'minLength' | 'maxLength' | string;
+type ValidatorName = 'min' | 'max' | 'minlength' | 'maxlength' | string;
 
-interface Validator {
+export type Validator = {
     name: ValidatorName;
-    validateWith: (value: DefaultValue) => boolean;
+    validateWith: (value: ControlPrimitiveModel) => boolean;
     message?: string;
-}
+};
 
-export interface ControlModel {
-    defaultValue: DefaultValue;
+export type ControlObjectModel = {
+    defaultValue: ControlPrimitiveModel;
     validators?: Validator[];
-}
+};
 
-export type FormModel = Record<string, DefaultValue | ControlModel>;
+export type FormModel = Record<string, ControlObjectModel | ControlPrimitiveModel>;
 
-// interface ControlError {
+// export type ControlError = {
 //     name: ValidatorName;
 //     message: Validator['message'];
-// }
+// };
 
-export interface JSXBinding {
-    defaultValue?: Exclude<DefaultValue, boolean>;
+export type JSXBinding = {
+    defaultValue?: DefaultValue;
     defaultChecked?: DefaultChecked;
     onChange: (ev: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-}
+};
 
 type Bind = (controlName: string) => JSXBinding;
 
 export type GenerateBinding = (model: FormModel) => {
     bind: Bind;
-    onFormChange: (fn: Observer) => void;
+    onControlValueChange: (fn: Observer) => void;
 };
 
-export type Observer = (ev: { controlName: string; value: ControlValue }) => unknown;
+export type Observer = (ev: {
+    controlName: string;
+    value: ControlPrimitiveModel;
+}) => unknown;
 
-// interface CtrlAddRemoveResult {
+// type CtrlAddRemoveResult = {
 //     success: boolean;
 //     message: string;
 // }
 
 export type ControlConvertor = (
-    value: DefaultValue | ControlModel,
-    key: string
-) => { value: DefaultValue };
+    control: ControlObjectModel | ControlPrimitiveModel
+) => Control;
 
-export interface Controls {
+export type Controls = {
     [key: string]: Control;
-}
+};
 
 export interface Control {
-    value: ControlValue;
+    value: ControlPrimitiveModel;
+    isValid: boolean;
     // setValue: (value: ValueType) => void;
-    // isValid: boolean;
     // isEnabled: boolean;
     // errors: ControlError;
     // reset: () => void;

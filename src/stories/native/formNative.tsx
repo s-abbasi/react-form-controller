@@ -15,7 +15,7 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
     return (
         <div>
             <label htmlFor="1">
-                With type text assigned
+                first name
                 <br />
                 <input id="1" type="text" {...form.bind('firstName')} />
             </label>
@@ -24,9 +24,17 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
             <hr />
 
             <label htmlFor="2">
-                Without type text assigned
+                last name
                 <br />
                 <input id="2" {...form.bind('lastName')} />
+            </label>
+
+            <hr />
+
+            <label htmlFor="inputNumber">
+                price
+                <br />
+                <input type="number" id="inputNumber" {...form.bind('price')} />
             </label>
 
             <hr />

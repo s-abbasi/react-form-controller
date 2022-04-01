@@ -1,10 +1,10 @@
-/* eslint-disable no-console */
 import { mapObjIndexed } from 'ramda';
 import {
     getDefaultValue,
     generateJSXValueAttribute,
-    controlGenerator,
+    generateControlInitialState,
     getValueBasedOnType,
+    generateControlErrors,
 } from './useForm.helper';
 import {
     ControlObjectModel,
@@ -50,7 +50,7 @@ const proxyHandler = {};
 
 export const useForm = (model: FormModel): FormGroup => {
     const { bind, onControlValueChange } = generateBinding(model);
-    const controls = mapObjIndexed(controlGenerator, model);
+    const controls = mapObjIndexed(generateControlInitialState, model);
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
@@ -62,7 +62,7 @@ export const useForm = (model: FormModel): FormGroup => {
         // WARNING: this block mutates formGroup
         formGroup[controlName].value = value;
         formGroup[controlName].isValid = validate(value, validators);
-        //
+        formGroup[controlName].errors = generateControlErrors(value, validators);
     });
 
     return new Proxy(formGroup, proxyHandler);

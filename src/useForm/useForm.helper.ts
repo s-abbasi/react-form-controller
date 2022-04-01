@@ -1,8 +1,10 @@
 import { ChangeEvent } from 'react';
 import {
     ControlConvertor,
+    ControlError,
     ControlObjectModel,
     ControlPrimitiveModel,
+    Validator,
 } from './useForm.types';
 import { validate } from './useForm.validations';
 
@@ -39,13 +41,23 @@ export const generateJSXValueAttribute = (
         : { defaultValue: value };
 };
 
-export const controlGenerator: ControlConvertor = (controlModel) => {
+export const generateControlErrors = (
+    value: ControlPrimitiveModel,
+    validators: Validator[] = []
+): ControlError => {
+    return validators
+        .filter((validator) => !validator.validateWith(value))
+        .reduce((acc, curr) => ({ ...acc, [curr.name]: curr.message }), {});
+};
+
+export const generateControlInitialState: ControlConvertor = (controlModel) => {
     const defaultValue = getDefaultValue(controlModel);
     const validators = (controlModel as ControlObjectModel)?.validators;
 
     return {
         value: defaultValue,
         isValid: validate(defaultValue, validators),
+        errors: generateControlErrors(defaultValue, validators),
     };
 };
 

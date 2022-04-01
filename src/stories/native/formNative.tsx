@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { useForm } from '../../useForm/useForm';
 import { FormModel } from '../../useForm/useForm.types';
 import { formModel } from './form';
@@ -10,6 +9,8 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
     const log = (): void => {
         console.clear();
         console.table(form);
+        const f = JSON.parse(JSON.stringify(form));
+        console.log('form: ', f);
     };
 
     return (
@@ -19,7 +20,6 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
                 <br />
                 <input id="1" type="text" {...form.bind('firstName')} />
             </label>
-            <br />
 
             <hr />
 

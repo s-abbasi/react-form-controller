@@ -19,10 +19,9 @@ export type ControlObjectModel = {
 
 export type FormModel = Record<string, ControlObjectModel | ControlPrimitiveModel>;
 
-// export type ControlError = {
-//     name: ValidatorName;
-//     message: Validator['message'];
-// };
+export type ControlError = {
+    [key: ValidatorName]: Validator['message'];
+};
 
 export type JSXBinding = {
     defaultValue?: DefaultValue;
@@ -55,12 +54,12 @@ export type Controls = {
     [key: string]: Control;
 };
 
-export interface Control {
+export type Control = {
     value: ControlPrimitiveModel;
     isValid: boolean;
+    errors: ControlError;
     // setValue: (value: ValueType) => void;
     // isEnabled: boolean;
-    // errors: ControlError;
     // reset: () => void;
     // addValidator: (validator: Validator) => void;
     // removeValidator: (name: Validator['name']) => void;
@@ -69,7 +68,7 @@ export interface Control {
     // disable: () => boolean;
     // isDirty: boolean; // gets change event
     // isTouched: boolean; // gets blur event
-}
+};
 
 export type FormGroup = {
     [key: string]: Control;

@@ -74,6 +74,7 @@ export type FormGroup = {
     [key: string]: Control;
 } & {
     bind: Bind;
+    isValid: boolean;
 };
 
 // export type FormGroup<T> = {

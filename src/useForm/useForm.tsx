@@ -14,7 +14,10 @@ import {
     JSXBinding,
     Observer,
 } from './useForm.types';
-import { validate } from './useForm.validations';
+import {
+    generateControlIsValidProp,
+    generateFormGroupIsValidProp,
+} from './useForm.validations';
 
 const generateBinding: GenerateBinding = (model) => {
     const observers: Observer[] = [];
@@ -54,15 +57,20 @@ export const useForm = (model: FormModel): FormGroup => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
-    const formGroup: FormGroup = { bind, ...controls };
+    const formGroup: FormGroup = {
+        bind,
+        isValid: generateFormGroupIsValidProp(controls),
+        ...controls,
+    };
 
     onControlValueChange(({ controlName, value }): void => {
         const validators = (model[controlName] as ControlObjectModel)?.validators;
 
         // WARNING: this block mutates formGroup
         formGroup[controlName].value = value;
-        formGroup[controlName].isValid = validate(value, validators);
+        formGroup[controlName].isValid = generateControlIsValidProp(value, validators);
         formGroup[controlName].errors = generateControlErrors(value, validators);
+        formGroup.isValid = generateFormGroupIsValidProp(controls);
     });
 
     return new Proxy(formGroup, proxyHandler);

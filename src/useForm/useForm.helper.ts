@@ -6,7 +6,7 @@ import {
     ControlPrimitiveValue,
     Validator,
 } from './useForm.types';
-import { validate } from './useForm.validations';
+import { generateControlIsValidProp } from './useForm.validations';
 
 export const isTypeOfControlModel = (
     controlValueType: ControlPrimitiveValue | ControlObjectModel
@@ -56,7 +56,7 @@ export const generateControlInitialState: ControlConvertor = (controlModel) => {
 
     return {
         value: defaultValue,
-        isValid: validate(defaultValue, validators),
+        isValid: generateControlIsValidProp(defaultValue, validators),
         errors: generateControlErrors(defaultValue, validators),
     };
 };

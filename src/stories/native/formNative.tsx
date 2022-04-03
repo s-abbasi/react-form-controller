@@ -9,8 +9,8 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
     const log = (): void => {
         console.clear();
         console.table(form);
-        const f = JSON.parse(JSON.stringify(form));
-        console.log('form: ', f);
+        // const f = JSON.parse(JSON.stringify(form));
+        // console.log('form: ', f);
     };
 
     return (

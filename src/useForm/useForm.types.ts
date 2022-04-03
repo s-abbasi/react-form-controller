@@ -2,22 +2,22 @@ import { ChangeEvent, HTMLAttributes } from 'react';
 
 export type DefaultValue = HTMLAttributes<HTMLInputElement>['defaultValue'];
 export type DefaultChecked = HTMLAttributes<HTMLInputElement>['defaultChecked'];
-export type ControlPrimitiveModel = DefaultValue | boolean | File;
+export type ControlPrimitiveValue = DefaultValue | boolean | File;
 
-type ValidatorName = 'min' | 'max' | 'minlength' | 'maxlength' | string;
+type ValidatorName = 'min' | 'max' | 'minlength' | 'maxlength' | 'required' | string;
 
 export type Validator = {
     name: ValidatorName;
-    validateWith: (value: ControlPrimitiveModel) => boolean;
+    validateWith: (value: ControlPrimitiveValue) => boolean;
     message?: string;
 };
 
 export type ControlObjectModel = {
-    defaultValue: ControlPrimitiveModel;
+    defaultValue: ControlPrimitiveValue;
     validators?: Validator[];
 };
 
-export type FormModel = Record<string, ControlObjectModel | ControlPrimitiveModel>;
+export type FormModel = Record<string, ControlObjectModel | ControlPrimitiveValue>;
 
 export type ControlError = {
     [key: ValidatorName]: Validator['message'];
@@ -38,7 +38,7 @@ export type GenerateBinding = (model: FormModel) => {
 
 export type Observer = (ev: {
     controlName: string;
-    value: ControlPrimitiveModel;
+    value: ControlPrimitiveValue;
 }) => unknown;
 
 // type CtrlAddRemoveResult = {
@@ -47,7 +47,7 @@ export type Observer = (ev: {
 // }
 
 export type ControlConvertor = (
-    control: ControlObjectModel | ControlPrimitiveModel
+    control: ControlObjectModel | ControlPrimitiveValue
 ) => Control;
 
 export type Controls = {
@@ -55,7 +55,7 @@ export type Controls = {
 };
 
 export type Control = {
-    value: ControlPrimitiveModel;
+    value: ControlPrimitiveValue;
     isValid: boolean;
     errors: ControlError;
     // setValue: (value: ValueType) => void;

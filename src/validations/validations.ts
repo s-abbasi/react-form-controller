@@ -1,9 +1,9 @@
-import { ControlPrimitiveModel, Validator } from '../useForm/useForm.types';
+import { ControlPrimitiveValue, Validator } from '../useForm/useForm.types';
 
 export const min = (minValue: number, message?: string): Validator => {
     return {
         name: 'min',
-        validateWith: (value: ControlPrimitiveModel) => {
+        validateWith: (value: ControlPrimitiveValue) => {
             if (typeof value === 'number') {
                 return value >= minValue;
             }
@@ -20,7 +20,7 @@ export const min = (minValue: number, message?: string): Validator => {
 export const max = (maxValue: number, message?: string): Validator => {
     return {
         name: 'max',
-        validateWith: (value: ControlPrimitiveModel) => {
+        validateWith: (value: ControlPrimitiveValue) => {
             if (typeof value === 'number') {
                 return value <= maxValue;
             }
@@ -34,10 +34,10 @@ export const max = (maxValue: number, message?: string): Validator => {
     };
 };
 
-export const maxlength = (maxValue: number, message?: string): Validator => {
+export const maxLength = (maxValue: number, message?: string): Validator => {
     return {
         name: 'maxlength',
-        validateWith: (value: ControlPrimitiveModel) => {
+        validateWith: (value: ControlPrimitiveValue) => {
             if (typeof value === 'string') {
                 return value.length <= maxValue;
             }
@@ -48,10 +48,10 @@ export const maxlength = (maxValue: number, message?: string): Validator => {
     };
 };
 
-export const minlength = (minValue: number, message?: string): Validator => {
+export const minLength = (minValue: number, message?: string): Validator => {
     return {
         name: 'minlength',
-        validateWith: (value: ControlPrimitiveModel) => {
+        validateWith: (value: ControlPrimitiveValue) => {
             if (typeof value === 'string') {
                 return value.length >= minValue;
             }
@@ -59,5 +59,17 @@ export const minlength = (minValue: number, message?: string): Validator => {
             return false;
         },
         message: message || `value length must be equal or greater than ${minValue}`,
+    };
+};
+
+export const required = (message?: string): Validator => {
+    return {
+        name: 'required',
+        validateWith: (value: ControlPrimitiveValue) => {
+            return (
+                value !== null && value !== undefined && value !== false && value !== ''
+            );
+        },
+        message: message || 'field is required',
     };
 };

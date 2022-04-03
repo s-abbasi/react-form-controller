@@ -3,20 +3,20 @@ import {
     ControlConvertor,
     ControlError,
     ControlObjectModel,
-    ControlPrimitiveModel,
+    ControlPrimitiveValue,
     Validator,
 } from './useForm.types';
 import { validate } from './useForm.validations';
 
 export const isTypeOfControlModel = (
-    controlValueType: ControlPrimitiveModel | ControlObjectModel
+    controlValueType: ControlPrimitiveValue | ControlObjectModel
 ): controlValueType is ControlObjectModel => {
     return typeof controlValueType === 'object';
 };
 
 export const getDefaultValue = (
-    controlValueType: ControlPrimitiveModel | ControlObjectModel
-): ControlPrimitiveModel => {
+    controlValueType: ControlPrimitiveValue | ControlObjectModel
+): ControlPrimitiveValue => {
     if (isTypeOfControlModel(controlValueType)) {
         return controlValueType.defaultValue;
     }
@@ -24,7 +24,7 @@ export const getDefaultValue = (
 };
 
 export const setDefaultChecked = (
-    controlValueType: ControlPrimitiveModel | ControlObjectModel
+    controlValueType: ControlPrimitiveValue | ControlObjectModel
 ): boolean | undefined => {
     const value = getDefaultValue(controlValueType);
     const valueIsBoolean = typeof value === 'boolean';
@@ -32,7 +32,7 @@ export const setDefaultChecked = (
 };
 export const generateJSXValueAttribute = (
     value: unknown,
-    control: ControlPrimitiveModel | ControlObjectModel
+    control: ControlPrimitiveValue | ControlObjectModel
 ): unknown => {
     const valueIsBoolean = typeof value === 'boolean';
 
@@ -42,7 +42,7 @@ export const generateJSXValueAttribute = (
 };
 
 export const generateControlErrors = (
-    value: ControlPrimitiveModel,
+    value: ControlPrimitiveValue,
     validators: Validator[] = []
 ): ControlError => {
     return validators
@@ -63,7 +63,7 @@ export const generateControlInitialState: ControlConvertor = (controlModel) => {
 
 export const getValueBasedOnType = ({
     target,
-}: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): ControlPrimitiveModel => {
+}: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): ControlPrimitiveValue => {
     switch (target.type) {
         case 'checkbox':
             return (target as HTMLInputElement).checked;

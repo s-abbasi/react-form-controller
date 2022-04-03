@@ -73,3 +73,16 @@ export const required = (message?: string): Validator => {
         message: message || 'field is required',
     };
 };
+
+export const pattern = (name: string, regex: RegExp, message?: string): Validator => {
+    return {
+        name,
+        validateWith: (value: ControlPrimitiveValue) => {
+            if (typeof value === 'string') {
+                return regex.test(value);
+            }
+            return false;
+        },
+        message: message || 'incorrect pattern',
+    };
+};

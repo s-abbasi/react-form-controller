@@ -31,6 +31,14 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
 
             <hr />
 
+            <label htmlFor="cellphone">
+                cellphone
+                <br />
+                <input id="cellphone" {...form.bind('cellphone')} />
+            </label>
+
+            <hr />
+
             <label htmlFor="inputNumber">
                 price
                 <br />

@@ -1,5 +1,12 @@
 import { FormModel } from '../../useForm/useForm.types';
-import { max, min, minLength, maxLength, required } from '../../validations/validations';
+import {
+    max,
+    min,
+    minLength,
+    maxLength,
+    required,
+    pattern,
+} from '../../validations/validations';
 
 export const formModel: FormModel = {
     firstName: {
@@ -9,6 +16,10 @@ export const formModel: FormModel = {
     lastName: {
         defaultValue: '',
         validators: [required()],
+    },
+    cellphone: {
+        defaultValue: '',
+        validators: [required(), pattern('patternName', /^(\+98?)?{?(0?9[0-9]{9,9}}?)$/)],
     },
     price: {
         defaultValue: undefined,

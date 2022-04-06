@@ -13,8 +13,9 @@ export type Validator = {
 };
 
 export type ControlObjectModel = {
-    defaultValue: ControlPrimitiveValue;
+    initialValue: ControlPrimitiveValue;
     validators?: Validator[];
+    disabled?: boolean;
 };
 
 export type FormModel = Record<string, ControlObjectModel | ControlPrimitiveValue>;
@@ -58,6 +59,7 @@ export type Control = {
     value: ControlPrimitiveValue;
     isValid: boolean;
     errors: ControlError;
+    // rawValue: ControlPrimitiveValue;
     // setValue: (value: ValueType) => void;
     // isEnabled: boolean;
     // reset: () => void;

@@ -6,7 +6,7 @@ import { useForm } from '../useForm/useForm';
 describe('text', () => {
     test('should set "<input defaultValue={}>" to the given defaultValue in FormModel', () => {
         const formModel: FormModel = {
-            firstName: { defaultValue: 'sajad' },
+            firstName: { initialValue: 'sajad' },
         };
 
         const hook = renderHook(() => useForm(formModel));

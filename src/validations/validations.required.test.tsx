@@ -7,7 +7,7 @@ describe('validations - max', () => {
     test('should set value to "form.control.isValid" to true when value of <input type="number"> is 0', () => {
         const formModel: FormModel = {
             price: {
-                defaultValue: 0,
+                initialValue: 0,
                 validators: [required()],
             },
         };
@@ -19,7 +19,7 @@ describe('validations - max', () => {
     test('should set value to "form.control.isValid" to false when value of <input type="number"> is undefined', () => {
         const formModel: FormModel = {
             price: {
-                defaultValue: undefined,
+                initialValue: undefined,
                 validators: [required()],
             },
         };
@@ -31,7 +31,7 @@ describe('validations - max', () => {
     test('should set value to "form.control.isValid" to false when value of <input type="number"> is empty', () => {
         const formModel: FormModel = {
             price: {
-                defaultValue: '',
+                initialValue: '',
                 validators: [required()],
             },
         };
@@ -45,7 +45,7 @@ describe('validations - max', () => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error
             price: {
-                defaultValue: null,
+                initialValue: null,
                 validators: [required()],
             },
         };
@@ -57,7 +57,7 @@ describe('validations - max', () => {
     test('should set "form.control.isValid" to true when value of <input type="checkbox" checked>', () => {
         const formModel: FormModel = {
             single: {
-                defaultValue: true,
+                initialValue: true,
                 validators: [required()],
             },
         };

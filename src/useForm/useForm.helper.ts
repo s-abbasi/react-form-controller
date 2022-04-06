@@ -18,7 +18,7 @@ export const getDefaultValue = (
     controlValueType: ControlPrimitiveValue | ControlObjectModel
 ): ControlPrimitiveValue => {
     if (isTypeOfControlModel(controlValueType)) {
-        return controlValueType.defaultValue;
+        return controlValueType.initialValue;
     }
     return controlValueType;
 };

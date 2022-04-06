@@ -10,35 +10,36 @@ import {
 
 export const formModel: FormModel = {
     firstName: {
-        defaultValue: 'sajad',
+        initialValue: 'sajad',
         validators: [minLength(2), maxLength(10), required()],
     },
     lastName: {
-        defaultValue: '',
+        initialValue: '',
         validators: [required()],
+        disabled: true,
     },
     cellphone: {
-        defaultValue: '',
+        initialValue: '',
         validators: [required(), pattern('patternName', /^(\+98?)?{?(0?9[0-9]{9,9}}?)$/)],
     },
     price: {
-        defaultValue: undefined,
+        initialValue: undefined,
         validators: [min(50), max(100), required()],
     },
     single: {
-        defaultValue: true,
+        initialValue: true,
         validators: [required()],
     },
     contact: {
-        defaultValue: 'phone',
+        initialValue: 'phone',
         validators: [required()],
     },
     image: {
-        defaultValue: undefined,
+        initialValue: undefined,
         validators: [required()],
     },
     description: {
-        defaultValue: '',
+        initialValue: '',
         validators: [required()],
     },
 };

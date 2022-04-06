@@ -9,10 +9,10 @@ export default {
 
 const formModel: FormModel = {
     firstName: {
-        defaultValue: 'sajad',
+        initialValue: 'sajad',
     },
     lastName: {
-        defaultValue: '',
+        initialValue: '',
     },
 };
 

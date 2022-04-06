@@ -9,22 +9,22 @@ export default {
 
 const formModel: FormModel = {
     firstName: {
-        defaultValue: 'sajad',
+        initialValue: 'sajad',
     },
     lastName: {
-        defaultValue: '',
+        initialValue: '',
     },
     single: {
-        defaultValue: true,
+        initialValue: true,
     },
     contact: {
-        defaultValue: 'phone',
+        initialValue: 'phone',
     },
     image: {
-        defaultValue: undefined,
+        initialValue: undefined,
     },
     description: {
-        defaultValue: '',
+        initialValue: '',
     },
 };
 const Template: ComponentStory<typeof FormNative> = (): JSX.Element => (

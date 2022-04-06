@@ -5,7 +5,7 @@ import { FormModel } from '../useForm/useForm.types';
 describe('Radio', () => {
     test('should set "<input defaultValue={}>" to the given defaultValue in FormModel', () => {
         const formModel: FormModel = {
-            contact: { defaultValue: 'phone' },
+            contact: { initialValue: 'phone' },
         };
         const hook = renderHook(() => useForm(formModel));
         const form = hook.result.current;
@@ -19,7 +19,7 @@ describe('Radio', () => {
 
     test.skip('should set "<input defaultChecked={}>" to the given defaultValue in FormModel', () => {
         const formModel: FormModel = {
-            contact: { defaultValue: 'phone' },
+            contact: { initialValue: 'phone' },
         };
         const hook = renderHook(() => useForm(formModel));
         const form = hook.result.current;

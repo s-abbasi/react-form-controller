@@ -54,4 +54,23 @@ describe('checkbox', () => {
 
         expect(form.single.value).toBe(true);
     });
+
+    test.skip('should set "HTMLInputElement.disabled" to true when control is initially disabled', () => {
+        const formModel: FormModel = {
+            single: {
+                initialValue: true,
+                disabled: true,
+            },
+        };
+
+        const hook = renderHook(() => useForm(formModel));
+        const form = hook.result.current;
+
+        const el = document.createElement('INPUT') as HTMLInputElement;
+        el.setAttribute('type', 'checkbox');
+
+        form.bind('single').ref(el);
+
+        expect(el.disabled).toBe(true);
+    });
 });

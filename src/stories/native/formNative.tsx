@@ -1,6 +1,29 @@
+/* eslint-disable no-console */
+// import { Adapter } from '../../useForm/native-adapter';
 import { useForm } from '../../useForm/useForm';
-import { FormModel } from '../../useForm/useForm.types';
+import { FormModel, JSXBinding } from '../../useForm/useForm.types';
 import { formModel } from './form';
+
+const CustomInput = (props: JSXBinding): JSX.Element => {
+    // console.log('ad: ', props);
+    // onInput={(e) => adapter.(e.currentTarget.textContent)}
+
+    return (
+        <>
+            <span>label:</span>
+            <div
+                style={{ background: 'lightgrey' }}
+                contentEditable={!props.disabled}
+                onInput={(e) => props.onChange(e.currentTarget.textContent)}
+                onBlur={(e) => props.onBlur(e.currentTarget.textContent)}
+            >
+                {props.defaultValue}
+            </div>
+            is disabled: {JSON.stringify(props.disabled)}
+            <hr />
+        </>
+    );
+};
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const FormNative = (_formModel?: FormModel): JSX.Element => {
@@ -9,12 +32,11 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
     const log = (): void => {
         console.clear();
         console.table(form);
-        // const f = JSON.parse(JSON.stringify(form));
-        // console.log('form: ', f);
     };
 
     return (
         <div>
+            <CustomInput {...form.bind('customInput')} />
             <label htmlFor="1">
                 first name
                 <br />

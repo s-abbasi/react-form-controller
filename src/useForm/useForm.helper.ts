@@ -58,6 +58,7 @@ export const generateControlInitialState: ControlConvertor = (controlModel) => {
         value: defaultValue,
         isValid: generateControlIsValidProp(defaultValue, validators),
         errors: generateControlErrors(defaultValue, validators),
+        isTouched: false,
     };
 };
 
@@ -83,4 +84,14 @@ export const getValueBasedOnType = ({
         default:
             return target.value;
     }
+};
+
+export const checkIfHasDisabledProp = ([, value]: [
+    string,
+    ControlPrimitiveValue | ControlObjectModel
+]): boolean => {
+    if (isTypeOfControlModel(value)) {
+        return value?.disabled !== undefined;
+    }
+    return false;
 };

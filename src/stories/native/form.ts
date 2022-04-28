@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { FormModel } from '../../useForm/useForm.types';
 import {
     max,
@@ -9,9 +10,15 @@ import {
 } from '../../validations/validations';
 
 export const formModel: FormModel = {
+    customInput: {
+        initialValue: 'custom input value',
+        validators: [],
+        disabled: false,
+    },
     firstName: {
         initialValue: 'sajad',
         validators: [minLength(2), maxLength(10), required()],
+        disabled: false,
     },
     lastName: {
         initialValue: '',
@@ -33,10 +40,12 @@ export const formModel: FormModel = {
     contact: {
         initialValue: 'phone',
         validators: [required()],
+        disabled: true,
     },
     image: {
         initialValue: undefined,
         validators: [required()],
+        disabled: true,
     },
     description: {
         initialValue: '',

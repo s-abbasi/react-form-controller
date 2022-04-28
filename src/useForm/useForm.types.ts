@@ -4,7 +4,7 @@ export type DefaultValue = HTMLAttributes<HTMLInputElement>['defaultValue'];
 export type DefaultChecked = HTMLAttributes<HTMLInputElement>['defaultChecked'];
 export type ControlPrimitiveValue = DefaultValue | boolean | File;
 
-type ValidatorName = 'min' | 'max' | 'minlength' | 'maxlength' | 'required' | string;
+type ValidatorName = 'min' | 'max' | 'minlength' | 'maxlength' | 'required';
 
 export type Validator = {
     name: ValidatorName;
@@ -15,22 +15,35 @@ export type Validator = {
 export type ControlObjectModel = {
     initialValue: ControlPrimitiveValue;
     validators?: Validator[];
-    disabled?: boolean;
+    disabled?: boolean | string | string[];
+    adapter?: unknown;
 };
 
 export type FormModel = Record<string, ControlObjectModel | ControlPrimitiveValue>;
 
 export type ControlError = {
-    [key: ValidatorName]: Validator['message'];
+    [key in ValidatorName]: Validator['message'];
 };
 
 export type JSXBinding = {
     defaultValue?: DefaultValue;
     defaultChecked?: DefaultChecked;
     onChange: (ev: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onBlur: (ev: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    disabled?: boolean;
+    // use infer in ref
+    // ref: ReturnType<addToRef>;
 };
 
-type Bind = (controlName: string) => JSXBinding;
+// export type Adapter = {
+//     setValue: (value: ControlPrimitiveValue) => void;
+//     initialValue: ControlObjectModel['initialValue'];
+//     // disabled?: boolean;
+// };
+
+export type OnControlValueChange = ReturnType<GenerateBinding>['onControlValueChange'];
+
+export type Bind = (controlName: string) => JSXBinding;
 
 export type GenerateBinding = (model: FormModel) => {
     bind: Bind;
@@ -59,6 +72,7 @@ export type Control = {
     value: ControlPrimitiveValue;
     isValid: boolean;
     errors: ControlError;
+    isTouched: boolean; // gets blur event
     // rawValue: ControlPrimitiveValue;
     // setValue: (value: ValueType) => void;
     // isEnabled: boolean;
@@ -69,7 +83,6 @@ export type Control = {
     // enable: () => boolean;
     // disable: () => boolean;
     // isDirty: boolean; // gets change event
-    // isTouched: boolean; // gets blur event
 };
 
 export type FormGroup = {

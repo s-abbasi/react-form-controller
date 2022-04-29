@@ -1,17 +1,16 @@
 /* eslint-disable no-console */
-import { Adapter } from '../../useForm/native-adapter';
 import { useForm } from '../../useForm/useForm';
-import { FormModel } from '../../useForm/useForm.types';
+import { FormModel, JSXBinding } from '../../useForm/useForm.types';
 import { formModel } from './form';
 
-const CustomInput = (adapter: Adapter): JSX.Element => {
+const CustomInput = (adapter: JSXBinding): JSX.Element => {
     return (
         <div>
             <span>title:</span>
             <div
                 style={{ background: 'lightgrey' }}
                 contentEditable
-                onInput={(e) => adapter.setValue(e.currentTarget.textContent)}
+                onInput={(e) => adapter.onChange(e.currentTarget.textContent)}
             >
                 {adapter.initialValue}
             </div>

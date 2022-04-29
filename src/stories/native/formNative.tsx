@@ -1,13 +1,9 @@
 /* eslint-disable no-console */
-// import { Adapter } from '../../useForm/native-adapter';
 import { useForm } from '../../useForm/useForm';
 import { FormModel, JSXBinding } from '../../useForm/useForm.types';
 import { formModel } from './form';
 
 const CustomInput = (props: JSXBinding): JSX.Element => {
-    // console.log('ad: ', props);
-    // onInput={(e) => adapter.(e.currentTarget.textContent)}
-
     return (
         <>
             <span>label:</span>

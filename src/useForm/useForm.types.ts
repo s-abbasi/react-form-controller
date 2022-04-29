@@ -25,11 +25,16 @@ export type ControlError = {
     [key in ValidatorName]: Validator['message'];
 };
 
+type FormChangeEvent =
+    | ChangeEvent<HTMLInputElement | HTMLTextAreaElement | string>
+    | null
+    | string;
+
 export type JSXBinding = {
     defaultValue?: DefaultValue;
     defaultChecked?: DefaultChecked;
-    onChange: (ev: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    onBlur: (ev: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onChange: (ev: FormChangeEvent) => void;
+    onBlur: (ev: FormChangeEvent) => void;
     disabled?: boolean;
     // use infer in ref
     // ref: ReturnType<addToRef>;

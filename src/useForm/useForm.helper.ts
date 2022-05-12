@@ -74,11 +74,12 @@ export const generateControlErrorsProp = (
 export const generateControlInitialState: ControlConvertor = (control) => {
     const { initialValue, validators, disabled } = control;
 
-    const obj = {
+    return {
         value: initialValue,
         isValid: generateControlIsValidProp(initialValue, validators),
         errors: generateControlErrorsProp(initialValue, validators),
         isTouched: false,
+        isDirty: false,
         isDisabled: disabled,
         disable() {
             this.isDisabled = true;
@@ -87,8 +88,6 @@ export const generateControlInitialState: ControlConvertor = (control) => {
             this.isDisabled = false;
         },
     };
-
-    return obj;
 };
 
 export const getValueBasedOnType = ({

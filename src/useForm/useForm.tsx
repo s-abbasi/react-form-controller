@@ -67,6 +67,7 @@ export const useForm = (model: FormModel): FormGroup => {
 
         // WARNING: this block mutates formGroup
         control.value = value;
+        control.isDirty = true;
         control.isValid = generateControlIsValidProp(value, controlModel.validators);
         control.errors = generateControlErrorsProp(value, controlModel.validators);
         formGroup.isValid = generateFormGroupIsValidProp(controls);

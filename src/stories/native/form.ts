@@ -46,7 +46,7 @@ export const formModel: FormModel = {
     contact: {
         initialValue: 'phone',
         validators: [required()],
-        disabled: true,
+        disabled: false,
     },
     image: {
         initialValue: undefined,

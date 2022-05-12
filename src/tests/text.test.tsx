@@ -120,4 +120,17 @@ describe('text', () => {
 
         expect(form.firstName.isTouched).toBe(true);
     });
+
+    test('should set form.control.isDirty to true on input change event', () => {
+        const formModel: FormModel = {
+            firstName: 'sajad',
+        };
+        const hook = renderHook(() => useForm(formModel));
+        const form = hook.result.current;
+
+        const change = { target: { value: 'newValue' } } as ChangeEvent<HTMLInputElement>;
+        form.bind('firstName').onChange(change);
+
+        expect(form.firstName.isDirty).toBe(true);
+    });
 });

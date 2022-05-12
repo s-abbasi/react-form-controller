@@ -100,10 +100,10 @@ export type Control = {
     isValid: boolean;
     errors: ControlError;
     isTouched: boolean; // gets blur event
+    isDirty: boolean; // gets change event
     disable: () => void;
     enable: () => void;
     isDisabled: ControlObjectModel['disabled'];
-    // isDirty: boolean; // gets change event
     // rawValue: ControlPrimitiveValue;
     // setValue: (value: ValueType) => void;
     // reset: () => void;

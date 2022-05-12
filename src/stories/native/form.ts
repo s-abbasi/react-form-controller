@@ -10,6 +10,11 @@ import {
 } from '../../validations/validations';
 
 export const formModel: FormModel = {
+    materialTextField: {
+        initialValue: 'sajad abbasi',
+        validators: [],
+        disabled: true,
+    },
     customInput: {
         initialValue: 'custom input value',
         validators: [],
@@ -36,6 +41,7 @@ export const formModel: FormModel = {
     single: {
         initialValue: true,
         validators: [required()],
+        disabled: true,
     },
     contact: {
         initialValue: 'phone',

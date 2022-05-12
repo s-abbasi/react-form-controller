@@ -55,13 +55,13 @@ const config = {
             'error',
             { allowExpressions: true },
         ],
-        'no-param-reassign': [
-            'warn',
-            {
-                props: true,
-                ignorePropertyModificationsFor: ['state'],
-            },
-        ],
+        // 'no-param-reassign': [
+        //     'warn',
+        //     {
+        //         props: true,
+        //         ignorePropertyModificationsFor: ['state'],
+        //     },
+        // ],
     },
 };
 

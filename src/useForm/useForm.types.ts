@@ -12,6 +12,11 @@ export type Validator = {
     message?: string;
 };
 
+export type ModelNormalizerReducerCallback = (
+    prev: Required<ControlObjectModel>,
+    curr: [string, ControlObjectModel | ControlPrimitiveValue]
+) => Required<ControlObjectModel>;
+
 export type ControlObjectModel = {
     initialValue: ControlPrimitiveValue;
     validators?: Validator[];
@@ -20,12 +25,22 @@ export type ControlObjectModel = {
 };
 
 export type FormModel = Record<string, ControlObjectModel | ControlPrimitiveValue>;
+export type NormalizedModel = Record<string, Required<ControlObjectModel>>;
 
 export type ControlError = {
     [key in ValidatorName]: Validator['message'];
 };
 
-type FormChangeEvent =
+export type Adapter = {
+    setValue: (e: unknown) => void;
+    setAsTouched: () => void;
+    disabled: boolean;
+    isValid: boolean;
+    errors: ControlError;
+    initialValue: ControlPrimitiveValue;
+};
+
+export type FormChangeEvent =
     | ChangeEvent<HTMLInputElement | HTMLTextAreaElement | string>
     | null
     | string;
@@ -35,39 +50,46 @@ export type JSXBinding = {
     defaultChecked?: DefaultChecked;
     onChange: (ev: FormChangeEvent) => void;
     onBlur: (ev: FormChangeEvent) => void;
-    disabled?: boolean;
+    disabled: boolean;
     // use infer in ref
     // ref: ReturnType<addToRef>;
 };
 
-// export type Adapter = {
-//     setValue: (value: ControlPrimitiveValue) => void;
-//     initialValue: ControlObjectModel['initialValue'];
-//     // disabled?: boolean;
-// };
-
 export type OnControlValueChange = ReturnType<GenerateBinding>['onControlValueChange'];
+export type OnControlBlur = ReturnType<GenerateBinding>['onControlBlurEvent'];
 
 export type Bind = (controlName: string) => JSXBinding;
 
-export type GenerateBinding = (model: FormModel) => {
+export type GenerateBinding = (
+    model: NormalizedModel,
+    controls: Controls
+) => {
     bind: Bind;
-    onControlValueChange: (fn: Observer) => void;
+    onControlValueChange: (fn: ChangeObserver) => void;
+    onControlBlurEvent: (fn: BlurObserver) => void;
 };
 
-export type Observer = (ev: {
+export type ChangeObserver = (ev: {
     controlName: string;
     value: ControlPrimitiveValue;
 }) => unknown;
+
+export type BlurObserver = (ev: { controlName: string }) => unknown;
+
+export type GenerateNativeBinding = (
+    onChangeObservers: ChangeObserver[],
+    onBlurObservers: BlurObserver[],
+    control: Required<ControlObjectModel>,
+    controlName: string,
+    controls: Controls
+) => JSXBinding;
 
 // type CtrlAddRemoveResult = {
 //     success: boolean;
 //     message: string;
 // }
 
-export type ControlConvertor = (
-    control: ControlObjectModel | ControlPrimitiveValue
-) => Control;
+export type ControlConvertor = (control: Required<ControlObjectModel>) => Control;
 
 export type Controls = {
     [key: string]: Control;
@@ -78,16 +100,16 @@ export type Control = {
     isValid: boolean;
     errors: ControlError;
     isTouched: boolean; // gets blur event
+    disable: () => void;
+    enable: () => void;
+    isDisabled: ControlObjectModel['disabled'];
+    // isDirty: boolean; // gets change event
     // rawValue: ControlPrimitiveValue;
     // setValue: (value: ValueType) => void;
-    // isEnabled: boolean;
     // reset: () => void;
     // addValidator: (validator: Validator) => void;
     // removeValidator: (name: Validator['name']) => void;
     // subscribe: (value: ValueType) => void;
-    // enable: () => boolean;
-    // disable: () => boolean;
-    // isDirty: boolean; // gets change event
 };
 
 export type FormGroup = {

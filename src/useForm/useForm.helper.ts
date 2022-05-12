@@ -1,12 +1,41 @@
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { ChangeEvent } from 'react';
 import {
     ControlConvertor,
     ControlError,
     ControlObjectModel,
     ControlPrimitiveValue,
+    FormModel,
+    ModelNormalizerReducerCallback,
+    NormalizedModel,
     Validator,
 } from './useForm.types';
 import { generateControlIsValidProp } from './useForm.validations';
+
+export const normalizeFormModel = (model: FormModel): NormalizedModel => {
+    const requiredPairs = {
+        disabled: false,
+        adapter: undefined,
+        validators: [],
+    };
+
+    const reducerCallback: ModelNormalizerReducerCallback = (prev, [key, value]) => {
+        if (typeof value !== 'object') {
+            return {
+                ...prev,
+                [key]: { ...requiredPairs, initialValue: value },
+            };
+        }
+        return {
+            ...prev,
+            [key]: { ...requiredPairs, ...value },
+        };
+    };
+
+    // @ts-ignore
+    return Object.entries(model).reduce(reducerCallback, {});
+};
 
 export const isTypeOfControlModel = (
     controlValueType: ControlPrimitiveValue | ControlObjectModel
@@ -14,25 +43,16 @@ export const isTypeOfControlModel = (
     return typeof controlValueType === 'object';
 };
 
-export const getDefaultValue = (
-    controlValueType: ControlPrimitiveValue | ControlObjectModel
-): ControlPrimitiveValue => {
-    if (isTypeOfControlModel(controlValueType)) {
-        return controlValueType.initialValue;
-    }
-    return controlValueType;
+export const setDefaultChecked = (
+    controlValueType: ControlObjectModel
+): boolean | undefined => {
+    const valueIsBoolean = typeof controlValueType.initialValue === 'boolean';
+    return valueIsBoolean ? (controlValueType.initialValue as boolean) : undefined;
 };
 
-export const setDefaultChecked = (
-    controlValueType: ControlPrimitiveValue | ControlObjectModel
-): boolean | undefined => {
-    const value = getDefaultValue(controlValueType);
-    const valueIsBoolean = typeof value === 'boolean';
-    return valueIsBoolean ? value : undefined;
-};
 export const generateJSXValueAttribute = (
     value: unknown,
-    control: ControlPrimitiveValue | ControlObjectModel
+    control: Required<ControlObjectModel>
 ): unknown => {
     const valueIsBoolean = typeof value === 'boolean';
 
@@ -41,25 +61,34 @@ export const generateJSXValueAttribute = (
         : { defaultValue: value };
 };
 
-export const generateControlErrors = (
+export const generateControlErrorsProp = (
     value: ControlPrimitiveValue,
     validators: Validator[] = []
 ): ControlError => {
+    // @ts-ignore
     return validators
         .filter((validator) => !validator.validateWith(value))
         .reduce((acc, curr) => ({ ...acc, [curr.name]: curr.message }), {});
 };
 
-export const generateControlInitialState: ControlConvertor = (controlModel) => {
-    const defaultValue = getDefaultValue(controlModel);
-    const validators = (controlModel as ControlObjectModel)?.validators;
+export const generateControlInitialState: ControlConvertor = (control) => {
+    const { initialValue, validators, disabled } = control;
 
-    return {
-        value: defaultValue,
-        isValid: generateControlIsValidProp(defaultValue, validators),
-        errors: generateControlErrors(defaultValue, validators),
+    const obj = {
+        value: initialValue,
+        isValid: generateControlIsValidProp(initialValue, validators),
+        errors: generateControlErrorsProp(initialValue, validators),
         isTouched: false,
+        isDisabled: disabled,
+        disable() {
+            this.isDisabled = true;
+        },
+        enable() {
+            this.isDisabled = false;
+        },
     };
+
+    return obj;
 };
 
 export const getValueBasedOnType = ({
@@ -84,14 +113,4 @@ export const getValueBasedOnType = ({
         default:
             return target.value;
     }
-};
-
-export const checkIfHasDisabledProp = ([, value]: [
-    string,
-    ControlPrimitiveValue | ControlObjectModel
-]): boolean => {
-    if (isTypeOfControlModel(value)) {
-        return value?.disabled !== undefined;
-    }
-    return false;
 };

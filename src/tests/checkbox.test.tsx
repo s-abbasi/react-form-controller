@@ -1,3 +1,4 @@
+import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { ChangeEvent } from 'react';
 import { useForm } from '../useForm/useForm';
@@ -55,22 +56,65 @@ describe('checkbox', () => {
         expect(form.single.value).toBe(true);
     });
 
-    test.skip('should set "HTMLInputElement.disabled" to true when control is initially disabled', () => {
-        const formModel: FormModel = {
-            single: {
-                initialValue: true,
-                disabled: true,
-            },
+    test('should disable input on form.control.disable()', () => {
+        const Comp = (): JSX.Element => {
+            const formModel = {
+                remember: {
+                    initialValue: false,
+                    disabled: false,
+                },
+            };
+            const form = useForm(formModel);
+
+            form.remember.disable();
+
+            return <input type="text" {...form.bind('remember')} />;
         };
 
-        const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        render(<Comp />);
 
-        const el = document.createElement('INPUT') as HTMLInputElement;
-        el.setAttribute('type', 'checkbox');
+        const checkbox = screen.getByRole('textbox');
+        expect(checkbox).toBeDisabled();
+    });
 
-        form.bind('single').ref(el);
+    test('should enable input on form.control.enable()', () => {
+        const Comp = (): JSX.Element => {
+            const formModel = {
+                remember: {
+                    initialValue: false,
+                    disabled: true,
+                },
+            };
+            const form = useForm(formModel);
 
-        expect(el.disabled).toBe(true);
+            form.remember.enable();
+
+            return <input type="text" {...form.bind('remember')} />;
+        };
+
+        render(<Comp />);
+
+        const checkbox = screen.getByRole('textbox');
+        expect(checkbox).not.toBeDisabled();
+    });
+
+    test('should disable input when controlModel is set to disable', () => {
+        const Comp = (): JSX.Element => {
+            const formModel = {
+                remember: {
+                    initialValue: false,
+                    disabled: true,
+                },
+            };
+            const form = useForm(formModel);
+
+            return <input type="checkbox" {...form.bind('remember')} />;
+        };
+
+        render(<Comp />);
+
+        const checkbox = screen.getByRole('checkbox');
+
+        expect(checkbox).toBeDisabled();
     });
 });

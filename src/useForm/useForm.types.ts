@@ -117,6 +117,8 @@ export type FormGroup = {
 } & {
     bind: Bind;
     isValid: boolean;
+    isTouched: boolean; // gets blur event
+    isDirty: boolean; // gets change event
 };
 
 // export type FormGroup<T> = {

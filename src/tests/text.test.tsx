@@ -133,4 +133,30 @@ describe('text', () => {
 
         expect(form.firstName.isDirty).toBe(true);
     });
+
+    test('should set form.isTouched to true on any blur event', () => {
+        const formModel: FormModel = {
+            firstName: 'sajad',
+        };
+        const hook = renderHook(() => useForm(formModel));
+        const form = hook.result.current;
+
+        const onBlueEvent = (): boolean => true;
+        form.bind('firstName').onBlur(onBlueEvent as unknown as FormChangeEvent);
+
+        expect(form.isTouched).toBe(true);
+    });
+
+    test('should set form.isDirty to true on any input change event', () => {
+        const formModel: FormModel = {
+            firstName: 'sajad',
+        };
+        const hook = renderHook(() => useForm(formModel));
+        const form = hook.result.current;
+
+        const change = { target: { value: 'newValue' } } as ChangeEvent<HTMLInputElement>;
+        form.bind('firstName').onChange(change);
+
+        expect(form.isDirty).toBe(true);
+    });
 });

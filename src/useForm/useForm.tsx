@@ -59,6 +59,7 @@ export const useForm = (model: FormModel): FormGroup => {
 
     binding.onControlBlurEvent(({ controlName }): void => {
         formGroup[controlName].isTouched = true;
+        formGroup.isTouched = true;
     });
 
     binding.onControlValueChange(({ controlName, value }): void => {
@@ -71,6 +72,7 @@ export const useForm = (model: FormModel): FormGroup => {
         control.isValid = generateControlIsValidProp(value, controlModel.validators);
         control.errors = generateControlErrorsProp(value, controlModel.validators);
         formGroup.isValid = generateFormGroupIsValidProp(controls);
+        formGroup.isDirty = true;
     });
 
     const proxy = new Proxy(formGroup, proxyHandler);

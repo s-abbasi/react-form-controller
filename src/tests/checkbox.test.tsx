@@ -11,9 +11,9 @@ describe('checkbox', () => {
         };
 
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { controls } = hook.result.current;
 
-        expect(form.single.value).toBe(true);
+        expect(controls.single.value).toBe(true);
     });
 
     test('should set "defaultChecked={}" to given defaultValue of formModel', () => {
@@ -22,9 +22,9 @@ describe('checkbox', () => {
         };
 
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { bind } = hook.result.current;
 
-        const { props } = <input type="checkbox" {...form.bind('single')} />;
+        const { props } = <input type="checkbox" {...bind('single')} />;
 
         expect(props.defaultChecked).toBe(true);
     });
@@ -35,9 +35,9 @@ describe('checkbox', () => {
         };
 
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { controls } = hook.result.current;
 
-        expect(form.single.value).toBe(true);
+        expect(controls.single.value).toBe(true);
     });
 
     test('should update "form.control.value" on onChange event', () => {
@@ -45,15 +45,15 @@ describe('checkbox', () => {
             single: false,
         };
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { controls, bind } = hook.result.current;
 
         const change = {
             target: { checked: true, type: 'checkbox' },
         } as ChangeEvent<HTMLInputElement>;
 
-        form.bind('single').onChange(change);
+        bind('single').onChange(change);
 
-        expect(form.single.value).toBe(true);
+        expect(controls.single.value).toBe(true);
     });
 
     test('should disable input on form.control.disable()', () => {
@@ -64,11 +64,11 @@ describe('checkbox', () => {
                     disabled: false,
                 },
             };
-            const form = useForm(formModel);
+            const { controls, bind } = useForm(formModel);
 
-            form.remember.disable();
+            controls.remember.disable();
 
-            return <input type="text" {...form.bind('remember')} />;
+            return <input type="text" {...bind('remember')} />;
         };
 
         render(<Comp />);
@@ -85,11 +85,11 @@ describe('checkbox', () => {
                     disabled: true,
                 },
             };
-            const form = useForm(formModel);
+            const { controls, bind } = useForm(formModel);
 
-            form.remember.enable();
+            controls.remember.enable();
 
-            return <input type="text" {...form.bind('remember')} />;
+            return <input type="text" {...bind('remember')} />;
         };
 
         render(<Comp />);
@@ -106,9 +106,9 @@ describe('checkbox', () => {
                     disabled: true,
                 },
             };
-            const form = useForm(formModel);
+            const { bind } = useForm(formModel);
 
-            return <input type="checkbox" {...form.bind('remember')} />;
+            return <input type="checkbox" {...bind('remember')} />;
         };
 
         render(<Comp />);

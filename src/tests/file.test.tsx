@@ -9,9 +9,9 @@ describe('file', () => {
             image: '',
         };
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { controls } = hook.result.current;
 
-        expect(form.image.value).toBe('');
+        expect(controls.image.value).toBe('');
     });
 
     test.skip('should set "<input defaultValue={}>" onChange', () => {
@@ -21,7 +21,7 @@ describe('file', () => {
             image: undefined,
         };
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { bind, controls } = hook.result.current;
 
         const change = {
             target: {
@@ -31,8 +31,8 @@ describe('file', () => {
             },
         } as unknown as ChangeEvent<HTMLInputElement>;
 
-        form.bind('image').onChange(change);
+        bind('image').onChange(change);
 
-        expect(form.image.value).toBe(file);
+        expect(controls.image.value).toBe(file);
     });
 });

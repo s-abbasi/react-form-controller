@@ -1,81 +1,18 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-import { mapObjIndexed } from 'ramda';
-import { useRef } from 'react';
-import { generateNativeBinding } from './bindings';
-import {
-    generateControlInitialState,
-    generateControlErrorsProp,
-    normalizeFormModel,
-} from './useForm.helper';
-import {
-    Bind,
-    FormGroup,
-    FormModel,
-    GenerateBinding,
-    ChangeObserver,
-    OnControlValueChange,
-    BlurObserver,
-    OnControlBlur,
-} from './useForm.types';
-import {
-    generateControlIsValidProp,
-    generateFormGroupIsValidProp,
-} from './useForm.validations';
+import { log } from '../logger';
+import { generateFormGroup } from './composition';
+import { FormGroup, FormModel } from './useForm.types';
 
-const generateBinding: GenerateBinding = (normalizedModel, controls) => {
-    const onChangeObservers: ChangeObserver[] = [];
-    const onBlurObservers: BlurObserver[] = [];
-
-    const onControlValueChange: OnControlValueChange = (fn) => onChangeObservers.push(fn);
-    const onControlBlurEvent: OnControlBlur = (fn) => onBlurObservers.push(fn);
-
-    const bind: Bind = (controlName) => {
-        return generateNativeBinding(
-            onChangeObservers,
-            onBlurObservers,
-            normalizedModel[controlName],
-            controlName,
-            controls
-        );
-    };
-
-    return { bind, onControlValueChange, onControlBlurEvent };
+const baseFormGroup: FormGroup = {
+    controls: {},
+    bind: undefined,
+    isValid: false,
+    isTouched: false,
+    isDirty: false,
+    add: undefined,
+    remove: undefined,
 };
 
-const proxyHandler = {};
-
-export const useForm = (model: FormModel): FormGroup => {
-    const normalizedModel = normalizeFormModel(model);
-    const controls = mapObjIndexed(generateControlInitialState, normalizedModel);
-    // console.log('before passing to bind: ', controls.materialTextField);
-    const binding = generateBinding(normalizedModel, controls);
-
-    // @ts-expect-error
-    const formGroup: FormGroup = {
-        bind: binding.bind,
-        isValid: generateFormGroupIsValidProp(controls),
-        ...controls,
-    };
-
-    binding.onControlBlurEvent(({ controlName }): void => {
-        formGroup[controlName].isTouched = true;
-        formGroup.isTouched = true;
-    });
-
-    binding.onControlValueChange(({ controlName, value }): void => {
-        const controlModel = normalizedModel[controlName];
-        const control = formGroup[controlName];
-
-        // WARNING: this block mutates formGroup
-        control.value = value;
-        control.isDirty = true;
-        control.isValid = generateControlIsValidProp(value, controlModel.validators);
-        control.errors = generateControlErrorsProp(value, controlModel.validators);
-        formGroup.isValid = generateFormGroupIsValidProp(controls);
-        formGroup.isDirty = true;
-    });
-
-    const proxy = new Proxy(formGroup, proxyHandler);
-    const ref = useRef(proxy);
-    return ref.current;
+export const useForm = (model: FormModel): Required<FormGroup> => {
+    log('hook re-render');
+    return generateFormGroup(baseFormGroup)(model);
 };

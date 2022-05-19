@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable no-console */
+// import { useState } from 'react';
+import { useState } from 'react';
 import { TextField } from '@mui/material';
 import { useForm } from '../../useForm/useForm';
 import { FormModel } from '../../useForm/useForm.types';
 import { CustomInput } from './customInput';
 import { formModel } from './form';
 import { useForceUpdate } from '../../useForceUpdate/UseForceUpdate';
+import { log } from '../../logger';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const FormNative = (_formModel?: FormModel): JSX.Element => {
@@ -13,29 +15,43 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
 
     const rerender = useForceUpdate();
 
-    const log = (): void => {
-        console.clear();
-        const formWithoutIsValid = { ...form };
-        const excludedCols = ['disable', 'enable', 'errors'];
-        // @ts-ignore
-        delete formWithoutIsValid.isValid;
-        const cols = Object.keys(form.firstName).filter(
-            (col) => !excludedCols.includes(col)
-        );
-        console.table(formWithoutIsValid, cols);
-        console.log('form: ', JSON.parse(JSON.stringify(form)));
+    const logForm = (): void => {
+        log('form: ', form);
     };
 
     const disableMUI = (): void => {
-        form.materialTextField.disable();
+        form.controls.materialTextField.disable();
     };
 
     const enableMUI = (): void => {
-        form.materialTextField.enable();
+        form.controls.materialTextField.enable();
+    };
+
+    const [jsx, setJsx] = useState();
+    const addControl = (): void => {
+        const controls = {
+            newControl: {
+                initialValue: 'newControl initialValue',
+                disabled: false,
+            },
+        };
+        form.add(controls);
+
+        const x = (
+            <>
+                <label htmlFor="9">
+                    <br />
+                    <input id="9" {...form.bind('newControl')} />
+                </label>
+                <hr />
+            </>
+        );
+        setJsx(x);
     };
 
     return (
         <div>
+            {jsx}
             <TextField
                 {...form.bind('materialTextField')}
                 id="filled-basic"
@@ -121,7 +137,7 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
                 <textarea id="textarea" {...form.bind('description')} />
             </label>
             <hr />
-            <button type="button" onClick={log}>
+            <button type="button" onClick={logForm}>
                 log
             </button>
             <button type="button" onClick={rerender}>
@@ -132,6 +148,9 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
             </button>
             <button type="button" onClick={enableMUI}>
                 enable mui
+            </button>
+            <button type="button" onClick={addControl}>
+                add control
             </button>
         </div>
     );

@@ -1,13 +1,13 @@
 /* eslint-disable no-console */
 import { FormModel } from '../../useForm/useForm.types';
 import {
-    max,
-    min,
     minLength,
     maxLength,
     required,
     pattern,
-} from '../../validations/validations';
+    min,
+    max,
+} from '../../useForm/validations';
 
 export const formModel: FormModel = {
     materialTextField: {

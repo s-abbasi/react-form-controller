@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { FormModel } from '../../useForm/useForm.types';
-import { minLength, maxLength, required } from '../../validations/validations';
+import { maxLength, minLength, required } from '../../useForm/validations';
 
 export const formModel: FormModel = {
     customInput: {

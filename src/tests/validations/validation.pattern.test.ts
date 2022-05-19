@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { useForm } from '../useForm/useForm';
-import { FormModel } from '../useForm/useForm.types';
-import { pattern } from './validations';
+import { useForm } from '../../useForm/useForm';
+import { FormModel } from '../../useForm/useForm.types';
+import { pattern } from '../../useForm/validations';
 
 describe('validations - pattern', () => {
     test('should set form.control.isValid to false when regex is incorrect', () => {
@@ -13,9 +13,9 @@ describe('validations - pattern', () => {
         };
 
         const hook = renderHook(() => useForm(model));
-        const form = hook.result.current;
+        const { controls } = hook.result.current;
 
-        expect(form.cellphone.isValid).toBe(false);
+        expect(controls.cellphone.isValid).toBe(false);
     });
 
     test('should set form.control.isValid to true when regex is correct', () => {
@@ -27,8 +27,8 @@ describe('validations - pattern', () => {
         };
 
         const hook = renderHook(() => useForm(model));
-        const form = hook.result.current;
+        const { controls } = hook.result.current;
 
-        expect(form.cellphone.isValid).toBe(true);
+        expect(controls.cellphone.isValid).toBe(true);
     });
 });

@@ -1,4 +1,4 @@
-import { min } from './validations';
+import { min } from '../../useForm/validations';
 
 describe('validations - min', () => {
     test('min - should return false when value < minValue', () => {

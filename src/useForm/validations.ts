@@ -1,4 +1,4 @@
-import { ControlPrimitiveValue, Validator } from '../useForm/useForm.types';
+import { ControlPrimitiveValue, Validator } from './useForm.types';
 
 export const min = (minValue: number, message?: string): Validator => {
     return {

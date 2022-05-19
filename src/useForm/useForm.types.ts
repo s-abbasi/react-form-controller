@@ -12,11 +12,6 @@ export type Validator = {
     message?: string;
 };
 
-export type ModelNormalizerReducerCallback = (
-    prev: Required<ControlObjectModel>,
-    curr: [string, ControlObjectModel | ControlPrimitiveValue]
-) => Required<ControlObjectModel>;
-
 export type ControlObjectModel = {
     initialValue: ControlPrimitiveValue;
     validators?: Validator[];
@@ -38,6 +33,11 @@ export type Adapter = {
     isValid: boolean;
     errors: ControlError;
     initialValue: ControlPrimitiveValue;
+};
+
+export type GenerateControls = (model: FormModel) => {
+    controls: Controls;
+    normalizedModel: NormalizedModel;
 };
 
 export type FormChangeEvent =
@@ -84,11 +84,6 @@ export type GenerateNativeBinding = (
     controls: Controls
 ) => JSXBinding;
 
-// type CtrlAddRemoveResult = {
-//     success: boolean;
-//     message: string;
-// }
-
 export type ControlConvertor = (control: Required<ControlObjectModel>) => Control;
 
 export type Controls = {
@@ -99,8 +94,8 @@ export type Control = {
     value: ControlPrimitiveValue;
     isValid: boolean;
     errors: ControlError;
-    isTouched: boolean; // gets blur event
-    isDirty: boolean; // gets change event
+    isTouched: boolean; // become true on blur event
+    isDirty: boolean; // become true on change event
     disable: () => void;
     enable: () => void;
     isDisabled: ControlObjectModel['disabled'];
@@ -112,23 +107,17 @@ export type Control = {
     // subscribe: (value: ValueType) => void;
 };
 
-export type FormGroup = {
-    [key: string]: Control;
-} & {
-    bind: Bind;
-    isValid: boolean;
-    isTouched: boolean; // gets blur event
-    isDirty: boolean; // gets change event
+type CtrlAddRemoveResult = {
+    success: boolean;
+    message: string;
 };
 
-// export type FormGroup<T> = {
-//     [Property in keyof T]: Control;
-// } & {
-//     [key: string]: Control;
-// } & {
-//     bind: Bind;
-//     addControl: (validator: Validator) => CtrlAddRemoveResult;
-//     removeControl: (validatorName: ValidatorName) => CtrlAddRemoveResult;
-//     validate: () => void;
-//     isTouchedAndValid: boolean;
-// };
+export type FormGroup = {
+    controls: Controls;
+    bind?: Bind;
+    isValid: boolean;
+    isTouched: boolean;
+    isDirty: boolean;
+    add?: (control: FormModel) => CtrlAddRemoveResult;
+    remove?: (controlName: string | string[]) => CtrlAddRemoveResult;
+};

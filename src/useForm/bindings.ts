@@ -28,6 +28,7 @@ export const generateNativeBinding: GenerateNativeBinding = (
         controlModel.initialValue,
         controlModel
     );
+
     Object.assign(jsx, JSXValueAttribute);
     return jsx;
 };

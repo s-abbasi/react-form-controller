@@ -11,9 +11,9 @@ describe('text', () => {
         };
 
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { bind } = hook.result.current;
 
-        const { props } = <input type="text" {...form.bind('firstName')} />;
+        const { props } = <input type="text" {...bind('firstName')} />;
         expect(props.defaultValue).toBe('sajad');
     });
 
@@ -23,20 +23,20 @@ describe('text', () => {
         };
 
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { bind } = hook.result.current;
 
-        const { props } = <input type="text" {...form.bind('firstName')} />;
+        const { props } = <input type="text" {...bind('firstName')} />;
         expect(props.defaultValue).toBe('sara');
     });
 
-    test('should set form.firstName.value to defaultValue given in model', () => {
+    test('should set controls.firstName.value to defaultValue given in model', () => {
         const formModel: FormModel = {
             firstName: 'sajad',
         };
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { controls } = hook.result.current;
 
-        expect(form.firstName.value).toBe('sajad');
+        expect(controls.firstName.value).toBe('sajad');
     });
 
     test('should update form.value on onChange event', () => {
@@ -44,12 +44,12 @@ describe('text', () => {
             firstName: '',
         };
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { controls, bind } = hook.result.current;
 
         const change = { target: { value: 'sara' } } as ChangeEvent<HTMLInputElement>;
-        form.bind('firstName').onChange(change);
+        bind('firstName').onChange(change);
 
-        expect(form.firstName.value).toBe('sara');
+        expect(controls.firstName.value).toBe('sara');
     });
 
     test('should disable input on form.control.disable()', () => {
@@ -57,10 +57,10 @@ describe('text', () => {
             const formModel: FormModel = {
                 firstName: '',
             };
-            const form = useForm(formModel);
-            form.firstName.disable();
+            const { controls, bind } = useForm(formModel);
+            controls.firstName.disable();
 
-            return <input type="text" {...form.bind('firstName')} />;
+            return <input type="text" {...bind('firstName')} />;
         };
 
         render(<Comp />);
@@ -77,10 +77,10 @@ describe('text', () => {
                     disabled: true,
                 },
             };
-            const form = useForm(formModel);
-            form.firstName.enable();
+            const { controls, bind } = useForm(formModel);
+            controls.firstName.enable();
 
-            return <input type="text" {...form.bind('firstName')} />;
+            return <input type="text" {...bind('firstName')} />;
         };
 
         render(<Comp />);
@@ -97,9 +97,9 @@ describe('text', () => {
                     disabled: true,
                 },
             };
-            const form = useForm(formModel);
+            const { bind } = useForm(formModel);
 
-            return <input {...form.bind('firstName')} />;
+            return <input {...bind('firstName')} />;
         };
 
         render(<Comp />);
@@ -113,12 +113,12 @@ describe('text', () => {
             firstName: 'sajad',
         };
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { controls, bind } = hook.result.current;
 
         const onBlueEvent = (): boolean => true;
-        form.bind('firstName').onBlur(onBlueEvent as unknown as FormChangeEvent);
+        bind('firstName').onBlur(onBlueEvent as unknown as FormChangeEvent);
 
-        expect(form.firstName.isTouched).toBe(true);
+        expect(controls.firstName.isTouched).toBe(true);
     });
 
     test('should set form.control.isDirty to true on input change event', () => {
@@ -126,12 +126,12 @@ describe('text', () => {
             firstName: 'sajad',
         };
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { controls, bind } = hook.result.current;
 
         const change = { target: { value: 'newValue' } } as ChangeEvent<HTMLInputElement>;
-        form.bind('firstName').onChange(change);
+        bind('firstName').onChange(change);
 
-        expect(form.firstName.isDirty).toBe(true);
+        expect(controls.firstName.isDirty).toBe(true);
     });
 
     test('should set form.isTouched to true on any blur event', () => {
@@ -139,12 +139,12 @@ describe('text', () => {
             firstName: 'sajad',
         };
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { bind, isTouched } = hook.result.current;
 
         const onBlueEvent = (): boolean => true;
-        form.bind('firstName').onBlur(onBlueEvent as unknown as FormChangeEvent);
+        bind('firstName').onBlur(onBlueEvent as unknown as FormChangeEvent);
 
-        expect(form.isTouched).toBe(true);
+        expect(isTouched).toBe(true);
     });
 
     test('should set form.isDirty to true on any input change event', () => {
@@ -152,11 +152,11 @@ describe('text', () => {
             firstName: 'sajad',
         };
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { bind, isDirty } = hook.result.current;
 
         const change = { target: { value: 'newValue' } } as ChangeEvent<HTMLInputElement>;
-        form.bind('firstName').onChange(change);
+        bind('firstName').onChange(change);
 
-        expect(form.isDirty).toBe(true);
+        expect(isDirty).toBe(true);
     });
 });

@@ -1,4 +1,4 @@
-import { max } from './validations';
+import { max } from '../../useForm/validations';
 
 describe('validations - max', () => {
     test('max - should return false when value > maxValue', () => {

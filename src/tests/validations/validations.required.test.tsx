@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { useForm } from '../useForm/useForm';
-import { FormModel } from '../useForm/useForm.types';
-import { required } from './validations';
+import { useForm } from '../../useForm/useForm';
+import { FormModel } from '../../useForm/useForm.types';
+import { required } from '../../useForm/validations';
 
 describe('validations - max', () => {
     test('should set value to "form.control.isValid" to true when value of <input type="number"> is 0', () => {
@@ -11,9 +11,9 @@ describe('validations - max', () => {
                 validators: [required()],
             },
         };
-        const form = renderHook(() => useForm(formModel)).result.current;
+        const { controls } = renderHook(() => useForm(formModel)).result.current;
 
-        expect(form.price.isValid).toBe(true);
+        expect(controls.price.isValid).toBe(true);
     });
 
     test('should set value to "form.control.isValid" to false when value of <input type="number"> is undefined', () => {
@@ -23,9 +23,9 @@ describe('validations - max', () => {
                 validators: [required()],
             },
         };
-        const form = renderHook(() => useForm(formModel)).result.current;
+        const { controls } = renderHook(() => useForm(formModel)).result.current;
 
-        expect(form.price.isValid).toBe(false);
+        expect(controls.price.isValid).toBe(false);
     });
 
     test('should set value to "form.control.isValid" to false when value of <input type="number"> is empty', () => {
@@ -35,9 +35,9 @@ describe('validations - max', () => {
                 validators: [required()],
             },
         };
-        const form = renderHook(() => useForm(formModel)).result.current;
+        const { controls } = renderHook(() => useForm(formModel)).result.current;
 
-        expect(form.price.isValid).toBe(false);
+        expect(controls.price.isValid).toBe(false);
     });
 
     test('should set value to "form.control.isValid" to false when value of <input type="number"> is null', () => {
@@ -49,9 +49,9 @@ describe('validations - max', () => {
                 validators: [required()],
             },
         };
-        const form = renderHook(() => useForm(formModel)).result.current;
+        const { controls } = renderHook(() => useForm(formModel)).result.current;
 
-        expect(form.price.isValid).toBe(false);
+        expect(controls.price.isValid).toBe(false);
     });
 
     test('should set "form.control.isValid" to true when value of <input type="checkbox" checked>', () => {
@@ -62,8 +62,8 @@ describe('validations - max', () => {
             },
         };
 
-        const form = renderHook(() => useForm(formModel)).result.current;
+        const { controls } = renderHook(() => useForm(formModel)).result.current;
 
-        expect(form.single.isValid).toBe(true);
+        expect(controls.single.isValid).toBe(true);
     });
 });

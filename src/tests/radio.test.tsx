@@ -9,10 +9,10 @@ describe('Radio', () => {
             contact: { initialValue: 'phone' },
         };
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { bind } = hook.result.current;
 
         const { props } = (
-            <input type="radio" name="contact" id="phone" {...form.bind('contact')} />
+            <input type="radio" name="contact" id="phone" {...bind('contact')} />
         );
 
         expect(props.defaultValue).toBe('phone');
@@ -27,12 +27,12 @@ describe('Radio', () => {
             contact: 'phone',
         };
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { bind, controls } = hook.result.current;
 
         const onBlueEvent = (): boolean => true;
-        form.bind('contact').onBlur(onBlueEvent as unknown as FormChangeEvent);
+        bind('contact').onBlur(onBlueEvent as unknown as FormChangeEvent);
 
-        expect(form.contact.isTouched).toBe(true);
+        expect(controls.contact.isTouched).toBe(true);
     });
 
     test('should set form.control.isDirty to true on input change event', () => {
@@ -40,11 +40,11 @@ describe('Radio', () => {
             contact: 'phone',
         };
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { bind, controls } = hook.result.current;
 
         const change = { target: { value: 'newValue' } } as ChangeEvent<HTMLInputElement>;
-        form.bind('contact').onChange(change);
+        bind('contact').onChange(change);
 
-        expect(form.contact.isDirty).toBe(true);
+        expect(controls.contact.isDirty).toBe(true);
     });
 });

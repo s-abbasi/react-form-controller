@@ -10,9 +10,9 @@ describe('text', () => {
         };
 
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { bind } = hook.result.current;
 
-        const { props } = <textarea {...form.bind('description')} />;
+        const { props } = <textarea {...bind('description')} />;
         expect(props.defaultValue).toBe('sajad');
     });
 
@@ -22,9 +22,9 @@ describe('text', () => {
         };
 
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { bind } = hook.result.current;
 
-        const { props } = <textarea {...form.bind('description')} />;
+        const { props } = <textarea {...bind('description')} />;
         expect(props.defaultValue).toBe('sara');
     });
 
@@ -33,9 +33,9 @@ describe('text', () => {
             description: 'sajad',
         };
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { controls } = hook.result.current;
 
-        expect(form.description.value).toBe('sajad');
+        expect(controls.description.value).toBe('sajad');
     });
 
     test('should update form.value on onChange event', () => {
@@ -43,11 +43,11 @@ describe('text', () => {
             description: '',
         };
         const hook = renderHook(() => useForm(formModel));
-        const form = hook.result.current;
+        const { bind, controls } = hook.result.current;
 
         const change = { target: { value: 'sara' } } as ChangeEvent<HTMLTextAreaElement>;
-        form.bind('description').onChange(change);
+        bind('description').onChange(change);
 
-        expect(form.description.value).toBe('sara');
+        expect(controls.description.value).toBe('sara');
     });
 });

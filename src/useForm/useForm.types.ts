@@ -99,17 +99,12 @@ export type Control = {
     disable: () => void;
     enable: () => void;
     isDisabled: ControlObjectModel['disabled'];
+    setValue: (value: ControlPrimitiveValue) => void;
     // rawValue: ControlPrimitiveValue;
-    // setValue: (value: ValueType) => void;
     // reset: () => void;
     // addValidator: (validator: Validator) => void;
     // removeValidator: (name: Validator['name']) => void;
     // subscribe: (value: ValueType) => void;
-};
-
-type CtrlAddRemoveResult = {
-    success: boolean;
-    message: string;
 };
 
 export type FormGroup = {
@@ -118,6 +113,6 @@ export type FormGroup = {
     isValid: boolean;
     isTouched: boolean;
     isDirty: boolean;
-    add?: (control: FormModel) => CtrlAddRemoveResult;
-    remove?: (controlName: string | string[]) => CtrlAddRemoveResult;
+    add?: (control: FormModel) => void;
+    remove?: (controlName: string | string[]) => void;
 };

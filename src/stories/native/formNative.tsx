@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// import { useState } from 'react';
 import { useState } from 'react';
 import { TextField } from '@mui/material';
 import { useForm } from '../../useForm/useForm';
@@ -16,6 +14,7 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
     const rerender = useForceUpdate();
 
     const logForm = (): void => {
+        console.clear();
         log('form: ', form);
     };
 
@@ -78,6 +77,12 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
                 <br />
                 <input id="cellphone" {...form.bind('cellphone')} />
             </label>
+            <button
+                type="button"
+                onClick={() => form.controls.cellphone.setValue('09136868075')}
+            >
+                setValue to 09136868075
+            </button>
             <hr />
             <label htmlFor="inputNumber">
                 price

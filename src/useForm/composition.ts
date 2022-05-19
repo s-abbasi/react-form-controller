@@ -66,6 +66,9 @@ const convertModelToControls: ConvertModelToControls = (model) => {
             enable() {
                 this.isDisabled = false;
             },
+            setValue(v) {
+                this.value = v;
+            },
         };
         return { ...prev, [key]: control };
     }, {});
@@ -99,7 +102,7 @@ const addBindToFormGroup = ({
         const valueIsBoolean = typeof initialValue === 'boolean';
         const defaultChecked = setDefaultChecked(initialValue);
         const { validators } = model[controlName];
-
+        // const validators = [];
         return {
             onChange: (e) => {
                 // why? native inputs send "object" as e, custom inputs send "primitives"
@@ -137,7 +140,7 @@ const addControlAddRemove = (formGroup: FormGroup): Required<FormGroup> => {
             delete formGroup.controls[controlName];
         }
     };
-    return formGroup;
+    return formGroup as Required<FormGroup>;
 };
 
 export const generateFormGroup: GenerateFormGroup = (formGroup) => {

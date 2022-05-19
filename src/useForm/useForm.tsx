@@ -1,4 +1,3 @@
-import { log } from '../logger';
 import { generateFormGroup } from './composition';
 import { FormGroup, FormModel } from './useForm.types';
 
@@ -13,6 +12,5 @@ const baseFormGroup: FormGroup = {
 };
 
 export const useForm = (model: FormModel): Required<FormGroup> => {
-    log('hook re-render');
     return generateFormGroup(baseFormGroup)(model);
 };

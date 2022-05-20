@@ -1,5 +1,11 @@
 /* eslint-disable no-param-reassign */
 import { compose } from 'ramda';
+import { log } from '../logger';
+import {
+    AddBindToFormGroup,
+    AddControlsToFormGroup,
+    ConvertModelToControls,
+} from './composition.type';
 import {
     generateControlErrorsProp,
     getValueBasedOnType,
@@ -7,7 +13,6 @@ import {
 } from './useForm.helper';
 import {
     Control,
-    Controls,
     DefaultValue,
     FormGroup,
     FormModel,
@@ -38,11 +43,6 @@ export const normalizeModel = (model: FormModel): NormalizedModel => {
             [key]: { ...requiredValues, ...value },
         };
     }, {});
-};
-
-type ConvertModelToControls = (model: NormalizedModel) => {
-    controls: Controls;
-    model: NormalizedModel;
 };
 
 type GenerateFormGroup = (
@@ -76,33 +76,25 @@ const convertModelToControls: ConvertModelToControls = (model) => {
     return { controls, model };
 };
 
-const addControlsToFormGroup =
-    (formGroup: FormGroup) =>
-    ({
-        controls,
-        model,
-    }: ReturnType<ConvertModelToControls>): {
-        formGroup: FormGroup;
-        model: ReturnType<ConvertModelToControls>['model'];
-    } => {
+const addControlsToFormGroup: AddControlsToFormGroup =
+    (formGroup) =>
+    ({ controls, model }) => {
         formGroup.controls = { ...formGroup.controls, ...controls };
         formGroup.isValid = generateFormGroupIsValidProp(formGroup.controls);
         return { formGroup, model };
     };
 
-const addBindToFormGroup = ({
-    formGroup,
-    model,
-}: {
-    formGroup: FormGroup;
-    model: NormalizedModel;
-}): FormGroup => {
+// TODO: model should not be cached in here
+let cachedModel: NormalizedModel = {};
+
+const addBindToFormGroup: AddBindToFormGroup = ({ formGroup, model }) => {
     formGroup.bind = (controlName: string) => {
         const initialValue = formGroup.controls[controlName].value;
         const valueIsBoolean = typeof initialValue === 'boolean';
         const defaultChecked = setDefaultChecked(initialValue);
-        const { validators } = model[controlName];
-        // const validators = [];
+        cachedModel = { ...cachedModel, ...model };
+        const { validators } = cachedModel[controlName];
+
         return {
             onChange: (e) => {
                 // why? native inputs send "object" as e, custom inputs send "primitives"

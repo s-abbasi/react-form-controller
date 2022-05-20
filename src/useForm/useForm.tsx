@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { generateFormGroup } from './composition';
 import { FormGroup, FormModel } from './useForm.types';
 
@@ -12,5 +13,11 @@ const baseFormGroup: FormGroup = {
 };
 
 export const useForm = (model: FormModel): Required<FormGroup> => {
-    return generateFormGroup(baseFormGroup)(model);
+    const formGroup = useMemo<Required<FormGroup>>(() => {
+        return generateFormGroup(baseFormGroup)(model);
+    }, [model]);
+
+    return formGroup;
 };
+
+// [√] - render hook only once

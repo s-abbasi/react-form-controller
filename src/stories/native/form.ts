@@ -13,7 +13,7 @@ export const formModel: FormModel = {
     materialTextField: {
         initialValue: 'sajad abbasi',
         validators: [],
-        disabled: true,
+        // disabled: true,
     },
     customInput: {
         initialValue: 'custom input value',
@@ -28,7 +28,7 @@ export const formModel: FormModel = {
     lastName: {
         initialValue: '',
         validators: [required()],
-        disabled: true,
+        // disabled: true,
     },
     cellphone: {
         initialValue: '',
@@ -41,7 +41,7 @@ export const formModel: FormModel = {
     single: {
         initialValue: true,
         validators: [required()],
-        disabled: true,
+        // disabled: true,
     },
     contact: {
         initialValue: 'phone',
@@ -51,7 +51,7 @@ export const formModel: FormModel = {
     image: {
         initialValue: undefined,
         validators: [required()],
-        disabled: true,
+        // disabled: true,
     },
     description: {
         initialValue: '',

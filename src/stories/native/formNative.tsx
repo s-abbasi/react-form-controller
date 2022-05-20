@@ -11,6 +11,40 @@ import { log } from '../../logger';
 export const FormNative = (_formModel?: FormModel): JSX.Element => {
     const form = useForm(formModel);
 
+    form.controls.cellphone.subscribe((e) => {
+        log('cellphone: ', e);
+    });
+    form.controls.cellphone.subscribe((e) => {
+        log('cellphone2: ', e);
+    });
+    form.controls.price.subscribe((e) => {
+        log('price: ', e);
+    });
+    form.controls.materialTextField.subscribe((e) => {
+        log('materialTextField: ', e);
+    });
+    form.controls.customInput.subscribe((e) => {
+        log('customInput: ', e);
+    });
+    form.controls.firstName.subscribe((e) => {
+        log('firstName: ', e);
+    });
+    form.controls.lastName.subscribe((e) => {
+        log('lastName: ', e);
+    });
+    form.controls.contact.subscribe((e) => {
+        log('contact: ', e);
+    });
+    form.controls.single.subscribe((e) => {
+        log('single: ', e);
+    });
+    form.controls.image.subscribe((e) => {
+        log('image: ', e);
+    });
+    form.controls.description.subscribe((e) => {
+        log('description: ', e);
+    });
+
     const rerender = useForceUpdate();
 
     const logForm = (): void => {

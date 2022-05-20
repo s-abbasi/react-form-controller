@@ -100,11 +100,12 @@ export type Control = {
     enable: () => void;
     isDisabled: ControlObjectModel['disabled'];
     setValue: (value: ControlPrimitiveValue) => void;
+    subscribe: (cb: (value: ControlPrimitiveValue) => void) => void;
+    _cb: Array<(value: ControlPrimitiveValue) => void>;
     // rawValue: ControlPrimitiveValue;
     // reset: () => void;
     // addValidator: (validator: Validator) => void;
     // removeValidator: (name: Validator['name']) => void;
-    // subscribe: (value: ValueType) => void;
 };
 
 export type FormGroup = {

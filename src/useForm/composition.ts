@@ -1,6 +1,6 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
 import { compose } from 'ramda';
-import { log } from '../logger';
 import {
     AddBindToFormGroup,
     AddControlsToFormGroup,
@@ -68,21 +68,20 @@ const convertModelToControls: ConvertModelToControls = (model) => {
             },
             setValue(v) {
                 this.value = v;
+                if (this._cb.length > 0) {
+                    this._cb.forEach((cb) => cb(this.value));
+                }
             },
+            subscribe(cb) {
+                this._cb.push(cb);
+            },
+            _cb: [],
         };
         return { ...prev, [key]: control };
     }, {});
 
     return { controls, model };
 };
-
-const addControlsToFormGroup: AddControlsToFormGroup =
-    (formGroup) =>
-    ({ controls, model }) => {
-        formGroup.controls = { ...formGroup.controls, ...controls };
-        formGroup.isValid = generateFormGroupIsValidProp(formGroup.controls);
-        return { formGroup, model };
-    };
 
 // TODO: model should not be cached in here
 let cachedModel: NormalizedModel = {};
@@ -102,7 +101,7 @@ const addBindToFormGroup: AddBindToFormGroup = ({ formGroup, model }) => {
                 const value = typeof e === 'object' ? getValueBasedOnType(e) : e;
                 formGroup.isDirty = true;
                 formGroup.isValid = generateFormGroupIsValidProp(formGroup.controls);
-                control.value = value;
+                control.setValue(value);
                 control.isDirty = true;
                 control.isValid = generateControlIsValidProp(value, validators);
                 control.errors = generateControlErrorsProp(value, validators);
@@ -118,6 +117,14 @@ const addBindToFormGroup: AddBindToFormGroup = ({ formGroup, model }) => {
     };
     return formGroup;
 };
+
+const addControlsToFormGroup: AddControlsToFormGroup =
+    (formGroup) =>
+    ({ controls, model }) => {
+        formGroup.controls = { ...formGroup.controls, ...controls };
+        formGroup.isValid = generateFormGroupIsValidProp(formGroup.controls);
+        return { formGroup, model };
+    };
 
 const addControlAddRemove = (formGroup: FormGroup): Required<FormGroup> => {
     formGroup.add = (model) => {

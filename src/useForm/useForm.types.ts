@@ -104,7 +104,7 @@ export type Control = {
     addValidator: (validator: Validator | Validator[]) => void;
     removeValidator: (name: Validator['name'] | Validator['name'][]) => void;
     // rawValue: ControlPrimitiveValue;
-    // reset: () => void;
+    reset: () => void;
     _subscribeCallbacks: Array<(value: ControlPrimitiveValue) => void>;
     _validators: Validator[];
 };
@@ -115,6 +115,7 @@ export type FormGroup = {
     isValid: boolean;
     isTouched: boolean;
     isDirty: boolean;
+    // reset: () => void;
     add?: (control: FormModel) => void;
     remove?: (controlName: string | string[]) => void;
 };

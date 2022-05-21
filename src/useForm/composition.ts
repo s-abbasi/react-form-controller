@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
 import { compose } from 'ramda';
-import { AddBindToFormGroup, ConvertModelToControls } from './composition.type';
+import { log } from '../logger';
 import {
     generateControlErrorsProp,
     getValueBasedOnType,
@@ -53,7 +53,7 @@ const baseFormGroup: FormGroup = {
     remove: undefined,
 };
 
-const attachControlsToFormGroup: ConvertModelToControls = (model) => {
+const attachControlsToFormGroup = (model: NormalizedModel): FormGroup => {
     const controls = Object.entries(model).reduce((prev, [key, value]) => {
         const { initialValue, validators, disabled } = value;
 
@@ -77,6 +77,9 @@ const attachControlsToFormGroup: ConvertModelToControls = (model) => {
                 if (this._subscribeCallbacks.length > 0) {
                     this._subscribeCallbacks.forEach((cb) => cb(this.value));
                 }
+            },
+            reset() {
+                log('reset control');
             },
             subscribe(cb) {
                 this._subscribeCallbacks.push(cb);
@@ -118,13 +121,10 @@ const attachControlsToFormGroup: ConvertModelToControls = (model) => {
     baseFormGroup.controls = { ...baseFormGroup.controls, ...controls };
     baseFormGroup.isValid = generateFormGroupIsValidProp(baseFormGroup.controls);
     const formGroup = baseFormGroup;
-    return {
-        formGroup,
-        model,
-    };
+    return formGroup;
 };
 
-const attachBindToFormGroup: AddBindToFormGroup = ({ formGroup }) => {
+const attachBindToFormGroup = (formGroup: FormGroup): Required<FormGroup> => {
     formGroup.bind = (controlName: string) => {
         const initialValue = formGroup.controls[controlName].value;
         const valueIsBoolean = typeof initialValue === 'boolean';
@@ -151,10 +151,12 @@ const attachBindToFormGroup: AddBindToFormGroup = ({ formGroup }) => {
             ...(!valueIsBoolean && { defaultValue: initialValue as DefaultValue }),
         };
     };
-    return formGroup;
+    return formGroup as Required<FormGroup>;
 };
 
-const attachAddRemoveControlToFormGroup = (formGroup: FormGroup): Required<FormGroup> => {
+const attachAddRemoveControlToFormGroup = (
+    formGroup: Required<FormGroup>
+): Required<FormGroup> => {
     formGroup.add = (model) => {
         // TODO: guard against existing controls
         generateFormGroup(model);
@@ -167,7 +169,7 @@ const attachAddRemoveControlToFormGroup = (formGroup: FormGroup): Required<FormG
             delete formGroup.controls[controlName];
         }
     };
-    return formGroup as Required<FormGroup>;
+    return formGroup;
 };
 
 export const generateFormGroup: GenerateFormGroup = compose(

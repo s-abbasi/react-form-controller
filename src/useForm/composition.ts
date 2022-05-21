@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
 import { compose } from 'ramda';
-import { log } from '../logger';
 import { AddBindToFormGroup, ConvertModelToControls } from './composition.type';
 import {
     generateControlErrorsProp,

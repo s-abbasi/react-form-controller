@@ -121,6 +121,14 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
             >
                 add minLength(7) validator
             </button>
+            <button
+                type="button"
+                onClick={() => {
+                    form.controls.firstName.reset();
+                }}
+            >
+                reset()
+            </button>
             <hr />
             <label htmlFor="2">
                 last name
@@ -220,6 +228,9 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
             </button>
             <button type="button" onClick={addControl}>
                 add control
+            </button>
+            <button type="button" onClick={() => form.reset()}>
+                form.reset()
             </button>
         </div>
     );

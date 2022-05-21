@@ -1,7 +1,30 @@
-describe.skip('controlReset', () => {
-    test.todo(
-        'should set value of controls.name.value, ...isTouched, ...isDirty, ...isValid, ...isDisabled'
-    );
-});
+import { renderHook } from '@testing-library/react-hooks';
+import { useForm } from '../useForm/useForm';
+import { FormModel } from '../useForm/useForm.types';
+import { generateChangeEvent } from './test.helper';
 
-export {};
+describe('controlReset', () => {
+    test('should regenerate control', () => {
+        const model: FormModel = {
+            firstName: {
+                initialValue: '',
+            },
+        };
+
+        const form = renderHook(() => useForm(model)).result.current;
+
+        const originalControl = JSON.stringify(form.controls.firstName);
+
+        const change = generateChangeEvent('sajad');
+        form.bind('firstName').onChange(change);
+
+        form.controls.firstName.reset();
+
+        const controlAfterReset = JSON.stringify(form.controls.firstName);
+
+        expect(originalControl).toBe(controlAfterReset);
+    });
+
+    test.todo('should re-subscribe on control controls.name.reset()');
+    test.todo('should re-evaluate validations on controls.name.reset()');
+});

@@ -91,6 +91,7 @@ export type Controls = {
 };
 
 export type Control = {
+    // rawValue: ControlPrimitiveValue;
     value: ControlPrimitiveValue;
     isValid: boolean;
     errors: ControlError;
@@ -103,7 +104,6 @@ export type Control = {
     subscribe: (cb: (value: ControlPrimitiveValue) => void) => void;
     addValidator: (validator: Validator | Validator[]) => void;
     removeValidator: (name: Validator['name'] | Validator['name'][]) => void;
-    // rawValue: ControlPrimitiveValue;
     reset: () => void;
     _subscribeCallbacks: Array<(value: ControlPrimitiveValue) => void>;
     _validators: Validator[];
@@ -115,7 +115,7 @@ export type FormGroup = {
     isValid: boolean;
     isTouched: boolean;
     isDirty: boolean;
-    // reset: () => void;
+    reset?: () => void;
     add?: (control: FormModel) => void;
     remove?: (controlName: string | string[]) => void;
 };

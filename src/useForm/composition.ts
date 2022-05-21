@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
 import { compose } from 'ramda';
-import { log } from '../logger';
 import {
     generateControlErrorsProp,
     getValueBasedOnType,
@@ -51,6 +50,7 @@ const baseFormGroup: FormGroup = {
     isDirty: false,
     add: undefined,
     remove: undefined,
+    reset: undefined,
 };
 
 const attachControlsToFormGroup = (model: NormalizedModel): FormGroup => {
@@ -79,7 +79,9 @@ const attachControlsToFormGroup = (model: NormalizedModel): FormGroup => {
                 }
             },
             reset() {
-                log('reset control');
+                const controlModel: NormalizedModel = { [key]: model[key] };
+                const newControl = attachControlsToFormGroup(controlModel).controls[key];
+                baseFormGroup.controls[key] = newControl;
             },
             subscribe(cb) {
                 this._subscribeCallbacks.push(cb);
@@ -120,6 +122,13 @@ const attachControlsToFormGroup = (model: NormalizedModel): FormGroup => {
 
     baseFormGroup.controls = { ...baseFormGroup.controls, ...controls };
     baseFormGroup.isValid = generateFormGroupIsValidProp(baseFormGroup.controls);
+    baseFormGroup.reset = () => {
+        Object.entries(baseFormGroup.controls).forEach(([, value]) => {
+            value.reset();
+        });
+        baseFormGroup.isDirty = false;
+        baseFormGroup.isTouched = false;
+    };
     const formGroup = baseFormGroup;
     return formGroup;
 };

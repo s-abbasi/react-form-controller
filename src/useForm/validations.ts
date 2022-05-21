@@ -36,7 +36,7 @@ export const max = (maxValue: number, message?: string): Validator => {
 
 export const maxLength = (maxValue: number, message?: string): Validator => {
     return {
-        name: 'maxlength',
+        name: 'maxLength',
         validateWith: (value: ControlPrimitiveValue) => {
             if (typeof value === 'string') {
                 return value.length <= maxValue;
@@ -50,7 +50,7 @@ export const maxLength = (maxValue: number, message?: string): Validator => {
 
 export const minLength = (minValue: number, message?: string): Validator => {
     return {
-        name: 'minlength',
+        name: 'minLength',
         validateWith: (value: ControlPrimitiveValue) => {
             if (typeof value === 'string') {
                 return value.length >= minValue;

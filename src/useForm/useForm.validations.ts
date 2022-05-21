@@ -1,4 +1,4 @@
-import { Control, ControlObjectModel, ControlPrimitiveValue } from './useForm.types';
+import { ControlObjectModel, ControlPrimitiveValue, Controls } from './useForm.types';
 
 export const generateControlIsValidProp = (
     value: ControlPrimitiveValue,
@@ -7,8 +7,6 @@ export const generateControlIsValidProp = (
     return validators.every((validator) => validator.validateWith(value));
 };
 
-export const generateFormGroupIsValidProp = (controls: {
-    [key: string]: Control;
-}): boolean => {
+export const generateFormGroupIsValidProp = (controls: Controls): boolean => {
     return Object.entries(controls).every((control) => control[1].isValid);
 };

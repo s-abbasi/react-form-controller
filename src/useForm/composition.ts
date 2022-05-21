@@ -1,11 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
 import { compose } from 'ramda';
-import {
-    AddBindToFormGroup,
-    AddControlsToFormGroup,
-    ConvertModelToControls,
-} from './composition.type';
+import { log } from '../logger';
+import { AddBindToFormGroup, ConvertModelToControls } from './composition.type';
 import {
     generateControlErrorsProp,
     getValueBasedOnType,
@@ -45,11 +42,19 @@ export const normalizeModel = (model: FormModel): NormalizedModel => {
     }, {});
 };
 
-type GenerateFormGroup = (
-    formGroup: FormGroup
-) => (model: FormModel) => Required<FormGroup>;
+type GenerateFormGroup = (model: FormModel) => Required<FormGroup>;
 
-const convertModelToControls: ConvertModelToControls = (model) => {
+const baseFormGroup: FormGroup = {
+    controls: {},
+    bind: undefined,
+    isValid: false,
+    isTouched: false,
+    isDirty: false,
+    add: undefined,
+    remove: undefined,
+};
+
+const attachControlsToFormGroup: ConvertModelToControls = (model) => {
     const controls = Object.entries(model).reduce((prev, [key, value]) => {
         const { initialValue, validators, disabled } = value;
 
@@ -68,31 +73,63 @@ const convertModelToControls: ConvertModelToControls = (model) => {
             },
             setValue(v) {
                 this.value = v;
-                if (this._cb.length > 0) {
-                    this._cb.forEach((cb) => cb(this.value));
+                this.isDirty = true;
+                formGroup.isDirty = true;
+                if (this._subscribeCallbacks.length > 0) {
+                    this._subscribeCallbacks.forEach((cb) => cb(this.value));
                 }
             },
             subscribe(cb) {
-                this._cb.push(cb);
+                this._subscribeCallbacks.push(cb);
             },
-            _cb: [],
+            addValidator(validator) {
+                if (Array.isArray(validator)) {
+                    this._validators.push(...validator);
+                } else {
+                    this._validators.push(validator);
+                }
+                this.isValid = generateControlIsValidProp(this.value, this._validators);
+                this.errors = generateControlErrorsProp(this.value, this._validators);
+                baseFormGroup.isValid = generateFormGroupIsValidProp(
+                    baseFormGroup.controls
+                );
+            },
+            removeValidator(validatorName) {
+                if (Array.isArray(validatorName)) {
+                    this._validators = this._validators.filter(
+                        (validator) => !validatorName.includes(validator.name)
+                    );
+                } else {
+                    this._validators = this._validators.filter(
+                        (validator) => validator.name !== validatorName
+                    );
+                }
+                this.isValid = generateControlIsValidProp(this.value, this._validators);
+                baseFormGroup.isValid = generateFormGroupIsValidProp(
+                    baseFormGroup.controls
+                );
+            },
+            _subscribeCallbacks: [],
+            _validators: [...validators],
         };
+
         return { ...prev, [key]: control };
     }, {});
 
-    return { controls, model };
+    baseFormGroup.controls = { ...baseFormGroup.controls, ...controls };
+    baseFormGroup.isValid = generateFormGroupIsValidProp(baseFormGroup.controls);
+    const formGroup = baseFormGroup;
+    return {
+        formGroup,
+        model,
+    };
 };
 
-// TODO: model should not be cached in here
-let cachedModel: NormalizedModel = {};
-
-const addBindToFormGroup: AddBindToFormGroup = ({ formGroup, model }) => {
+const attachBindToFormGroup: AddBindToFormGroup = ({ formGroup }) => {
     formGroup.bind = (controlName: string) => {
         const initialValue = formGroup.controls[controlName].value;
         const valueIsBoolean = typeof initialValue === 'boolean';
         const defaultChecked = setDefaultChecked(initialValue);
-        cachedModel = { ...cachedModel, ...model };
-        const { validators } = cachedModel[controlName];
 
         return {
             onChange: (e) => {
@@ -103,8 +140,8 @@ const addBindToFormGroup: AddBindToFormGroup = ({ formGroup, model }) => {
                 formGroup.isValid = generateFormGroupIsValidProp(formGroup.controls);
                 control.setValue(value);
                 control.isDirty = true;
-                control.isValid = generateControlIsValidProp(value, validators);
-                control.errors = generateControlErrorsProp(value, validators);
+                control.isValid = generateControlIsValidProp(value, control._validators);
+                control.errors = generateControlErrorsProp(value, control._validators);
             },
             onBlur: () => {
                 formGroup.controls[controlName].isTouched = true;
@@ -118,18 +155,10 @@ const addBindToFormGroup: AddBindToFormGroup = ({ formGroup, model }) => {
     return formGroup;
 };
 
-const addControlsToFormGroup: AddControlsToFormGroup =
-    (formGroup) =>
-    ({ controls, model }) => {
-        formGroup.controls = { ...formGroup.controls, ...controls };
-        formGroup.isValid = generateFormGroupIsValidProp(formGroup.controls);
-        return { formGroup, model };
-    };
-
-const addControlAddRemove = (formGroup: FormGroup): Required<FormGroup> => {
+const attachAddRemoveControlToFormGroup = (formGroup: FormGroup): Required<FormGroup> => {
     formGroup.add = (model) => {
         // TODO: guard against existing controls
-        generateFormGroup(formGroup)(model);
+        generateFormGroup(model);
     };
     formGroup.remove = (controlName: string | string[]) => {
         const isTypeOfArray = Array.isArray(controlName);
@@ -142,12 +171,9 @@ const addControlAddRemove = (formGroup: FormGroup): Required<FormGroup> => {
     return formGroup as Required<FormGroup>;
 };
 
-export const generateFormGroup: GenerateFormGroup = (formGroup) => {
-    return compose(
-        addControlAddRemove,
-        addBindToFormGroup,
-        addControlsToFormGroup(formGroup),
-        convertModelToControls,
-        normalizeModel
-    );
-};
+export const generateFormGroup: GenerateFormGroup = compose(
+    attachAddRemoveControlToFormGroup,
+    attachBindToFormGroup,
+    attachControlsToFormGroup,
+    normalizeModel
+);

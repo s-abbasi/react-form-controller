@@ -138,25 +138,23 @@ describe('text', () => {
         const formModel: FormModel = {
             firstName: 'sajad',
         };
-        const hook = renderHook(() => useForm(formModel));
-        const { bind, isTouched } = hook.result.current;
+        const form = renderHook(() => useForm(formModel)).result.current;
 
         const onBlueEvent = (): boolean => true;
-        bind('firstName').onBlur(onBlueEvent as unknown as FormChangeEvent);
+        form.bind('firstName').onBlur(onBlueEvent as unknown as FormChangeEvent);
 
-        expect(isTouched).toBe(true);
+        expect(form.isTouched).toBe(true);
     });
 
     test('should set form.isDirty to true on any input change event', () => {
         const formModel: FormModel = {
             firstName: 'sajad',
         };
-        const hook = renderHook(() => useForm(formModel));
-        const { bind, isDirty } = hook.result.current;
+        const form = renderHook(() => useForm(formModel)).result.current;
 
         const change = { target: { value: 'newValue' } } as ChangeEvent<HTMLInputElement>;
-        bind('firstName').onChange(change);
+        form.bind('firstName').onChange(change);
 
-        expect(isDirty).toBe(true);
+        expect(form.isDirty).toBe(true);
     });
 });

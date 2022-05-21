@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
-import { ChangeEvent } from 'react';
 import { useForm } from '../useForm/useForm';
 import { Control, FormModel } from '../useForm/useForm.types';
+import { generateChangeEvent } from './test.helper';
 
 describe('addControl', () => {
     test('should add one control to form based on given model', () => {
@@ -49,7 +49,7 @@ describe('addControl', () => {
 
         form.add({ lastName: { initialValue: 'abbasi' } });
 
-        const change = { target: { value: 'kaveh' } } as ChangeEvent<HTMLInputElement>;
+        const change = generateChangeEvent('kaveh');
         form.bind('lastName').onChange(change);
 
         expect(form.controls.lastName.value).toBe('kaveh');

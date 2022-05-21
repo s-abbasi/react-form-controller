@@ -1,11 +1,11 @@
-import { NormalizedModel, Controls, FormGroup } from './useForm.types';
+import { NormalizedModel, FormGroup } from './useForm.types';
 
 export type ConvertModelToControls = (model: NormalizedModel) => {
-    controls: Controls;
+    formGroup: FormGroup;
     model: NormalizedModel;
 };
 
-export type AddControlsToFormGroup = (formGroup: FormGroup) => (
+export type AddControlsToFormGroup = (obj: ReturnType<ConvertModelToControls>) => (
     obj: ReturnType<ConvertModelToControls>
 ) => {
     formGroup: FormGroup;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextField } from '@mui/material';
 import { useForm } from '../../useForm/useForm';
 import { FormModel } from '../../useForm/useForm.types';
@@ -6,6 +6,7 @@ import { CustomInput } from './customInput';
 import { formModel } from './form';
 import { useForceUpdate } from '../../useForceUpdate/UseForceUpdate';
 import { log } from '../../logger';
+import { maxLength, minLength } from '../../useForm/validations';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const FormNative = (_formModel?: FormModel): JSX.Element => {
@@ -49,8 +50,21 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
 
     const logForm = (): void => {
         console.clear();
-        log('form: ', form);
+        console.table(form.controls, [
+            'value',
+            'isValid',
+            'isTouched',
+            'isDirty',
+            'isDisabled',
+        ]);
+        console.table(form, ['isValid', 'isDirty', 'isTouched']);
+        log(form);
     };
+
+    useEffect(() => {
+        logForm();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const disableMUI = (): void => {
         form.controls.materialTextField.disable();
@@ -99,12 +113,28 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
                 <br />
                 <input id="1" type="text" {...form.bind('firstName')} />
             </label>
+            <button
+                type="button"
+                onClick={() => {
+                    form.controls.firstName.addValidator(minLength(7));
+                }}
+            >
+                add minLength(7) validator
+            </button>
             <hr />
             <label htmlFor="2">
                 last name
                 <br />
                 <input id="2" {...form.bind('lastName')} />
             </label>
+            <button
+                type="button"
+                onClick={() => {
+                    form.controls.lastName.addValidator(maxLength(10));
+                }}
+            >
+                add maxLength(10) validator
+            </button>
             <hr />
             <label htmlFor="cellphone">
                 cellphone

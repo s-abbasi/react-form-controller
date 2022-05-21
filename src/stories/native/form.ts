@@ -1,13 +1,5 @@
-/* eslint-disable no-console */
 import { FormModel } from '../../useForm/useForm.types';
-import {
-    minLength,
-    maxLength,
-    required,
-    pattern,
-    min,
-    max,
-} from '../../useForm/validations';
+// import { required, pattern, min, max } from '../../useForm/validations';
 
 export const formModel: FormModel = {
     materialTextField: {
@@ -22,39 +14,37 @@ export const formModel: FormModel = {
     },
     firstName: {
         initialValue: 'sajad',
-        validators: [minLength(2), maxLength(10), required()],
-        disabled: false,
+        // validators: [],
     },
     lastName: {
-        initialValue: '',
-        validators: [required()],
-        // disabled: true,
+        initialValue: 'abbasi',
+        // validators: [],
     },
     cellphone: {
         initialValue: '',
-        validators: [required(), pattern('patternName', /^(\+98?)?{?(0?9[0-9]{9,9}}?)$/)],
+        // validators: [required(), pattern('patternName', /^(\+98?)?{?(0?9[0-9]{9,9}}?)$/)],
     },
     price: {
         initialValue: undefined,
-        validators: [min(50), max(100), required()],
+        // validators: [min(50), max(100), required()],
     },
     single: {
         initialValue: true,
-        validators: [required()],
+        // validators: [required()],
         // disabled: true,
     },
     contact: {
         initialValue: 'phone',
-        validators: [required()],
+        // validators: [required()],
         disabled: false,
     },
     image: {
         initialValue: undefined,
-        validators: [required()],
+        // validators: [required()],
         // disabled: true,
     },
     description: {
         initialValue: '',
-        validators: [required()],
+        // validators: [required()],
     },
 };

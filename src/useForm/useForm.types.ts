@@ -4,7 +4,7 @@ export type DefaultValue = HTMLAttributes<HTMLInputElement>['defaultValue'];
 export type DefaultChecked = HTMLAttributes<HTMLInputElement>['defaultChecked'];
 export type ControlPrimitiveValue = DefaultValue | boolean | File;
 
-type ValidatorName = 'min' | 'max' | 'minlength' | 'maxlength' | 'required';
+type ValidatorName = 'min' | 'max' | 'minLength' | 'maxLength' | 'required';
 
 export type Validator = {
     name: ValidatorName;
@@ -101,11 +101,12 @@ export type Control = {
     isDisabled: ControlObjectModel['disabled'];
     setValue: (value: ControlPrimitiveValue) => void;
     subscribe: (cb: (value: ControlPrimitiveValue) => void) => void;
-    _cb: Array<(value: ControlPrimitiveValue) => void>;
+    addValidator: (validator: Validator | Validator[]) => void;
+    removeValidator: (name: Validator['name'] | Validator['name'][]) => void;
     // rawValue: ControlPrimitiveValue;
     // reset: () => void;
-    // addValidator: (validator: Validator) => void;
-    // removeValidator: (name: Validator['name']) => void;
+    _subscribeCallbacks: Array<(value: ControlPrimitiveValue) => void>;
+    _validators: Validator[];
 };
 
 export type FormGroup = {

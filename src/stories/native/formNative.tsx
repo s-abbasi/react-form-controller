@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useEffect, useState } from 'react';
 import { TextField } from '@mui/material';
 import { useForm } from '../../useForm/useForm';
@@ -63,7 +65,6 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
 
     useEffect(() => {
         logForm();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const disableMUI = (): void => {
@@ -107,6 +108,27 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
             />
             <hr />
             <CustomInput {...form.bind('customInput')} />
+            <hr />
+            <label>
+                category
+                <br />
+                <select name="pets" {...form.bind('category')}>
+                    <option value="">--Please choose an option--</option>
+                    <option value="dog">Dog</option>
+                    <option value="cat">Cat</option>
+                    <option value="hamster">Hamster</option>
+                    <option value="parrot">Parrot</option>
+                    <option value="spider">Spider</option>
+                    <option value="goldfish">Goldfish</option>
+                    <option value="sale">Sale</option>
+                </select>
+            </label>
+            <button
+                type="button"
+                onClick={() => form.controls.category.setValue('goldfish')}
+            >
+                setValue(goldfish)
+            </button>
             <hr />
             <label htmlFor="1">
                 first name

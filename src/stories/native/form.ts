@@ -12,6 +12,9 @@ export const formModel: FormModel = {
         validators: [],
         disabled: false,
     },
+    category: {
+        initialValue: 'sale',
+    },
     firstName: {
         initialValue: 'sajad',
         // validators: [],

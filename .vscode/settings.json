@@ -2,7 +2,7 @@
     "yaml.schemas": {
         "https://json.schemastore.org/github-workflow.json": "file:///Users/sajadabbasi/Projects/libraries/react-form-controller/.github/workflows/main.yml"
     },
-    "cSpell.words": ["commitlint", "cond", "linebreak", "maxlength", "testid"],
+    "cSpell.words": ["commitlint", "cond", "kave", "linebreak", "maxlength", "testid"],
     "workbench.editor.enablePreview": false,
     "workbench.editor.autoLockGroups": {}
 }

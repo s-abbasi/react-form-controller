@@ -119,3 +119,5 @@ export type FormGroup = {
     add?: (control: FormModel) => void;
     remove?: (controlName: string | string[]) => void;
 };
+
+export type GenerateFormGroup = (model: FormModel) => Required<FormGroup>;

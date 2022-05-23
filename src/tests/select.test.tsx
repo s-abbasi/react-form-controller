@@ -53,7 +53,7 @@ describe('select', () => {
         expect(combobox).toBeDisabled();
     });
 
-    test.skip('should set value of combobox on controls.name.setValue(value)', () => {
+    test('should set value of combobox on controls.name.setValue(value)', () => {
         const Comp = (): JSX.Element => {
             const model: FormModel = {
                 category: {

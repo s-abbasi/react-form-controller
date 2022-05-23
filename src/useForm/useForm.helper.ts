@@ -1,41 +1,13 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { mapObjIndexed } from 'ramda';
 import { ChangeEvent } from 'react';
 import {
-    ControlConvertor,
     ControlError,
     ControlObjectModel,
     ControlPrimitiveValue,
     FormChangeEvent,
-    GenerateControls,
     Validator,
 } from './useForm.types';
-import { generateControlIsValidProp } from './useForm.validations';
-
-// export const normalizeFormModel = (model: FormModel): NormalizedModel => {
-//     const requiredPairs = {
-//         disabled: false,
-//         adapter: undefined,
-//         validators: [],
-//     };
-
-//     const reducerCallback: ModelNormalizerReducerCallback = (prev, [key, value]) => {
-//         if (typeof value !== 'object') {
-//             return {
-//                 ...prev,
-//                 [key]: { ...requiredPairs, initialValue: value },
-//             };
-//         }
-//         return {
-//             ...prev,
-//             [key]: { ...requiredPairs, ...value },
-//         };
-//     };
-
-//     // @ts-ignore
-//     return Object.entries(model).reduce(reducerCallback, {});
-// };
 
 export const isTypeOfControlModel = (
     controlValueType: ControlPrimitiveValue | ControlObjectModel
@@ -48,16 +20,16 @@ export const setDefaultChecked = (value: ControlPrimitiveValue): boolean | undef
     return valueIsBoolean ? (value as boolean) : undefined;
 };
 
-export const generateJSXValueAttribute = (
-    value: unknown,
-    control: Required<ControlObjectModel>
-): unknown => {
-    const valueIsBoolean = typeof value === 'boolean';
+// export const generateJSXValueAttribute = (
+//     value: unknown,
+//     control: Required<ControlObjectModel>
+// ): unknown => {
+//     const valueIsBoolean = typeof value === 'boolean';
 
-    return valueIsBoolean
-        ? { defaultChecked: setDefaultChecked(control) }
-        : { defaultValue: value };
-};
+//     return valueIsBoolean
+//         ? { defaultChecked: setDefaultChecked(control) }
+//         : { defaultValue: value };
+// };
 
 export const generateControlErrorsProp = (
     value: ControlPrimitiveValue,
@@ -69,32 +41,32 @@ export const generateControlErrorsProp = (
         .reduce((acc, curr) => ({ ...acc, [curr.name]: curr.message }), {});
 };
 
-export const generateControlInitialState: ControlConvertor = (control) => {
-    const { initialValue, validators, disabled } = control;
+// export const generateControlInitialState: ControlConvertor = (control) => {
+//     const { initialValue, validators, disabled } = control;
 
-    return {
-        value: initialValue,
-        isValid: generateControlIsValidProp(initialValue, validators),
-        errors: generateControlErrorsProp(initialValue, validators),
-        isTouched: false,
-        isDirty: false,
-        isDisabled: disabled,
-        disable() {
-            this.isDisabled = true;
-        },
-        enable() {
-            this.isDisabled = false;
-        },
-    };
-};
+//     return {
+//         value: initialValue,
+//         isValid: generateControlIsValidProp(initialValue, validators),
+//         errors: generateControlErrorsProp(initialValue, validators),
+//         isTouched: false,
+//         isDirty: false,
+//         isDisabled: disabled,
+//         disable() {
+//             this.isDisabled = true;
+//         },
+//         enable() {
+//             this.isDisabled = false;
+//         },
+//     };
+// };
 
-export const generateControls: GenerateControls = (model) => {
-    const normalizedModel = normalizeFormModel(model);
-    return {
-        controls: mapObjIndexed(generateControlInitialState, normalizedModel),
-        normalizedModel,
-    };
-};
+// export const generateControls: GenerateControls = (model) => {
+//     const normalizedModel = normalizeFormModel(model);
+//     return {
+//         controls: mapObjIndexed(generateControlInitialState, normalizedModel),
+//         normalizedModel,
+//     };
+// };
 
 export const getValueBasedOnType = (e: FormChangeEvent): ControlPrimitiveValue => {
     const eventIsPrimitive = e && typeof e !== 'object';

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { generateFormGroup } from './composition';
+import { generateFormGroup } from './composition/composition';
 import { FormGroup, FormModel } from './useForm.types';
 
 export const useForm = (model: FormModel): Required<FormGroup> => {

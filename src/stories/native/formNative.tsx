@@ -160,6 +160,14 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
             <button
                 type="button"
                 onClick={() => {
+                    form.controls.lastName.setValue('kave');
+                }}
+            >
+                setValue(kave)
+            </button>
+            <button
+                type="button"
+                onClick={() => {
                     form.controls.lastName.addValidator(maxLength(10));
                 }}
             >

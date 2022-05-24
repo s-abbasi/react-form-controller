@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useForm } from '../useForm/useForm';
 import { FormModel, JSXBinding } from '../useForm/useForm.types';
@@ -53,7 +53,7 @@ describe('select', () => {
         expect(combobox).toBeDisabled();
     });
 
-    test('should set value of combobox on controls.name.setValue(value)', () => {
+    test('should set value of combobox on controls.name.setValue(value)', async () => {
         const Comp = (): JSX.Element => {
             const model: FormModel = {
                 category: {
@@ -90,8 +90,12 @@ describe('select', () => {
         const user = userEvent.setup();
 
         const combobox = screen.getByRole('combobox');
-        user.selectOptions(combobox, 'spider');
+        const button = screen.getByRole('button');
 
-        expect(combobox).toHaveDisplayValue('Spider');
+        await user.click(button);
+
+        await waitFor(() => {
+            expect(combobox).toHaveDisplayValue('Spider');
+        });
     });
 });

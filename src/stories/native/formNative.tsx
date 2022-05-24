@@ -1,10 +1,12 @@
+/* eslint-disable react/button-has-type */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/label-has-associated-control */
+
 import { useEffect, useState } from 'react';
 import { TextField } from '@mui/material';
 import { useForm } from '../../useForm/useForm';
 import { FormModel } from '../../useForm/useForm.types';
-import { CustomInput } from './customInput';
+// import { CustomInput } from './customInput';
 import { formModel } from './form';
 import { useForceUpdate } from '../../useForceUpdate/UseForceUpdate';
 import { log } from '../../logger';
@@ -14,10 +16,13 @@ import { maxLength, minLength } from '../../useForm/validations';
 export const FormNative = (_formModel?: FormModel): JSX.Element => {
     const form = useForm(formModel);
 
-    form.controls.cellphone.subscribe((e) => {
+    form.controls.category.subscribe((e) => {
+        log('category: ', e);
+    });
+    form.controls.cellphone2.subscribe((e) => {
         log('cellphone: ', e);
     });
-    form.controls.cellphone.subscribe((e) => {
+    form.controls.cellphone2.subscribe((e) => {
         log('cellphone2: ', e);
     });
     form.controls.price.subscribe((e) => {
@@ -51,7 +56,7 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
     const rerender = useForceUpdate();
 
     const logForm = (): void => {
-        console.clear();
+        // console.clear();
         console.table(form.controls, [
             'value',
             'isValid',
@@ -107,7 +112,7 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
                 variant="filled"
             />
             <hr />
-            <CustomInput {...form.bind('customInput')} />
+            {/* <CustomInput {...form.bind('customInput')} /> */}
             <hr />
             <label>
                 category
@@ -125,9 +130,12 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
             </label>
             <button
                 type="button"
-                onClick={() => form.controls.category.setValue('goldfish')}
+                onClick={() => {
+                    form.controls.category.setValue('cat');
+                    rerender();
+                }}
             >
-                setValue(goldfish)
+                setValue(cat)
             </button>
             <hr />
             <label htmlFor="1">
@@ -147,23 +155,43 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
                 type="button"
                 onClick={() => {
                     form.controls.firstName.reset();
+                    rerender();
                 }}
             >
                 reset()
             </button>
+            <button
+                type="button"
+                onClick={() => {
+                    form.controls.firstName.setValue('sara');
+                    rerender();
+                }}
+            >
+                setValue(sara)
+            </button>
             <hr />
-            <label htmlFor="2">
-                last name
+            <label>
+                lastName
                 <br />
-                <input id="2" {...form.bind('lastName')} />
+                <input type="text" {...form.bind('lastName')} />
             </label>
             <button
                 type="button"
                 onClick={() => {
                     form.controls.lastName.setValue('kave');
+                    rerender();
                 }}
             >
                 setValue(kave)
+            </button>
+            <button
+                type="button"
+                onClick={() => {
+                    form.controls.lastName.setValue('abbasi');
+                    rerender();
+                }}
+            >
+                setValue(abbasi)
             </button>
             <button
                 type="button"
@@ -177,11 +205,14 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
             <label htmlFor="cellphone">
                 cellphone
                 <br />
-                <input id="cellphone" {...form.bind('cellphone')} />
+                <input id="cellphone" {...form.bind('cellphone2')} />
             </label>
             <button
                 type="button"
-                onClick={() => form.controls.cellphone.setValue('09136868075')}
+                onClick={() => {
+                    form.controls.cellphone2.setValue('abliiias');
+                    rerender();
+                }}
             >
                 setValue to 09136868075
             </button>
@@ -203,6 +234,14 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
                         defaultValue="phone"
                     />
                 </label>
+                <button
+                    onClick={() => {
+                        form.controls.contact.setValue('fax');
+                        rerender();
+                    }}
+                >
+                    setValue(fax)
+                </button>
                 <br />
                 <label htmlFor="fax">
                     Fax

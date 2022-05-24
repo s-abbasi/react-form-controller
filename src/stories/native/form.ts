@@ -13,17 +13,17 @@ export const formModel: FormModel = {
         disabled: false,
     },
     category: {
-        initialValue: 'sale',
+        initialValue: '',
     },
     firstName: {
         initialValue: 'sajad',
         // validators: [],
     },
     lastName: {
-        initialValue: 'abbasi',
+        initialValue: '',
         // validators: [],
     },
-    cellphone: {
+    cellphone2: {
         initialValue: '',
         // validators: [required(), pattern('patternName', /^(\+98?)?{?(0?9[0-9]{9,9}}?)$/)],
     },

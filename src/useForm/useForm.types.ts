@@ -1,4 +1,4 @@
-import { ChangeEvent, HTMLAttributes } from 'react';
+import { ChangeEvent, HTMLAttributes, LegacyRef } from 'react';
 
 export type DefaultValue = HTMLAttributes<HTMLInputElement>['defaultValue'];
 export type DefaultChecked = HTMLAttributes<HTMLInputElement>['defaultChecked'];
@@ -50,9 +50,9 @@ export type JSXBinding = {
     defaultChecked?: DefaultChecked;
     onChange: (ev: FormChangeEvent) => void;
     onBlur: (ev: FormChangeEvent) => void;
+    ref: (ref: LegacyRef<unknown>) => void;
     disabled: boolean;
     // use infer in ref
-    // ref: ReturnType<addToRef>;
 };
 
 export type OnControlValueChange = ReturnType<GenerateBinding>['onControlValueChange'];
@@ -76,14 +76,6 @@ export type ChangeObserver = (ev: {
 
 export type BlurObserver = (ev: { controlName: string }) => unknown;
 
-export type GenerateNativeBinding = (
-    onChangeObservers: ChangeObserver[],
-    onBlurObservers: BlurObserver[],
-    control: Required<ControlObjectModel>,
-    controlName: string,
-    controls: Controls
-) => JSXBinding;
-
 export type ControlConvertor = (control: Required<ControlObjectModel>) => Control;
 
 export type Controls = {
@@ -95,8 +87,8 @@ export type Control = {
     value: ControlPrimitiveValue;
     isValid: boolean;
     errors: ControlError;
-    isTouched: boolean; // become true on blur event
-    isDirty: boolean; // become true on change event
+    isTouched: boolean; // becomes true on blur event
+    isDirty: boolean; // becomes true on change event
     disable: () => void;
     enable: () => void;
     isDisabled: ControlObjectModel['disabled'];
@@ -120,4 +112,9 @@ export type FormGroup = {
     remove?: (controlName: string | string[]) => void;
 };
 
-export type GenerateFormGroup = (model: FormModel) => Required<FormGroup>;
+export type AddToRef = (controlName: string, ref: LegacyRef<unknown>) => void;
+export type SetRefValue = (controlName: string, value: ControlPrimitiveValue) => void;
+
+export type GenerateFormGroup = (
+    addToRef: AddToRef
+) => (setRefValue: SetRefValue) => (model: FormModel) => Required<FormGroup>;

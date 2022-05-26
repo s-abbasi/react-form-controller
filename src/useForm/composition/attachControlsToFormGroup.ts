@@ -46,8 +46,7 @@ export const attachControlsToFormGroup =
                     this.isDisabled = false;
                 },
                 setValue(v) {
-                    // @ts-ignore
-                    setRefValue(controlName, v);
+                    setRefValue(controlName, v, this.type);
                     this.value = v;
                     this.isDirty = true;
                     formGroup.isDirty = true;
@@ -64,7 +63,7 @@ export const attachControlsToFormGroup =
                     baseFormGroup.controls[controlName] = newControl;
                 },
                 subscribe(cb) {
-                    const exist = (
+                    const callbackExist = (
                         callback: (value: ControlPrimitiveValue) => void
                     ): boolean => {
                         const cbString = callback.toString();
@@ -75,7 +74,7 @@ export const attachControlsToFormGroup =
 
                     if (this._subscribeCallbacks.length === 0) {
                         this._subscribeCallbacks.push(cb);
-                    } else if (!exist(cb)) {
+                    } else if (!callbackExist(cb)) {
                         this._subscribeCallbacks.push(cb);
                     }
                 },

@@ -1,5 +1,7 @@
+/* eslint-disable react/button-has-type */
 import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
+import userEvent from '@testing-library/user-event';
 import { ChangeEvent } from 'react';
 import { useForm } from '../useForm/useForm';
 import { FormChangeEvent, FormModel } from '../useForm/useForm.types';
@@ -94,5 +96,62 @@ describe('Radio', () => {
         bind('contact').onChange(change);
 
         expect(controls.contact.isDirty).toBe(true);
+    });
+
+    test('should set "controls.name.value" and "selected radio" to given value on "controls.name.setValue(value)"', async () => {
+        const Comp = (): JSX.Element => {
+            const model: FormModel = {
+                contact: { initialValue: 'phone' },
+            };
+            const form = useForm(model);
+            return (
+                <>
+                    <label htmlFor="phone">
+                        Phone
+                        <input
+                            {...form.bind('contact')}
+                            type="radio"
+                            name="contact"
+                            id="phone"
+                            defaultValue="phone"
+                        />
+                    </label>
+                    <br />
+                    <label htmlFor="fax">
+                        Fax
+                        <input
+                            {...form.bind('contact')}
+                            type="radio"
+                            name="contact"
+                            id="fax"
+                            defaultValue="fax"
+                        />
+                    </label>
+                    <br />
+                    <label htmlFor="email">
+                        Email
+                        <input
+                            {...form.bind('contact')}
+                            type="radio"
+                            name="contact"
+                            id="email"
+                            defaultValue="email"
+                        />
+                    </label>
+                    <button onClick={() => form.controls.contact.setValue('fax')}>
+                        change to fax
+                    </button>
+                </>
+            );
+        };
+
+        render(<Comp />);
+
+        const button = screen.getByRole('button');
+        const faxRadioInput = screen.getByRole('radio', { name: /fax/i });
+
+        await userEvent.click(button);
+
+        expect(faxRadioInput).toBeChecked();
     });
 });

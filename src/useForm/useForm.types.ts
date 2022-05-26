@@ -1,10 +1,11 @@
-import { ChangeEvent, HTMLAttributes, LegacyRef } from 'react';
+import { ChangeEvent, HTMLAttributes, HTMLInputTypeAttribute } from 'react';
 
 export type DefaultValue = HTMLAttributes<HTMLInputElement>['defaultValue'];
 export type DefaultChecked = HTMLAttributes<HTMLInputElement>['defaultChecked'];
 export type ControlPrimitiveValue = DefaultValue | boolean | File;
 
 type ValidatorName = 'min' | 'max' | 'minLength' | 'maxLength' | 'required';
+// type inputTypes = 'text' | 'radio' | 'password' | 'email' | 'checkbox' | 'url' | '';
 
 export type Validator = {
     name: ValidatorName;
@@ -85,6 +86,7 @@ export type Controls = {
 export type Control = {
     // rawValue: ControlPrimitiveValue;
     value: ControlPrimitiveValue;
+    type?: HTMLInputTypeAttribute;
     isValid: boolean;
     errors: ControlError;
     isTouched: boolean; // becomes true on blur event
@@ -113,14 +115,21 @@ export type FormGroup = {
 };
 
 export type AddToRef = (controlName: string, ref: HTMLInputElement) => void;
-export type SetRefValue = (controlName: string, value: string) => void;
+export type SetRefValue = (
+    controlName: string,
+    value: ControlPrimitiveValue,
+    type: HTMLInputTypeAttribute
+) => void;
 
 export type GenerateFormGroup = (
     addToRef: AddToRef
 ) => (setRefValue: SetRefValue) => (model: FormModel) => Required<FormGroup>;
 
 export type ControlRefs = {
-    [key: string]: { ref: HTMLInputElement; initializeValueSet: boolean };
+    [key: string]: {
+        ref: HTMLInputElement;
+        initializeValueSet: boolean;
+    };
 };
 
 export type FilterNonInitialized = (

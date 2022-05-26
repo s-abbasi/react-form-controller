@@ -52,6 +52,7 @@ export const attachBindToFormGroup =
                 }),
                 ref: (ref: HTMLInputElement) => {
                     if (ref) {
+                        formGroup.controls[controlName].type = ref.type;
                         addToRef(controlName, ref);
                     }
                 },

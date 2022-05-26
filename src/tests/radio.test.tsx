@@ -1,3 +1,4 @@
+import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { ChangeEvent } from 'react';
 import { useForm } from '../useForm/useForm';
@@ -18,9 +19,56 @@ describe('Radio', () => {
         expect(props.defaultValue).toBe('phone');
     });
 
-    test.todo(
-        'should set "<input defaultChecked={}>" to the given defaultValue in FormModel'
-    );
+    test('should set initial display value to model.initialValue', () => {
+        const Comp = (): JSX.Element => {
+            const model: FormModel = {
+                contact: { initialValue: 'phone' },
+            };
+            const form = useForm(model);
+            return (
+                <>
+                    <label htmlFor="phone">
+                        Phone
+                        <input
+                            {...form.bind('contact')}
+                            type="radio"
+                            name="contact"
+                            id="phone"
+                            defaultValue="phone"
+                        />
+                    </label>
+                    <br />
+                    <label htmlFor="fax">
+                        Fax
+                        <input
+                            {...form.bind('contact')}
+                            type="radio"
+                            name="contact"
+                            id="fax"
+                            defaultValue="fax"
+                        />
+                    </label>
+                    <br />
+                    <label htmlFor="email">
+                        Email
+                        <input
+                            {...form.bind('contact')}
+                            type="radio"
+                            name="contact"
+                            id="email"
+                            defaultValue="email"
+                        />
+                    </label>
+                </>
+            );
+        };
+
+        render(<Comp />);
+
+        const phoneRadioInput = screen.getByRole('radio', { name: /phone/i });
+
+        expect(phoneRadioInput).toBeChecked();
+    });
 
     test('should set form.control.isTouched to true on blur event', () => {
         const formModel: FormModel = {

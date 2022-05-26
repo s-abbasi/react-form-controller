@@ -50,7 +50,7 @@ export type JSXBinding = {
     defaultChecked?: DefaultChecked;
     onChange: (ev: FormChangeEvent) => void;
     onBlur: (ev: FormChangeEvent) => void;
-    ref: (ref: LegacyRef<unknown>) => void;
+    ref: (ref: HTMLInputElement) => void;
     disabled: boolean;
     // use infer in ref
 };
@@ -112,9 +112,29 @@ export type FormGroup = {
     remove?: (controlName: string | string[]) => void;
 };
 
-export type AddToRef = (controlName: string, ref: LegacyRef<unknown>) => void;
-export type SetRefValue = (controlName: string, value: ControlPrimitiveValue) => void;
+export type AddToRef = (controlName: string, ref: HTMLInputElement) => void;
+export type SetRefValue = (controlName: string, value: string) => void;
 
 export type GenerateFormGroup = (
     addToRef: AddToRef
 ) => (setRefValue: SetRefValue) => (model: FormModel) => Required<FormGroup>;
+
+export type ControlRefs = {
+    [key: string]: { ref: HTMLInputElement; initializeValueSet: boolean };
+};
+
+export type FilterNonInitialized = (
+    param: [string, { ref: HTMLInputElement; initializeValueSet: boolean }]
+) => boolean;
+
+export type SetDefaultValue = (
+    param: [string, { ref: HTMLInputElement; initializeValueSet: boolean }]
+) => void;
+
+export type FilterByTypeRadio = (
+    param: [string, { ref: HTMLInputElement; initializeValueSet: boolean }]
+) => boolean;
+
+export type SetAsInitialized = (
+    param: [string, { ref: HTMLInputElement; initializeValueSet: boolean }]
+) => [string, { ref: HTMLInputElement; initializeValueSet: boolean }];

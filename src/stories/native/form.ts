@@ -5,7 +5,7 @@ export const formModel: FormModel = {
     materialTextField: {
         initialValue: 'sajad abbasi',
         validators: [],
-        // disabled: true,
+        disabled: true,
     },
     customInput: {
         initialValue: 'custom input value',
@@ -37,7 +37,7 @@ export const formModel: FormModel = {
         // disabled: true,
     },
     contact: {
-        initialValue: 'phone',
+        initialValue: 'fax',
         // validators: [required()],
         disabled: false,
     },

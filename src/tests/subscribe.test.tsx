@@ -1,9 +1,10 @@
+/* eslint-disable react/button-has-type */
 import { renderHook } from '@testing-library/react-hooks';
 import { ChangeEvent } from 'react';
 import { useForm } from '../useForm/useForm';
 import { FormModel } from '../useForm/useForm.types';
 
-describe('subscribe', () => {
+describe.skip('subscribe', () => {
     test('should call subscribe with given value on "controls.name.setValue(value)"', () => {
         const model: FormModel = {
             firstName: {

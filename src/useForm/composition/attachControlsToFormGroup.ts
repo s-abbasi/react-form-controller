@@ -1,8 +1,15 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
 
 import { generateControlErrorsProp } from '../useForm.helper';
-import { NormalizedModel, FormGroup, Control, SetRefValue } from '../useForm.types';
+import {
+    NormalizedModel,
+    FormGroup,
+    Control,
+    SetRefValue,
+    ControlPrimitiveValue,
+} from '../useForm.types';
 import {
     generateControlIsValidProp,
     generateFormGroupIsValidProp,
@@ -39,13 +46,12 @@ export const attachControlsToFormGroup =
                     this.isDisabled = false;
                 },
                 setValue(v) {
+                    // @ts-ignore
                     setRefValue(controlName, v);
                     this.value = v;
                     this.isDirty = true;
                     formGroup.isDirty = true;
-                    if (this._subscribeCallbacks.length > 0) {
-                        this._subscribeCallbacks.forEach((cb) => cb(this.value));
-                    }
+                    this._subscribeCallbacks.forEach((cb) => cb(this.value));
                 },
                 reset() {
                     const controlModel: NormalizedModel = {
@@ -58,7 +64,20 @@ export const attachControlsToFormGroup =
                     baseFormGroup.controls[controlName] = newControl;
                 },
                 subscribe(cb) {
-                    this._subscribeCallbacks.push(cb);
+                    const exist = (
+                        callback: (value: ControlPrimitiveValue) => void
+                    ): boolean => {
+                        const cbString = callback.toString();
+                        return this._subscribeCallbacks
+                            .map(toString)
+                            .some((item) => item !== cbString);
+                    };
+
+                    if (this._subscribeCallbacks.length === 0) {
+                        this._subscribeCallbacks.push(cb);
+                    } else if (!exist(cb)) {
+                        this._subscribeCallbacks.push(cb);
+                    }
                 },
                 addValidator(validator) {
                     if (Array.isArray(validator)) {

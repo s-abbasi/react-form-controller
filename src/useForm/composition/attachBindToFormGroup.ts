@@ -1,13 +1,12 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
 
-import { LegacyRef } from 'react';
+import { FormGroup, DefaultValue, AddToRef } from '../useForm.types';
 import {
     setDefaultChecked,
     getValueBasedOnType,
     generateControlErrorsProp,
 } from '../useForm.helper';
-import { FormGroup, DefaultValue, AddToRef } from '../useForm.types';
 import {
     generateFormGroupIsValidProp,
     generateControlIsValidProp,
@@ -51,7 +50,7 @@ export const attachBindToFormGroup =
                 ...(!valueIsBoolean && {
                     defaultValue: formGroup.controls[controlName].value as DefaultValue,
                 }),
-                ref: (ref: LegacyRef<unknown>) => {
+                ref: (ref: HTMLInputElement) => {
                     if (ref) {
                         addToRef(controlName, ref);
                     }

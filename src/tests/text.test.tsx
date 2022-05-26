@@ -1,5 +1,6 @@
 import { ChangeEvent } from 'react';
 import { renderHook } from '@testing-library/react-hooks';
+import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import { FormChangeEvent, FormModel } from '../useForm/useForm.types';
 import { useForm } from '../useForm/useForm';
@@ -156,5 +157,80 @@ describe('text', () => {
         form.bind('firstName').onChange(change);
 
         expect(form.isDirty).toBe(true);
+    });
+
+    test('should render proper value after controls.name.setValue(value) to input', async () => {
+        const Comp = (): JSX.Element => {
+            const model: FormModel = { firstName: 'sajad' };
+
+            const form = useForm(model);
+
+            return (
+                <div>
+                    <input type="text" {...form.bind('firstName')} />
+                    <button
+                        type="submit"
+                        onClick={() => form.controls.firstName.setValue('sara')}
+                    >
+                        submit
+                    </button>
+                </div>
+            );
+        };
+        render(<Comp />);
+
+        const textbox = screen.getByRole('textbox');
+        const button = screen.getByRole('button');
+
+        expect(textbox).toHaveValue('sajad');
+
+        await userEvent.click(button);
+
+        expect(textbox).toHaveValue('sara');
+    });
+
+    test.skip('should disable input given a disabled model', async () => {
+        const Comp = (): JSX.Element => {
+            const model: FormModel = { firstName: 'sajad', disabled: true };
+
+            const form = useForm(model);
+
+            return <input {...form.bind('firstName')} />;
+        };
+        render(<Comp />);
+
+        const textbox = screen.getByRole('textbox');
+
+        expect(textbox).toBeDisabled();
+    });
+
+    test.skip('should disable and rerender input after controls.name.disable()', async () => {
+        const Comp = (): JSX.Element => {
+            const model: FormModel = { firstName: 'sajad' };
+
+            const form = useForm(model);
+
+            return (
+                <div>
+                    <input {...form.bind('firstName')} />
+                    <button
+                        type="submit"
+                        onClick={() => form.controls.firstName.disable()}
+                    >
+                        submit
+                    </button>
+                </div>
+            );
+        };
+        render(<Comp />);
+
+        const textbox = screen.getByRole('textbox');
+        const button = screen.getByRole('button');
+
+        expect(textbox).toBeEnabled();
+
+        await userEvent.click(button);
+
+        expect(textbox).toBeDisabled();
     });
 });

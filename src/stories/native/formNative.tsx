@@ -81,6 +81,8 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
     };
 
     const [jsx, setJsx] = useState();
+    const [radioJsx, setRadioJsx] = useState();
+
     const addControl = (): void => {
         const controls = {
             newControl: {
@@ -100,6 +102,50 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
             </>
         );
         setJsx(x);
+
+        form.controls.newControl.subscribe(() => {
+            log('newControl');
+        });
+    };
+    const addRadioControl = (): void => {
+        const controls = {
+            newRadioControl: {
+                initialValue: 'cow',
+            },
+        };
+        form.add(controls);
+
+        const jsxValue = (
+            <div>
+                <br />
+                <label htmlFor="cat">
+                    Cat
+                    <input
+                        {...form.bind('newRadioControl')}
+                        type="radio"
+                        name="radio2"
+                        id="cat"
+                        defaultValue="cat"
+                    />
+                </label>
+                <br />
+                <label htmlFor="cow">
+                    Cow
+                    <input
+                        {...form.bind('newRadioControl')}
+                        type="radio"
+                        name="radio2"
+                        id="cow"
+                        defaultValue="cow"
+                    />
+                </label>
+            </div>
+        );
+        setRadioJsx(jsxValue);
+
+        form.controls.newRadioControl.subscribe((e) => {
+            log('newRadioControl', e);
+        });
     };
 
     return (
@@ -210,7 +256,7 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
             <button
                 type="button"
                 onClick={() => {
-                    form.controls.cellphone2.setValue('abliiias');
+                    form.controls.cellphone2.setValue('09136868075');
                     rerender();
                 }}
             >
@@ -234,14 +280,6 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
                         defaultValue="phone"
                     />
                 </label>
-                <button
-                    onClick={() => {
-                        form.controls.contact.setValue('fax');
-                        rerender();
-                    }}
-                >
-                    setValue(fax)
-                </button>
                 <br />
                 <label htmlFor="fax">
                     Fax
@@ -265,6 +303,19 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
                     />
                 </label>
             </div>
+            {radioJsx}
+            <button type="button" onClick={addRadioControl}>
+                add control
+            </button>
+
+            <button
+                onClick={() => {
+                    form.controls.contact.setValue('fax');
+                    // rerender();
+                }}
+            >
+                setValue(fax)
+            </button>
             <hr />
             <label htmlFor="chb">
                 single

@@ -1,11 +1,17 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { ChangeEvent } from 'react';
+import { ChangeEvent, MutableRefObject } from 'react';
 import {
     ControlError,
     ControlObjectModel,
     ControlPrimitiveValue,
+    ControlRefs,
+    Controls,
+    FilterByTypeRadio,
+    FilterNonInitialized,
     FormChangeEvent,
+    SetAsInitialized,
+    SetDefaultValue,
     Validator,
 } from './useForm.types';
 
@@ -20,16 +26,35 @@ export const setDefaultChecked = (value: ControlPrimitiveValue): boolean | undef
     return valueIsBoolean ? (value as boolean) : undefined;
 };
 
-// export const generateJSXValueAttribute = (
-//     value: unknown,
-//     control: Required<ControlObjectModel>
-// ): unknown => {
-//     const valueIsBoolean = typeof value === 'boolean';
+export const setRadioInitialCheckedState = (
+    controls: Controls,
+    refs: MutableRefObject<ControlRefs>
+): void => {
+    const filterByTypeRadio: FilterByTypeRadio = ([controlName, { ref }]) => {
+        const key = controlName.split('#')[0];
+        return ref.type === 'radio' && ref.value === controls[key].value;
+    };
 
-//     return valueIsBoolean
-//         ? { defaultChecked: setDefaultChecked(control) }
-//         : { defaultValue: value };
-// };
+    const setAsInitialized: SetAsInitialized = (item) => {
+        // eslint-disable-next-line no-param-reassign
+        item[1].initializeValueSet = true;
+        return item;
+    };
+
+    const filterNonInitialized: FilterNonInitialized = ([, { initializeValueSet }]) =>
+        !initializeValueSet;
+
+    const setDefaultValue: SetDefaultValue = ([, { ref }]) => {
+        // eslint-disable-next-line no-param-reassign
+        ref.defaultChecked = true;
+    };
+
+    Object.entries(refs.current)
+        .filter(filterNonInitialized)
+        .map(setAsInitialized)
+        .filter(filterByTypeRadio)
+        .forEach(setDefaultValue);
+};
 
 export const generateControlErrorsProp = (
     value: ControlPrimitiveValue,
@@ -40,33 +65,6 @@ export const generateControlErrorsProp = (
         .filter((validator) => !validator.validateWith(value))
         .reduce((acc, curr) => ({ ...acc, [curr.name]: curr.message }), {});
 };
-
-// export const generateControlInitialState: ControlConvertor = (control) => {
-//     const { initialValue, validators, disabled } = control;
-
-//     return {
-//         value: initialValue,
-//         isValid: generateControlIsValidProp(initialValue, validators),
-//         errors: generateControlErrorsProp(initialValue, validators),
-//         isTouched: false,
-//         isDirty: false,
-//         isDisabled: disabled,
-//         disable() {
-//             this.isDisabled = true;
-//         },
-//         enable() {
-//             this.isDisabled = false;
-//         },
-//     };
-// };
-
-// export const generateControls: GenerateControls = (model) => {
-//     const normalizedModel = normalizeFormModel(model);
-//     return {
-//         controls: mapObjIndexed(generateControlInitialState, normalizedModel),
-//         normalizedModel,
-//     };
-// };
 
 export const getValueBasedOnType = (e: FormChangeEvent): ControlPrimitiveValue => {
     const eventIsPrimitive = e && typeof e !== 'object';

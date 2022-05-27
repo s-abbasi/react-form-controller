@@ -1,5 +1,5 @@
 import { ChangeEvent } from 'react';
-import { renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react-hooks';
 import { FormModel } from '../useForm/useForm.types';
 import { useForm } from '../useForm/useForm';
 
@@ -45,8 +45,12 @@ describe('text', () => {
         const hook = renderHook(() => useForm(formModel));
         const { bind, controls } = hook.result.current;
 
-        const change = { target: { value: 'sara' } } as ChangeEvent<HTMLTextAreaElement>;
-        bind('description').onChange(change);
+        act(() => {
+            const change = {
+                target: { value: 'sara' },
+            } as ChangeEvent<HTMLTextAreaElement>;
+            bind('description').onChange(change);
+        });
 
         expect(controls.description.value).toBe('sara');
     });

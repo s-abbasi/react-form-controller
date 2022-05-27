@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react-hooks';
 import { useForm } from '../useForm/useForm';
 import { Control, FormModel } from '../useForm/useForm.types';
 import { generateChangeEvent } from './test.helper';
@@ -49,8 +49,10 @@ describe('addControl', () => {
 
         form.add({ lastName: { initialValue: 'abbasi' } });
 
-        const change = generateChangeEvent('kaveh');
-        form.bind('lastName').onChange(change);
+        act(() => {
+            const change = generateChangeEvent('kaveh');
+            form.bind('lastName').onChange(change);
+        });
 
         expect(form.controls.lastName.value).toBe('kaveh');
     });

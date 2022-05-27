@@ -27,7 +27,7 @@ const baseFormGroup: FormGroup = {
 };
 
 export const attachControlsToFormGroup =
-    (setRefValue: SetRefValue) =>
+    (setRefValue: SetRefValue, rerender) =>
     (model: NormalizedModel): FormGroup => {
         const controls = Object.entries(model).reduce((prev, [controlName, value]) => {
             const { initialValue, validators, disabled } = value;
@@ -41,9 +41,11 @@ export const attachControlsToFormGroup =
                 isDisabled: disabled,
                 disable() {
                     this.isDisabled = true;
+                    rerender();
                 },
                 enable() {
                     this.isDisabled = false;
+                    rerender();
                 },
                 setValue(v) {
                     setRefValue(controlName, v, this.type);
@@ -51,16 +53,19 @@ export const attachControlsToFormGroup =
                     this.isDirty = true;
                     formGroup.isDirty = true;
                     this._subscribeCallbacks.forEach((cb) => cb(this.value));
+                    rerender();
                 },
                 reset() {
                     const controlModel: NormalizedModel = {
                         [controlName]: model[controlName],
                     };
-                    const newControl =
-                        attachControlsToFormGroup(setRefValue)(controlModel).controls[
-                            controlName
-                        ];
+                    const newControl = attachControlsToFormGroup(
+                        setRefValue,
+                        rerender
+                    )(controlModel).controls[controlName];
                     baseFormGroup.controls[controlName] = newControl;
+                    setRefValue(controlName, model[controlName].initialValue, this.type);
+                    rerender();
                 },
                 subscribe(cb) {
                     const callbackExist = (
@@ -92,6 +97,7 @@ export const attachControlsToFormGroup =
                     baseFormGroup.isValid = generateFormGroupIsValidProp(
                         baseFormGroup.controls
                     );
+                    rerender();
                 },
                 removeValidator(validatorName) {
                     if (Array.isArray(validatorName)) {
@@ -110,6 +116,7 @@ export const attachControlsToFormGroup =
                     baseFormGroup.isValid = generateFormGroupIsValidProp(
                         baseFormGroup.controls
                     );
+                    rerender();
                 },
                 _subscribeCallbacks: [],
                 _validators: [...validators],

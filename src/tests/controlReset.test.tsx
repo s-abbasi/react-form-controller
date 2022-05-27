@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react-hooks';
 import { useForm } from '../useForm/useForm';
 import { FormModel } from '../useForm/useForm.types';
 import { generateChangeEvent } from './test.helper';
@@ -16,9 +16,14 @@ describe('controlReset', () => {
         const originalControl = JSON.stringify(form.controls.firstName);
 
         const change = generateChangeEvent('sajad');
-        form.bind('firstName').onChange(change);
 
-        form.controls.firstName.reset();
+        act(() => {
+            form.bind('firstName').onChange(change);
+        });
+
+        act(() => {
+            form.controls.firstName.reset();
+        });
 
         const controlAfterReset = JSON.stringify(form.controls.firstName);
 

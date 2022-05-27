@@ -1,14 +1,12 @@
 /* eslint-disable no-param-reassign */
-import { FormGroup } from '../useForm.types';
-import { generateFormGroup } from './composition';
+import { FormGroup, GenerateFormGroup } from '../useForm.types';
 
 export const attachAddRemoveControlToFormGroup =
-    (addToRef) =>
-    (setRefValue) =>
+    (setRefValue: GenerateFormGroup) =>
     (formGroup: Required<FormGroup>): Required<FormGroup> => {
         formGroup.add = (model) => {
             // TODO: guard against existing controls
-            generateFormGroup(addToRef)(setRefValue)(model);
+            setRefValue(model);
         };
         formGroup.remove = (controlName: string | string[]) => {
             const isTypeOfArray = Array.isArray(controlName);

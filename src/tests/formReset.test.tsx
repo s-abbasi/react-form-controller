@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks/lib/pure';
+import { act, renderHook } from '@testing-library/react-hooks';
 import { useForm } from '../useForm/useForm';
 import { FormModel } from '../useForm/useForm.types';
 import { minLength, required } from '../useForm/validations';
@@ -20,11 +20,18 @@ describe('formReset', () => {
 
         const originalForm = JSON.stringify(form);
 
-        const change = generateChangeEvent('sara');
-        form.bind('firstName').onChange(change);
-        form.controls.lastName.addValidator(minLength(10));
+        act(() => {
+            const change = generateChangeEvent('sara');
+            form.bind('firstName').onChange(change);
+        });
 
-        form.reset();
+        act(() => {
+            form.controls.lastName.addValidator(minLength(10));
+        });
+
+        act(() => {
+            form.reset();
+        });
 
         const controlAfterReset = JSON.stringify(form);
 

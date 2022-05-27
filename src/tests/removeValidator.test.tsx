@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react-hooks';
 import { useForm } from '../useForm/useForm';
 import { FormModel } from '../useForm/useForm.types';
 import { maxLength, minLength, required } from '../useForm/validations';
@@ -15,7 +15,10 @@ describe('removeValidator', () => {
         const form = renderHook(() => useForm(model)).result.current;
 
         expect(form.controls.firstName.isValid).toBe(false);
-        form.controls.firstName.removeValidator('required');
+
+        act(() => {
+            form.controls.firstName.removeValidator('required');
+        });
 
         expect(form.controls.firstName.isValid).toBe(true);
     });
@@ -32,7 +35,10 @@ describe('removeValidator', () => {
 
         expect(form.controls.name.isValid).toBe(false);
 
-        form.controls.name.removeValidator(['required', 'maxLength', 'minLength']);
+        act(() => {
+            form.controls.name.removeValidator(['required', 'maxLength', 'minLength']);
+        });
+
         expect(form.controls.name.isValid).toBe(true);
     });
 
@@ -50,7 +56,10 @@ describe('removeValidator', () => {
 
         const form = renderHook(() => useForm(model)).result.current;
         expect(form.isValid).toBe(false);
-        form.controls.firstName.removeValidator('required');
+
+        act(() => {
+            form.controls.firstName.removeValidator('required');
+        });
 
         expect(form.isValid).toBe(true);
     });
@@ -71,8 +80,18 @@ describe('removeValidator', () => {
 
         expect(form.isValid).toBe(false);
 
-        form.controls.firstName.removeValidator(['required', 'maxLength', 'minLength']);
-        form.controls.lastName.removeValidator(['required', 'maxLength', 'minLength']);
+        act(() => {
+            form.controls.firstName.removeValidator([
+                'required',
+                'maxLength',
+                'minLength',
+            ]);
+            form.controls.lastName.removeValidator([
+                'required',
+                'maxLength',
+                'minLength',
+            ]);
+        });
         expect(form.isValid).toBe(true);
     });
 });

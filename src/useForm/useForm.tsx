@@ -1,23 +1,24 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable no-param-reassign */
-
+import { compose } from 'ramda';
 import { useEffect, useMemo, useRef } from 'react';
-import { generateFormGroup } from './composition/composition';
+import { useForceUpdate } from '../useForceUpdate/UseForceUpdate';
+import { attachAddRemoveControlToFormGroup } from './composition/attachAddRemoveControlToFormGroup';
+import { attachBindToFormGroup } from './composition/attachBindToFormGroup';
+import { attachControlsToFormGroup } from './composition/attachControlsToFormGroup';
+import { normalizeModel } from './composition/normalizeModel';
+import { setRadioInitialCheckedState } from './useForm.helper';
 import {
     AddToRef,
     ControlRefs,
     FormGroup,
     FormModel,
+    GenerateFormGroup,
     SetRefValue,
-    Controls,
-    FilterByTypeRadio,
-    SetAsInitialized,
-    FilterNonInitialized,
-    SetDefaultValue,
 } from './useForm.types';
 
 export const useForm = (model: FormModel): Required<FormGroup> => {
     const refs = useRef<ControlRefs>({});
+    const rerender = useForceUpdate();
 
     const addToRefs: AddToRef = (controlName, ref) => {
         const key = ref.type === 'radio' ? `${controlName}#${ref.value}` : controlName;
@@ -42,43 +43,26 @@ export const useForm = (model: FormModel): Required<FormGroup> => {
             const key = `${controlName}#${value}`;
             refs.current[key].ref.checked = true;
             refs.current[key].ref.value = JSON.stringify(value);
-        } else {
+        } else if (refs.current[controlName]?.ref) {
             // @ts-ignore
             refs.current[controlName].ref.value = value;
         }
     };
 
     const formGroup = useMemo<Required<FormGroup>>(() => {
-        return generateFormGroup(addToRefs)(setRefValue)(model);
-    }, [model]);
-
-    const setRadioInitialCheckedState = (controls: Controls): void => {
-        const filterByTypeRadio: FilterByTypeRadio = ([controlName, { ref }]) => {
-            const key = controlName.split('#')[0];
-            return ref.type === 'radio' && ref.value === controls[key].value;
-        };
-
-        const setAsInitialized: SetAsInitialized = (item) => {
-            item[1].initializeValueSet = true;
-            return item;
-        };
-
-        const filterNonInitialized: FilterNonInitialized = ([, { initializeValueSet }]) =>
-            !initializeValueSet;
-
-        const setDefaultValue: SetDefaultValue = ([, { ref }]) => {
-            ref.defaultChecked = true;
-        };
-
-        Object.entries(refs.current)
-            .filter(filterNonInitialized)
-            .map(setAsInitialized)
-            .filter(filterByTypeRadio)
-            .forEach(setDefaultValue);
-    };
+        const convertModelToControl: GenerateFormGroup = compose(
+            attachBindToFormGroup(addToRefs, rerender),
+            attachControlsToFormGroup(setRefValue, rerender),
+            normalizeModel
+        );
+        const formGroupWithControls = convertModelToControl(model);
+        const formGroupWIthAddRemove =
+            attachAddRemoveControlToFormGroup(convertModelToControl);
+        return formGroupWIthAddRemove(formGroupWithControls);
+    }, [model, rerender]);
 
     useEffect(() => {
-        setRadioInitialCheckedState(formGroup.controls);
+        setRadioInitialCheckedState(formGroup.controls, refs);
     }, [formGroup.controls]);
 
     return formGroup;

@@ -121,9 +121,7 @@ export type SetRefValue = (
     type: HTMLInputTypeAttribute
 ) => void;
 
-export type GenerateFormGroup = (
-    addToRef: AddToRef
-) => (setRefValue: SetRefValue) => (model: FormModel) => Required<FormGroup>;
+export type GenerateFormGroup = (model: FormModel) => Required<FormGroup>;
 
 export type ControlRefs = {
     [key: string]: {

@@ -1,4 +1,5 @@
 import { ChangeEvent } from 'react';
+import { act } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useForm } from '../../useForm/useForm';
 import { FormModel } from '../../useForm/useForm.types';
@@ -41,8 +42,10 @@ describe('validations', () => {
         const hook = renderHook(() => useForm(model));
         const { bind, controls } = hook.result.current;
 
-        const change = { target: { value: '1' } } as ChangeEvent<HTMLInputElement>;
-        bind('price').onChange(change);
+        act(() => {
+            const change = { target: { value: '1' } } as ChangeEvent<HTMLInputElement>;
+            bind('price').onChange(change);
+        });
 
         expect(controls.price.isValid).toBe(false);
     });
@@ -72,8 +75,10 @@ describe('validations', () => {
         const hook = renderHook(() => useForm(model));
         const { controls, bind } = hook.result.current;
 
-        const change = { target: { value: '1' } } as ChangeEvent<HTMLInputElement>;
-        bind('price').onChange(change);
+        act(() => {
+            const change = { target: { value: '1' } } as ChangeEvent<HTMLInputElement>;
+            bind('price').onChange(change);
+        });
 
         expect(controls.price.errors).toEqual({ min: 'value should be at least 2' });
     });
@@ -132,8 +137,10 @@ describe('validations', () => {
 
         expect(isValid).toBe(false);
 
-        const change = { target: { value: '6' } } as ChangeEvent<HTMLInputElement>;
-        bind('price').onChange(change);
+        act(() => {
+            const change = { target: { value: '6' } } as ChangeEvent<HTMLInputElement>;
+            bind('price').onChange(change);
+        });
 
         expect(isValid).toBe(true);
     });

@@ -1,4 +1,5 @@
 import { FormModel } from '../../useForm/useForm.types';
+import { pattern, required } from '../../useForm/validations';
 // import { required, pattern, min, max } from '../../useForm/validations';
 
 export const formModel: FormModel = {
@@ -25,7 +26,7 @@ export const formModel: FormModel = {
     },
     cellphone2: {
         initialValue: '',
-        // validators: [required(), pattern('patternName', /^(\+98?)?{?(0?9[0-9]{9,9}}?)$/)],
+        validators: [required(), pattern('patternName', /^(\+98?)?{?(0?9[0-9]{9,9}}?)$/)],
     },
     price: {
         initialValue: undefined,

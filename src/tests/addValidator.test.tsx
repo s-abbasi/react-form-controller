@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react-hooks';
 import { useForm } from '../useForm/useForm';
 import { FormModel } from '../useForm/useForm.types';
 import { maxLength, minLength, required } from '../useForm/validations';
@@ -13,7 +13,9 @@ describe('addValidator', () => {
         };
         const form = renderHook(() => useForm(model)).result.current;
 
-        form.controls.firstName.addValidator(minLength(5));
+        act(() => {
+            form.controls.firstName.addValidator(minLength(5));
+        });
 
         expect(form.controls.firstName.isValid).toBe(false);
     });
@@ -29,7 +31,9 @@ describe('addValidator', () => {
 
         expect(form.controls.firstName.isValid).toBe(true);
 
-        form.controls.firstName.addValidator(minLength(7));
+        act(() => {
+            form.controls.firstName.addValidator(minLength(7));
+        });
 
         expect(form.controls.firstName.isValid).toBe(false);
     });
@@ -47,7 +51,9 @@ describe('addValidator', () => {
         };
         const form = renderHook(() => useForm(model)).result.current;
 
-        form.controls.lastName.addValidator(maxLength(3));
+        act(() => {
+            form.controls.lastName.addValidator(maxLength(3));
+        });
 
         expect(form.isValid).toBe(false);
     });
@@ -65,8 +71,10 @@ describe('addValidator', () => {
 
         expect(form.controls.firstName.isValid).toBe(true);
 
-        form.controls.firstName.addValidator(minLength(7));
-        form.bind('lastName').onChange(generateChangeEvent('sara'));
+        act(() => {
+            form.controls.firstName.addValidator(minLength(7));
+            form.bind('lastName').onChange(generateChangeEvent('sara'));
+        });
 
         expect(form.controls.firstName.isValid).toBe(false);
         expect(form.controls.lastName.isValid).toBe(true);

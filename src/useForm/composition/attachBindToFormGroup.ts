@@ -13,7 +13,7 @@ import {
 } from '../useForm.validations';
 
 export const attachBindToFormGroup =
-    (addToRef: AddToRef) =>
+    (addToRef: AddToRef, rerender) =>
     (formGroup: FormGroup): Required<FormGroup> => {
         formGroup.bind = (controlName: string) => {
             const initialValue = formGroup.controls[controlName].value;
@@ -40,10 +40,12 @@ export const attachBindToFormGroup =
                     if (control._subscribeCallbacks.length > 0) {
                         control._subscribeCallbacks.forEach((cb) => cb(value));
                     }
+                    rerender();
                 },
                 onBlur: () => {
                     formGroup.controls[controlName].isTouched = true;
                     formGroup.isTouched = true;
+                    rerender();
                 },
                 disabled: formGroup.controls[controlName].isDisabled as boolean,
                 ...(valueIsBoolean && { defaultChecked }),

@@ -10,53 +10,15 @@ import { FormModel } from '../../useForm/useForm.types';
 import { formModel } from './form';
 import { useForceUpdate } from '../../useForceUpdate/UseForceUpdate';
 import { log } from '../../logger';
-import { maxLength, minLength } from '../../useForm/validations';
+import { ControlDetail } from './controlDetail/controlDetail';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const FormNative = (_formModel?: FormModel): JSX.Element => {
     const form = useForm(formModel);
 
-    form.controls.category.subscribe((e) => {
-        log('category: ', e);
-    });
-    form.controls.cellphone2.subscribe((e) => {
-        log('cellphone: ', e);
-    });
-    form.controls.cellphone2.subscribe((e) => {
-        log('cellphone2: ', e);
-    });
-    form.controls.price.subscribe((e) => {
-        log('price: ', e);
-    });
-    form.controls.materialTextField.subscribe((e) => {
-        log('materialTextField: ', e);
-    });
-    form.controls.customInput.subscribe((e) => {
-        log('customInput: ', e);
-    });
-    form.controls.firstName.subscribe((e) => {
-        log('firstName: ', e);
-    });
-    form.controls.lastName.subscribe((e) => {
-        log('lastName: ', e);
-    });
-    form.controls.contact.subscribe((e) => {
-        log('contact: ', e);
-    });
-    form.controls.single.subscribe((e) => {
-        log('single: ', e);
-    });
-    form.controls.image.subscribe((e) => {
-        log('image: ', e);
-    });
-    form.controls.description.subscribe((e) => {
-        log('description: ', e);
-    });
-
     const rerender = useForceUpdate();
 
     const logForm = (): void => {
-        // console.clear();
         console.table(form.controls, [
             'value',
             'isValid',
@@ -162,7 +124,6 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
             <hr />
             <label>
                 category
-                <br />
                 <select name="pets" {...form.bind('category')}>
                     <option value="">--Please choose an option--</option>
                     <option value="dog">Dog</option>
@@ -174,100 +135,32 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
                     <option value="sale">Sale</option>
                 </select>
             </label>
-            <button
-                type="button"
-                onClick={() => {
-                    form.controls.category.setValue('cat');
-                    rerender();
-                }}
-            >
-                setValue(cat)
-            </button>
+            <ControlDetail control={form.controls.category} setValueInput="hamster" />
             <hr />
-            <label htmlFor="1">
+            <label>
                 first name
-                <br />
-                <input id="1" type="text" {...form.bind('firstName')} />
+                <input type="text" {...form.bind('firstName')} />
             </label>
-            <button
-                type="button"
-                onClick={() => {
-                    form.controls.firstName.addValidator(minLength(7));
-                }}
-            >
-                add minLength(7) validator
-            </button>
-            <button
-                type="button"
-                onClick={() => {
-                    form.controls.firstName.reset();
-                    rerender();
-                }}
-            >
-                reset()
-            </button>
-            <button
-                type="button"
-                onClick={() => {
-                    form.controls.firstName.setValue('sara');
-                    rerender();
-                }}
-            >
-                setValue(sara)
-            </button>
+            <ControlDetail control={form.controls.firstName} setValueInput="sara" />
             <hr />
             <label>
                 lastName
                 <br />
                 <input type="text" {...form.bind('lastName')} />
             </label>
-            <button
-                type="button"
-                onClick={() => {
-                    form.controls.lastName.setValue('kave');
-                    rerender();
-                }}
-            >
-                setValue(kave)
-            </button>
-            <button
-                type="button"
-                onClick={() => {
-                    form.controls.lastName.setValue('abbasi');
-                    rerender();
-                }}
-            >
-                setValue(abbasi)
-            </button>
-            <button
-                type="button"
-                onClick={() => {
-                    form.controls.lastName.addValidator(maxLength(10));
-                }}
-            >
-                add maxLength(10) validator
-            </button>
+            <ControlDetail control={form.controls.lastName} setValueInput="abbasi" />
             <hr />
             <label htmlFor="cellphone">
                 cellphone
-                <br />
                 <input id="cellphone" {...form.bind('cellphone2')} />
             </label>
-            <button
-                type="button"
-                onClick={() => {
-                    form.controls.cellphone2.setValue('09136868075');
-                    rerender();
-                }}
-            >
-                setValue to 09136868075
-            </button>
+            <ControlDetail control={form.controls.cellphone2} setValueInput="868075" />
             <hr />
             <label htmlFor="inputNumber">
                 price
-                <br />
                 <input type="number" id="inputNumber" {...form.bind('price')} />
             </label>
+            <ControlDetail control={form.controls.price} setValueInput="56000" />
             <hr />
             <div>
                 <label htmlFor="phone">
@@ -304,36 +197,27 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
                 </label>
             </div>
             {radioJsx}
-            <button type="button" onClick={addRadioControl}>
-                add control
-            </button>
-
-            <button
-                onClick={() => {
-                    form.controls.contact.setValue('fax');
-                    // rerender();
-                }}
-            >
-                setValue(fax)
-            </button>
+            <ControlDetail control={form.controls.contact} setValueInput="email" />
             <hr />
             <label htmlFor="chb">
                 single
                 <input id="chb" type="checkbox" {...form.bind('single')} />
             </label>
-            <hr />
-            <label htmlFor="file">
-                file:
-                <br />
-                <input type="file" id="file" {...form.bind('image')} />
-            </label>
+            <ControlDetail control={form.controls.single} setValueInput={false} />
             <hr />
             <label htmlFor="textarea">
                 textarea:
                 <br />
                 <textarea id="textarea" {...form.bind('description')} />
             </label>
+            <ControlDetail control={form.controls.description} setValueInput="a desc" />
             <hr />
+            <label htmlFor="file">
+                file:
+                <br />
+                <input type="file" id="file" {...form.bind('image')} />
+            </label>
+            <ControlDetail control={form.controls.image} setValueInput="" />
             <button type="button" onClick={logForm}>
                 log
             </button>
@@ -355,3 +239,40 @@ export const FormNative = (_formModel?: FormModel): JSX.Element => {
         </div>
     );
 };
+
+// form.controls.category.subscribe((e) => {
+//     log('category: ', e);
+// });
+// form.controls.cellphone2.subscribe((e) => {
+//     log('cellphone: ', e);
+// });
+// form.controls.cellphone2.subscribe((e) => {
+//     log('cellphone2: ', e);
+// });
+// form.controls.price.subscribe((e) => {
+//     log('price: ', e);
+// });
+// form.controls.materialTextField.subscribe((e) => {
+//     log('materialTextField: ', e);
+// });
+// form.controls.customInput.subscribe((e) => {
+//     log('customInput: ', e);
+// });
+// form.controls.firstName.subscribe((e) => {
+//     log('firstName: ', e);
+// });
+// form.controls.lastName.subscribe((e) => {
+//     log('lastName: ', e);
+// });
+// form.controls.contact.subscribe((e) => {
+//     log('contact: ', e);
+// });
+// form.controls.single.subscribe((e) => {
+//     log('single: ', e);
+// });
+// form.controls.image.subscribe((e) => {
+//     log('image: ', e);
+// });
+// form.controls.description.subscribe((e) => {
+//     log('description: ', e);
+// });

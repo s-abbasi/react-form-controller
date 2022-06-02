@@ -18,7 +18,6 @@ const config = {
         'plugin:react/recommended',
         'airbnb',
         'plugin:@typescript-eslint/recommended',
-        'plugin:storybook/recommended',
         'prettier',
     ],
     parser: '@typescript-eslint/parser',

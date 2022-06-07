@@ -55,7 +55,8 @@
     },
     "scripts": {
         "rollup": "rollup -c",
-        "lint": "eslint ."
+        "lint": "eslint .",
+        "test": "jest"
     },
     "lint-staged": {
         "**/*": "prettier --write --ignore-unknown"

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { useForm } from '../useForm/useForm';
-import { Control, FormModel } from '../useForm/useForm.types';
+import { FormModel } from '../useForm/useForm.types';
 import { generateChangeEvent } from './test.helper';
 
 describe('addControl', () => {
@@ -17,7 +17,7 @@ describe('addControl', () => {
 
         form.add(newModel);
 
-        const expectedControl: Control = {
+        const expectedControl = {
             value: 'abbasi',
             isDisabled: true,
             isTouched: false,

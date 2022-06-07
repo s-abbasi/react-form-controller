@@ -27,7 +27,7 @@ const baseFormGroup: FormGroup = {
 };
 
 export const attachControlsToFormGroup =
-    (setRefValue: SetRefValue, rerender) =>
+    (setRefValue: SetRefValue, rerender: () => void) =>
     (model: NormalizedModel): FormGroup => {
         const controls = Object.entries(model).reduce((prev, [controlName, value]) => {
             const { initialValue, validators, disabled } = value;
@@ -48,6 +48,7 @@ export const attachControlsToFormGroup =
                     rerender();
                 },
                 setValue(v) {
+                    // @ts-ignore
                     setRefValue(controlName, v, this.type);
                     this.value = v;
                     this.isDirty = true;
@@ -64,6 +65,7 @@ export const attachControlsToFormGroup =
                         rerender
                     )(controlModel).controls[controlName];
                     baseFormGroup.controls[controlName] = newControl;
+                    // @ts-ignore
                     setRefValue(controlName, model[controlName].initialValue, this.type);
                     rerender();
                 },

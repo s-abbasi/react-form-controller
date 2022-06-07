@@ -13,7 +13,7 @@ import {
 } from '../useForm.validations';
 
 export const attachBindToFormGroup =
-    (addToRef: AddToRef, rerender) =>
+    (addToRef: AddToRef, rerender: () => void) =>
     (formGroup: FormGroup): Required<FormGroup> => {
         formGroup.bind = (controlName: string) => {
             const initialValue = formGroup.controls[controlName].value;

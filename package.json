@@ -1,76 +1,13 @@
 {
-    "name": "@s-abbasi/react-form-controller",
+    "name": "react-form-controller",
+    "private": true,
     "version": "0.0.0",
     "author": "Sajad Abbasi",
-    "devDependencies": {
-        "@babel/core": "^7.16.10",
-        "@babel/plugin-transform-runtime": "^7.18.0",
-        "@babel/preset-env": "^7.16.10",
-        "@babel/preset-react": "^7.16.7",
-        "@babel/preset-typescript": "^7.16.7",
-        "@commitlint/cli": "^16.0.2",
-        "@commitlint/config-conventional": "^16.0.0",
-        "@emotion/react": "^11.8.1",
-        "@emotion/styled": "^11.8.1",
-        "@mui/material": "^5.4.3",
-        "@rollup/plugin-commonjs": "^21.0.1",
-        "@rollup/plugin-node-resolve": "^13.1.3",
-        "@rollup/plugin-typescript": "^8.3.0",
-        "@testing-library/jest-dom": "^5.16.2",
-        "@testing-library/react": "^12.1.3",
-        "@testing-library/react-hooks": "^7.0.2",
-        "@testing-library/user-event": "^14.2.0",
-        "@tsconfig/recommended": "^1.0.1",
-        "@types/jest": "^27.4.0",
-        "@types/ramda": "^0.27.64",
-        "@types/react": "^17.0.38",
-        "@typescript-eslint/eslint-plugin": "^5.9.0",
-        "@typescript-eslint/parser": "^5.9.0",
-        "@vite/vitejs": "^2.3.17-alpha.5",
-        "@vitejs/plugin-react": "^1.1.4",
-        "babel-jest": "^27.4.6",
-        "babel-loader": "^8.2.3",
-        "eslint": "^8.6.0",
-        "eslint-config-airbnb": "^19.0.4",
-        "eslint-config-prettier": "^8.3.0",
-        "eslint-import-resolver-typescript": "^2.5.0",
-        "eslint-plugin-import": "^2.25.4",
-        "eslint-plugin-jsx-a11y": "^6.5.1",
-        "eslint-plugin-prettier": "^4.0.0",
-        "eslint-plugin-react": "^7.28.0",
-        "eslint-plugin-react-hooks": "^4.3.0",
-        "husky": "^7.0.4",
-        "jest": "^27.4.7",
-        "prettier": "2.5.1",
-        "react": "^17.0.2",
-        "rollup": "^2.64.0",
-        "rollup-plugin-dts": "^4.1.0",
-        "typescript": "^4.4.4",
-        "vite": "^2.7.13"
-    },
-    "peerDependencies": {
-        "react": "^17.0.2",
-        "react-dom": "^17.0.2"
-    },
-    "scripts": {
-        "prepare": "husky install",
-        "rollup": "rollup -c",
-        "lint": "eslint .",
-        "test": "jest"
-    },
-    "lint-staged": {
-        "**/*": "prettier --write --ignore-unknown"
-    },
-    "main": "dist/cjs/index.js",
-    "module": "dist/esm/index.js",
-    "files": [
-        "dist"
+    "workspaces": [
+        "packages/app",
+        "packages/hook"
     ],
-    "types": "dist/index.d.ts",
-    "publishConfig": {
-        "registry": "https://npm.pkg.github.com/s-abbasi"
-    },
-    "dependencies": {
-        "ramda": "^0.28.0"
+    "scripts": {
+        "prepare": "husky install"
     }
 }

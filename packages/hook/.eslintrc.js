@@ -29,6 +29,14 @@ const config = {
     plugins: ['react', '@typescript-eslint', 'react-hooks', 'prettier'],
     settings: { 'import/resolver': { typescript: {} } },
     rules: {
+        'jsx-a11y/label-has-associated-control': [
+            'error',
+            {
+                required: {
+                    some: ['nesting', 'id'],
+                },
+            },
+        ],
         'no-console': ['warn', { allow: ['warn', 'error', 'table', 'clear'] }],
         'react/function-component-definition': ['off'],
         'object-curly-newline': 'off',

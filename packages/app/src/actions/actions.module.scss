@@ -1,0 +1,18 @@
+.container {
+    border: 4px solid rgb(109, 109, 109);
+    margin: 10px;
+    background-color: rgba(109, 109, 109, 0.2);
+    padding: 40px 10px 10px 10px;
+    position: relative;
+    > * {
+        margin-right: 5px;
+    }
+}
+
+.boxTitle {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    padding: 5px 10px;
+    background-color: grey;
+}

@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    border: 4px solid rgb(39, 107, 149);
+    margin: 10px;
+    background-color: rgba(39, 107, 149, 0.2);
+    padding: 40px 10px 10px 10px;
+    position: relative;
+    > * {
+        margin-right: 5px;
+    }
+}
+
+.boxTitle {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    padding: 5px 10px;
+    background-color: rgb(39, 107, 149);
+}
+
+.item {
+    background-color: rgba(105, 149, 39, 0.5);
+    width: max-content;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+}

@@ -5,5 +5,6 @@ export const formModel: FormModel = {
     firstName: {
         initialValue: '',
         validators: [required()],
+        disabled: false
     },
 };

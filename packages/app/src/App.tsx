@@ -1,4 +1,5 @@
 import { Outlet, ReactLocation, Route, Router } from '@tanstack/react-location';
+import { Checkbox } from './checkbox/checkbox';
 import { Radio } from './radio/radio';
 import { Text } from './text/text';
 
@@ -7,6 +8,7 @@ const location = new ReactLocation();
 const routes: Route[] = [
     { path: 'text', element: <Text /> },
     { path: 'radio', element: <Radio /> },
+    { path: 'checkbox', element: <Checkbox /> },
 ];
 
 function App(): JSX.Element {

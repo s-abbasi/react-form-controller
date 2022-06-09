@@ -4,7 +4,7 @@ import css from './actions.module.scss';
 type Prop = {
     form: FormGroup;
     controlName: string;
-    setValueTo: string;
+    setValueTo: string | boolean;
 };
 
 export const Actions = ({ form, controlName, setValueTo }: Prop): JSX.Element => {

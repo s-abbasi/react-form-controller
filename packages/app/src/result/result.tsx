@@ -14,7 +14,7 @@ export const Result = ({ form, controlName }: Prop): JSX.Element => {
             <div className={css.boxTitle}>result</div>
             <div className={css.item}>
                 <span>value: </span>
-                <span id="value-box">{control.value}</span>
+                <span id="value-box">{JSON.stringify(control.value)}</span>
             </div>
             <div className={css.item}>
                 <span>isDisabled: </span>

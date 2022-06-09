@@ -5,7 +5,7 @@ describe('radio.cy.ts', () => {
 
     it('should render selected value', () => {
         cy.get('#email-inp').click();
-        cy.get('#value-box').invoke('text').should('equal', 'email');
+        cy.get('#value-box').invoke('text').should('equal', '"email"');
     });
 
     it('should disable and render on disable event', () => {
@@ -27,14 +27,14 @@ describe('radio.cy.ts', () => {
 
     it('should set value of input and control.value to given value on setValue() and rerender', () => {
         cy.get('#set-value-btn').click();
-        cy.get('#value-box').invoke('text').should('equal', 'sms');
+        cy.get('#value-box').invoke('text').should('equal', '"sms"');
     });
 
     it('should reset input on reset and rerender', () => {
         cy.get('#email-inp').click();
         cy.get('#disable-btn').click();
         cy.get('#reset-btn').click();
-        cy.get('#value-box').invoke('text').should('equal', 'phone');
+        cy.get('#value-box').invoke('text').should('equal', '"phone"');
         cy.get('#email-inp').should('be.enabled');
         cy.get('#phone-inp').should('be.enabled');
         cy.get('#sms-inp').should('be.enabled');

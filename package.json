@@ -5,7 +5,8 @@
     "author": "Sajad Abbasi",
     "workspaces": [
         "packages/app",
-        "packages/hook"
+        "packages/hook",
+        "packages/docs"
     ],
     "scripts": {
         "prepare": "husky install"

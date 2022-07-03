@@ -1,0 +1,28 @@
+---
+title: form.add()
+---
+
+# form.add(`FormModel`)
+
+Adds a control to an already created `FormGroup` instance.
+
+-   Type
+
+```tsx
+form.add(model);
+```
+
+-   Example
+
+Accepts an obejct of type `FormModel` and returns `FormGroup`.
+
+```tsx
+const model: FormModel = {
+    firstName: {initialValue: ''},
+    lastName: {initialValue: ''}
+}
+
+const form = useForm(model: FormModel): FromGroup;
+
+form.add({cellphone: ''})
+```

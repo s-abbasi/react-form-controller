@@ -1,0 +1,26 @@
+---
+title: useForm()
+---
+
+# useForm(`FormModel`)
+
+Creates an instance of `FormGroup`.
+
+-   Type
+
+```ts
+const form = useForm(model: FormModel): FromGroup;
+```
+
+-   Example
+
+Accepts an obejct of type `FormModel` and returns `FormGroup`.
+
+```ts
+const model: FormModel = {
+    firstName: {initialValue: ''},
+    lastName: {initialValue: ''}
+}
+
+const form = useForm(model: FormModel): FromGroup;
+```

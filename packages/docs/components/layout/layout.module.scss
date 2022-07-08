@@ -1,0 +1,31 @@
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: 70px 1fr;
+    grid-gap: 1px;
+    color: rgba(255, 255, 255, 0.87);
+    grid-template-areas:
+        'header header'
+        'aside main';
+    background-color: #363636;
+}
+
+.header,
+.aside,
+.main {
+    background-color: #1a1a1a;
+}
+
+.aside {
+    grid-area: aside;
+}
+
+.main {
+    grid-area: main;
+}
+
+.header {
+    grid-area: header;
+}

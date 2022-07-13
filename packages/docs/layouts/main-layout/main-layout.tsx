@@ -4,7 +4,7 @@ import { MainLayoutProps } from './main-layout.types';
 export function MainLayout({ children }: MainLayoutProps): JSX.Element {
     return (
         <div className={css.container}>
-            <header className={css.header}>header</header>
+            <header className={css.header}></header>
             <main className={css.main}>{children}</main>
         </div>
     );

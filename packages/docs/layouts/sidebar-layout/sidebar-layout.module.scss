@@ -1,0 +1,11 @@
+.container {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 1px;
+}
+
+.sidebar,
+.main {
+    background-color: var(--bg);
+}

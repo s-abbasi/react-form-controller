@@ -1,0 +1,27 @@
+.container {
+    margin-left: 50px;
+    width: max-content;
+    display: flex;
+    height: 100%;
+    gap: 20px;
+}
+
+.navItem {
+    min-width: 50px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    color: var(--text-color-2);
+}
+
+.navItem:first-child {
+    border-bottom: 6px solid var(--color-border);
+    color: var(--text-color-1);
+}
+
+.navItem:hover {
+    color: var(--text-color-1);
+}

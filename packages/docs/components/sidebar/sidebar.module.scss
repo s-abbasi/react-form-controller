@@ -1,5 +1,5 @@
 .container {
-    padding-left: 1rem;
+    padding-left: 2rem;
     padding-top: 1rem;
 }
 
@@ -25,6 +25,9 @@
 
 .adornment {
     font-size: 12px;
-    opacity: 0.4;
-    padding-left: 5px;
+    margin-left: 5px;
+    color: var(--text-color-4);
+    padding: 2px 4px;
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.2);
 }

@@ -1,6 +1,6 @@
 # Why?
 
-When I migrated from Angular to React, there were two things that I really missed in the Angular ecosystem, `routing` and `formGroups`. The way Angular was handling forms was elegant, simple, and powerful. At this time I could not find any proper react alternative, therefore, I decided to create my own form handler.
+When I migrated from Angular to React, there were two things that I really missed in the Angular ecosystem, `routing` and `formGroups`. The way Angular was handling forms was elegant, simple, and powerful. At this time I could not find any proper React alternative, therefore, I decided to create my own form handler.
 
   This library is my attempt to create a form controller that respects the separation of concern and has a simple API.
 

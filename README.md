@@ -18,7 +18,7 @@ const form = useForm(model)
 return <>
 	<input {...form.bind('username')} />
 	<input {...form.bind('password')} />
-</>
+       </>
 ```
 
 
